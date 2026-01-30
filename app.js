@@ -16,22 +16,19 @@ const arteDiv = document.getElementById("arte");
 const relatoriosDiv = document.getElementById("relatorios");
 const usuariosDiv = document.getElementById("usuarios");
 
-const userInput = document.getElementById("user");
-const senhaInput = document.getElementById("senha");
-const erroMsg = document.getElementById("erro");
-
 // ===== LOGIN =====
 function login() {
-  const u = userInput.value.trim();
-  const s = senhaInput.value.trim();
+  const u = document.getElementById("user").value.trim();
+  const s = document.getElementById("senha").value.trim();
+  const erro = document.getElementById("erro");
 
   const ok = usuarios.find(x => x.user === u && x.senha === s);
   if (ok) {
     loginDiv.style.display = "none";
     homeDiv.style.display = "block";
-    erroMsg.innerText = "";
+    erro.innerText = "";
   } else {
-    erroMsg.innerText = "Usuário ou senha inválidos";
+    erro.innerText = "Usuário ou senha inválidos";
   }
 }
 
@@ -82,12 +79,18 @@ function salvarArte() {
     return;
   }
 
+  // mantém foto antiga se estiver editando
+  let fotoExistente = null;
+  if (indiceArteEditando !== null && artes[indiceArteEditando].foto) {
+    fotoExistente = artes[indiceArteEditando].foto;
+  }
+
   if (fotoInput) {
     const reader = new FileReader();
     reader.onload = () => salvarArteFinal(nome, valor, reader.result);
     reader.readAsDataURL(fotoInput);
   } else {
-    salvarArteFinal(nome, valor, null);
+    salvarArteFinal(nome, valor, fotoExistente);
   }
 }
 
@@ -119,9 +122,10 @@ function listarArte() {
     li.innerHTML = `
       <strong>${a.nome}</strong><br>
       Valor: R$ ${a.valor.toFixed(2)}<br>
-      ${a.foto ? `<img src="${a.foto}" style="max-width:100px">` : ""}
+      ${a.foto ? `<img src="${a.foto}">` : "<em>Sem imagem</em>"}
       <br>
       <button onclick="editarArte(${i})">Editar</button>
+      <button onclick="excluirArte(${i})">Excluir</button>
     `;
     lista.appendChild(li);
   });
@@ -133,6 +137,15 @@ function editarArte(indice) {
   indiceArteEditando = indice;
 }
 
+function excluirArte(indice) {
+  if (!confirm("Tem certeza que deseja excluir este item?")) return;
+
+  artes.splice(indice, 1);
+  localStorage.setItem("artes", JSON.stringify(artes));
+  listarArte();
+}
+
+// ===== PEDIDOS =====
 function atualizarSelectArte() {
   const select = document.getElementById("item");
   select.innerHTML = "";
@@ -144,7 +157,6 @@ function atualizarSelectArte() {
   });
 }
 
-// ===== PEDIDOS =====
 function salvarPedido() {
   const arteSelecionada = artes[document.getElementById("item").value];
 
