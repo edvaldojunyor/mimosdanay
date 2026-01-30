@@ -209,6 +209,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .campo-data input:valid + .fake-placeholder {
   display: none;
 }
+/* ===== Botões de ação ===== */
+
+.btn-excluir-item {
+  background-color: #d9534f; /* vermelho */
+}
+
+.btn-excluir-imagem {
+  background-color: #f0ad4e; /* laranja */
+  color: #fff;
+}
+
+/* efeito visual ao tocar */
+.btn-excluir-item:hover,
+.btn-excluir-imagem:hover {
+  opacity: 0.9;
+}
+
 
 
 
