@@ -1,180 +1,130 @@
-// ===== DADOS =====
-let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
-  { user: "Edvaldo", senha: "1234" },
-  { user: "Neiara", senha: "1234" }
+// USUÁRIOS
+const usuarios = [
+  { user: "Edvaldo", pass: "1234" },
+  { user: "Neiara", pass: "1234" }
 ];
 
-let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 let artes = JSON.parse(localStorage.getItem("artes")) || [];
-let indiceArteEditando = null;
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+let arteEditando = null;
 
-// ===== ELEMENTOS =====
-const loginDiv = document.getElementById("login");
-const homeDiv = document.getElementById("home");
-const pedidosDiv = document.getElementById("pedidos");
-const arteDiv = document.getElementById("arte");
-const relatoriosDiv = document.getElementById("relatorios");
-const usuariosDiv = document.getElementById("usuarios");
-
-const userInput = document.getElementById("user");
-const senhaInput = document.getElementById("senha");
-const erroMsg = document.getElementById("erro");
-
-// ===== LOGIN =====
+// LOGIN
 function login() {
-  const u = userInput.value.trim();
-  const s = senhaInput.value.trim();
+  const u = usuario.value;
+  const s = senha.value;
+  const valido = usuarios.find(x => x.user === u && x.pass === s);
 
-  const ok = usuarios.find(x => x.user === u && x.senha === s);
-  if (ok) {
-    loginDiv.style.display = "none";
-    homeDiv.style.display = "block";
-    erroMsg.innerText = "";
+  if (valido) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    listarArte();
+    carregarSelectArte();
   } else {
-    erroMsg.innerText = "Usuário ou senha inválidos";
+    alert("Usuário ou senha inválidos");
   }
 }
 
-function logout() {
-  location.reload();
-}
-
-// ===== NAVEGAÇÃO =====
-function voltarHome() {
-  pedidosDiv.style.display = "none";
-  arteDiv.style.display = "none";
-  relatoriosDiv.style.display = "none";
-  usuariosDiv.style.display = "none";
-  homeDiv.style.display = "block";
-}
-
-function abrirPedidos() {
-  homeDiv.style.display = "none";
-  pedidosDiv.style.display = "block";
-  atualizarSelectArte();
-  listarPedidos();
-}
-
-function abrirArte() {
-  homeDiv.style.display = "none";
-  arteDiv.style.display = "block";
-  listarArte();
-}
-
-function abrirRelatorios() {
-  homeDiv.style.display = "none";
-  relatoriosDiv.style.display = "block";
-}
-
-function abrirUsuarios() {
-  homeDiv.style.display = "none";
-  usuariosDiv.style.display = "block";
-}
-
-// ===== ARTE SACRA =====
+// ARTE SACRA
 function salvarArte() {
-  const input = document.getElementById("nomeArte");
-  const nome = input.value.trim();
-  if (!nome) return;
+  const nome = nomeArte.value.trim();
+  const valor = parseFloat(valorArte.value);
+  const foto = fotoArte.files[0];
 
-  if (indiceArteEditando !== null) {
-    artes[indiceArteEditando] = nome;
-    indiceArteEditando = null;
+  if (!nome || isNaN(valor)) {
+    alert("Informe nome e valor");
+    return;
+  }
+
+  if (foto) {
+    const reader = new FileReader();
+    reader.onload = () => salvarArteFinal(nome, valor, reader.result);
+    reader.readAsDataURL(foto);
   } else {
-    artes.push(nome);
+    salvarArteFinal(nome, valor, null);
+  }
+}
+
+function salvarArteFinal(nome, valor, foto) {
+  const item = { nome, valor, foto };
+
+  if (arteEditando !== null) {
+    artes[arteEditando] = item;
+    arteEditando = null;
+  } else {
+    artes.push(item);
   }
 
   localStorage.setItem("artes", JSON.stringify(artes));
-  input.value = "";
+  nomeArte.value = "";
+  valorArte.value = "";
+  fotoArte.value = "";
+
   listarArte();
+  carregarSelectArte();
 }
 
 function listarArte() {
-  const lista = document.getElementById("listaArte");
-  lista.innerHTML = "";
-
+  listaArte.innerHTML = "";
   artes.forEach((a, i) => {
     const li = document.createElement("li");
-
-    const texto = document.createElement("div");
-    texto.innerText = a;
-
-    const btnEditar = document.createElement("button");
-    btnEditar.innerText = "Editar";
-    btnEditar.onclick = () => editarArte(i);
-
-    li.appendChild(texto);
-    li.appendChild(btnEditar);
-    lista.appendChild(li);
+    li.innerHTML = `
+      <strong>${a.nome}</strong><br>
+      Valor: R$ ${a.valor.toFixed(2)}
+      ${a.foto ? `<img src="${a.foto}">` : ""}
+      <br>
+      <button onclick="editarArte(${i})">Editar</button>
+    `;
+    listaArte.appendChild(li);
   });
 }
 
-function editarArte(indice) {
-  document.getElementById("nomeArte").value = artes[indice];
-  indiceArteEditando = indice;
+function editarArte(i) {
+  nomeArte.value = artes[i].nome;
+  valorArte.value = artes[i].valor;
+  arteEditando = i;
 }
 
-function atualizarSelectArte() {
-  const select = document.getElementById("item");
-  select.innerHTML = "";
-  artes.forEach(a => {
+// PEDIDOS
+function carregarSelectArte() {
+  artePedido.innerHTML = "";
+  artes.forEach((a, i) => {
     const opt = document.createElement("option");
-    opt.value = a;
-    opt.innerText = a;
-    select.appendChild(opt);
+    opt.value = i;
+    opt.text = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
+    artePedido.appendChild(opt);
   });
 }
 
-// ===== PEDIDOS =====
 function salvarPedido() {
+  const arte = artes[artePedido.value];
+
   pedidos.push({
-    cliente: document.getElementById("cliente").value,
-    item: document.getElementById("item").value,
-    valor: Number(document.getElementById("valor").value),
-    pagamento: document.getElementById("pagamento").value,
-    status: document.getElementById("status").value
+    dataPedido: dataPedido.value,
+    cliente: clientePedido.value,
+    arte: arte.nome,
+    valor: arte.valor,
+    entrega: dataEntrega.value,
+    pagamento: pagamento.value
   });
 
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  listarPedidos();
+  alert("Pedido salvo com sucesso");
 }
 
-function listarPedidos() {
-  const lista = document.getElementById("listaPedidos");
-  lista.innerHTML = "";
-  pedidos.forEach(p => {
-    const li = document.createElement("li");
-    li.innerText = `${p.cliente} | ${p.item} | R$ ${p.valor.toFixed(2)}`;
-    lista.appendChild(li);
-  });
-}
-
-// ===== RELATÓRIOS =====
+// RELATÓRIO
 function gerarRelatorio() {
-  let total = 0, pix = 0, prazo = 0, cartao = 0;
+  relatorio.innerHTML = "";
+  let total = 0;
 
   pedidos.forEach(p => {
-    if (p.status === "Entregue") {
-      total += p.valor;
-      if (p.pagamento === "Pix") pix += p.valor;
-      if (p.pagamento === "A prazo") prazo += p.valor;
-      if (p.pagamento === "Cartão") cartao += p.valor;
-    }
+    total += p.valor;
+    relatorio.innerHTML += `
+      <p>
+        ${p.cliente} | ${p.arte} | 
+        R$ ${p.valor.toFixed(2)} | ${p.pagamento}
+      </p>
+    `;
   });
 
-  document.getElementById("total").innerText = `Total: R$ ${total.toFixed(2)}`;
-  document.getElementById("pix").innerText = `Pix: R$ ${pix.toFixed(2)}`;
-  document.getElementById("prazo").innerText = `A prazo: R$ ${prazo.toFixed(2)}`;
-  document.getElementById("cartao").innerText = `Cartão: R$ ${cartao.toFixed(2)}`;
-}
-
-// ===== USUÁRIOS =====
-function addUsuario() {
-  usuarios.push({
-    user: document.getElementById("novoUser").value,
-    senha: document.getElementById("novaSenha").value
-  });
-
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-  alert("Usuário criado com sucesso!");
+  relatorio.innerHTML += `<h3>Total Geral: R$ ${total.toFixed(2)}</h3>`;
 }
