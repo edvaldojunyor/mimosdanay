@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>Mimos da Nay</header>
@@ -25,6 +24,7 @@
 <div id="home" style="display:none;">
   <h2>Menu</h2>
   <button onclick="abrirPedidos()">Pedidos</button>
+  <button onclick="abrirArte()">Arte Sacra</button>
   <button onclick="abrirRelatorios()">Relatórios</button>
   <button onclick="abrirUsuarios()">Usuários</button>
   <button onclick="logout()">Sair</button>
@@ -35,11 +35,10 @@
   <h2>Novo Pedido</h2>
 
   <input id="cliente" placeholder="Nome do Cliente">
+
   <select id="item"></select>
 
-  <input type="date" id="dataPedido">
   <input type="date" id="dataEntrega">
-
   <input type="number" id="valor" placeholder="Valor (R$)">
 
   <select id="pagamento">
@@ -53,21 +52,29 @@
     <option>Entregue</option>
   </select>
 
-  <button onclick="salvarPedido()">Salvar</button>
+  <button onclick="salvarPedido()">Salvar Pedido</button>
   <button onclick="voltarHome()">Voltar</button>
 
   <ul id="listaPedidos"></ul>
+</div>
+
+<!-- ARTE SACRA -->
+<div id="arte" style="display:none;">
+  <h2>Cadastro de Arte Sacra</h2>
+
+  <input id="nomeArte" placeholder="Nome do item (ex: São José)">
+  <button onclick="salvarArte()">Salvar Item</button>
+
+  <ul id="listaArte"></ul>
+
+  <button onclick="voltarHome()">Voltar</button>
 </div>
 
 <!-- RELATÓRIOS -->
 <div id="relatorios" style="display:none;">
   <h2>Relatórios</h2>
 
-  <input type="date" id="inicio">
-  <input type="date" id="fim">
-  <button onclick="gerarRelatorio()">Gerar</button>
-
-  <ul id="resultado"></ul>
+  <button onclick="gerarRelatorio()">Gerar Relatório Geral</button>
 
   <p id="total"></p>
   <p id="pix"></p>
@@ -80,9 +87,11 @@
 <!-- USUÁRIOS -->
 <div id="usuarios" style="display:none;">
   <h2>Usuários</h2>
+
   <input id="novoUser" placeholder="Usuário">
   <input id="novaSenha" placeholder="Senha">
-  <button onclick="addUsuario()">Adicionar</button>
+  <button onclick="addUsuario()">Adicionar Usuário</button>
+
   <button onclick="voltarHome()">Voltar</button>
 </div>
 
