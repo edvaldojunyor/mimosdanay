@@ -76,4 +76,45 @@ input[type="date"] {
 input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
+/* ===== Input DATE padronizado (iOS + Web) ===== */
+.input-date {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background-color: #fff;
+  color: #000;
+  box-sizing: border-box;
+  height: 44px; /* força mesmo tamanho dos outros */
+}
+
+/* Texto "Data da entrega" fake dentro do campo */
+.input-date:before {
+  content: "Data de entrega";
+  color: #aaa;
+}
+
+/* Quando tem valor, remove o texto fake */
+.input-date:valid:before {
+  content: "";
+}
+
+/* Safari / iOS */
+.input-date::-webkit-datetime-edit {
+  color: transparent;
+}
+
+.input-date:focus::-webkit-datetime-edit,
+.input-date:valid::-webkit-datetime-edit {
+  color: #000;
+}
+
+/* Cursor do calendário */
+.input-date::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+}
+
 
