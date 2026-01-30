@@ -134,17 +134,26 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   pointer-events: none;
 }
 
-/* Input date padronizado */
+/* ===== Input DATE padronizado (igual aos outros) ===== */
 .campo-data input[type="date"] {
   width: 100%;
-  padding: 10px;
-  height: 44px;
+  height: 44px;              /* altura exata */
+  padding: 0 10px;           /* remove padding vertical extra */
+  margin-top: 0;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-family: Arial, sans-serif;
   font-size: 16px;
   background-color: #fff;
   box-sizing: border-box;
+  line-height: 44px;         /* força alinhamento vertical */
+}
+
+/* Safari iOS – remove ajustes internos */
+.campo-data input::-webkit-datetime-edit {
+  height: 44px;
+  line-height: 44px;
+  padding: 0;
 }
 
 /* Esconde placeholder quando tiver valor */
@@ -157,6 +166,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .campo-data input::-webkit-datetime-edit {
   color: #000;
 }
+
 
 
 
