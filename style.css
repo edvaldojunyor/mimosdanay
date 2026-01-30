@@ -58,3 +58,22 @@ img {
   margin-top: 8px;
   border-radius: 6px;
 }
+/* ===== Padronizar input type=date ===== */
+input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background-color: #fff;
+  color: #000;
+  box-sizing: border-box;
+}
+
+/* Remove aparência diferente em alguns navegadores */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
