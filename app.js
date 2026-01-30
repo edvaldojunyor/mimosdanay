@@ -1,15 +1,17 @@
-// ====== BANCO LOCAL ======
+// ===== DADOS =====
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
   { user: "Edvaldo", senha: "1234" },
   { user: "Neiara", senha: "1234" }
 ];
 
 let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+let artes = JSON.parse(localStorage.getItem("artes")) || [];
 
-// ====== ELEMENTOS ======
+// ===== ELEMENTOS =====
 const loginDiv = document.getElementById("login");
 const homeDiv = document.getElementById("home");
 const pedidosDiv = document.getElementById("pedidos");
+const arteDiv = document.getElementById("arte");
 const relatoriosDiv = document.getElementById("relatorios");
 const usuariosDiv = document.getElementById("usuarios");
 
@@ -17,16 +19,13 @@ const userInput = document.getElementById("user");
 const senhaInput = document.getElementById("senha");
 const erroMsg = document.getElementById("erro");
 
-// ====== LOGIN ======
+// ===== LOGIN =====
 function login() {
   const u = userInput.value.trim();
   const s = senhaInput.value.trim();
 
-  const encontrado = usuarios.find(
-    x => x.user === u && x.senha === s
-  );
-
-  if (encontrado) {
+  const ok = usuarios.find(x => x.user === u && x.senha === s);
+  if (ok) {
     loginDiv.style.display = "none";
     homeDiv.style.display = "block";
     erroMsg.innerText = "";
@@ -39,9 +38,10 @@ function logout() {
   location.reload();
 }
 
-// ====== NAVEGAÇÃO ======
+// ===== NAVEGAÇÃO =====
 function voltarHome() {
   pedidosDiv.style.display = "none";
+  arteDiv.style.display = "none";
   relatoriosDiv.style.display = "none";
   usuariosDiv.style.display = "none";
   homeDiv.style.display = "block";
@@ -50,7 +50,14 @@ function voltarHome() {
 function abrirPedidos() {
   homeDiv.style.display = "none";
   pedidosDiv.style.display = "block";
+  atualizarSelectArte();
   listarPedidos();
+}
+
+function abrirArte() {
+  homeDiv.style.display = "none";
+  arteDiv.style.display = "block";
+  listarArte();
 }
 
 function abrirRelatorios() {
@@ -63,18 +70,48 @@ function abrirUsuarios() {
   usuariosDiv.style.display = "block";
 }
 
-// ====== PEDIDOS ======
+// ===== ARTE SACRA =====
+function salvarArte() {
+  const nome = document.getElementById("nomeArte").value.trim();
+  if (!nome) return;
+
+  artes.push(nome);
+  localStorage.setItem("artes", JSON.stringify(artes));
+  document.getElementById("nomeArte").value = "";
+  listarArte();
+}
+
+function listarArte() {
+  const lista = document.getElementById("listaArte");
+  lista.innerHTML = "";
+  artes.forEach(a => {
+    const li = document.createElement("li");
+    li.innerText = a;
+    lista.appendChild(li);
+  });
+}
+
+function atualizarSelectArte() {
+  const select = document.getElementById("item");
+  select.innerHTML = "";
+  artes.forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.innerText = a;
+    select.appendChild(opt);
+  });
+}
+
+// ===== PEDIDOS =====
 function salvarPedido() {
-  const pedido = {
+  pedidos.push({
     cliente: document.getElementById("cliente").value,
     item: document.getElementById("item").value,
-    entrega: document.getElementById("dataEntrega").value,
     valor: Number(document.getElementById("valor").value),
     pagamento: document.getElementById("pagamento").value,
     status: document.getElementById("status").value
-  };
+  });
 
-  pedidos.push(pedido);
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
   listarPedidos();
 }
@@ -82,7 +119,6 @@ function salvarPedido() {
 function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
   lista.innerHTML = "";
-
   pedidos.forEach(p => {
     const li = document.createElement("li");
     li.innerText = `${p.cliente} | ${p.item} | R$ ${p.valor.toFixed(2)}`;
@@ -90,7 +126,7 @@ function listarPedidos() {
   });
 }
 
-// ====== RELATÓRIOS ======
+// ===== RELATÓRIOS =====
 function gerarRelatorio() {
   let total = 0, pix = 0, prazo = 0, cartao = 0;
 
@@ -109,14 +145,13 @@ function gerarRelatorio() {
   document.getElementById("cartao").innerText = `Cartão: R$ ${cartao.toFixed(2)}`;
 }
 
-// ====== USUÁRIOS ======
+// ===== USUÁRIOS =====
 function addUsuario() {
-  const novo = {
+  usuarios.push({
     user: document.getElementById("novoUser").value,
     senha: document.getElementById("novaSenha").value
-  };
+  });
 
-  usuarios.push(novo);
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
-  alert("Usuário criado!");
+  alert("Usuário criado com sucesso!");
 }
