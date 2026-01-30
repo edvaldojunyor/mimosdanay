@@ -25,8 +25,9 @@
 <!-- HOME -->
 <div id="home" style="display:none">
   <h2>Menu</h2>
-  <button onclick="abrirArte()">Arte Sacra</button>
-  <button onclick="abrirPedidos()">Pedidos</button>
+  <button onclick="abrirArte()">Cadastro de Artesanatos</button>
+  <button onclick="abrirPedidos()">Pedidos de Clientes</button>
+  <button onclick="abrirRelatorios()">Relatório dos Pedidos</button>
   <button onclick="logout()">Sair</button>
 </div>
 
@@ -73,5 +74,19 @@
 
 <!-- APP -->
 <script src="app.js"></script>
+<!-- RELATÓRIOS -->
+<div id="relatorios" style="display:none">
+  <h2>Relatório Mensal de Vendas</h2>
+
+  <label>Mês:</label>
+  <input type="month" id="mesRelatorio">
+
+  <button onclick="gerarRelatorio()">Gerar Relatório</button>
+  <button onclick="voltarHome()">Voltar</button>
+
+  <div id="resultadoRelatorio"></div>
+</div>
+
 </body>
 </html>
+
