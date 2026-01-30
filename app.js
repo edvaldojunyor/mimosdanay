@@ -128,6 +128,7 @@ function salvarArteFinal(nome, valor, foto) {
   document.getElementById("nomeArte").value = "";
   document.getElementById("valorArte").value = "";
   document.getElementById("fotoArte").value = "";
+  document.getElementById("previewArte").style.display = "none";
 
   listarArte();
 }
@@ -230,4 +231,5 @@ function addUsuario() {
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   alert("Usuário criado com sucesso!");
 }
+
 
