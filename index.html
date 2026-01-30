@@ -3,120 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <title>Mimos da Nay</title>
-
-  <!-- Responsivo para iPhone -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="manifest.json">
-
-  <!-- Estilo -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- TELA DE LOGIN -->
-  <div id="login">
-    <h1>Mimos da Nay</h1>
+<header>Mimos da Nay</header>
 
-    <input type="text" id="usuario" placeholder="Usuário">
-    <input type="password" id="senha" placeholder="Senha">
+<!-- LOGIN -->
+<div id="login">
+  <h2>Login</h2>
+  <input id="user" placeholder="Usuário">
+  <input id="senha" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+  <p id="erro"></p>
+</div>
 
-    <button onclick="login()">Entrar</button>
-
-    <p id="erro"></p>
-  </div>
-
- <!-- HOME -->
+<!-- HOME -->
 <div id="home" style="display:none;">
   <h2>Menu</h2>
-
-  <button onclick="abrirNovoPedido()">Novo Pedido</button>
-<button onclick="abrirArteSacra()">Arte Sacra</button>
-<button onclick="abrirListaPedidos()">Pedidos</button>
-<button onclick="abrirRelatorios()">Relatórios</button>
-
-<button>Usuários</button>
-
+  <button onclick="abrirPedidos()">Pedidos</button>
+  <button onclick="abrirRelatorios()">Relatórios</button>
+  <button onclick="abrirUsuarios()">Usuários</button>
+  <button onclick="logout()">Sair</button>
 </div>
 
-<!-- ARTE SACRA -->
-<div id="arteSacra" style="display:none;">
-  <h2>Arte Sacra</h2>
-
-  <input type="text" id="nomeItem" placeholder="Nome do item">
-  <input type="text" id="descricaoItem" placeholder="Descrição (opcional)">
-  <input type="number" id="valorItem" placeholder="Valor base (R$)">
-
-  <button onclick="salvarItem()">Salvar Item</button>
-  <button onclick="voltarHome()">Voltar</button>
-
-  <h3>Itens cadastrados</h3>
-  <ul id="listaItens"></ul>
-</div>
-
-<!-- NOVO PEDIDO -->
-<div id="novoPedido" style="display:none;">
+<!-- PEDIDOS -->
+<div id="pedidos" style="display:none;">
   <h2>Novo Pedido</h2>
 
-  <input type="text" id="clientePedido" placeholder="Nome do cliente">
+  <input id="cliente" placeholder="Nome do Cliente">
+  <select id="item"></select>
 
-  <label>Item de Arte Sacra</label>
-  <select id="itemPedido"></select>
-
-  <label>Data de entrega</label>
+  <input type="date" id="dataPedido">
   <input type="date" id="dataEntrega">
 
-  <input type="number" id="valorPedido" placeholder="Valor do pedido (R$)">
+  <input type="number" id="valor" placeholder="Valor (R$)">
 
-  <label>Forma de pagamento</label>
-  <select id="pagamentoPedido">
+  <select id="pagamento">
     <option>Pix</option>
     <option>A prazo</option>
     <option>Cartão</option>
   </select>
 
-  <label>Status</label>
-  <select id="statusPedido">
+  <select id="status">
     <option>Não entregue</option>
     <option>Entregue</option>
   </select>
 
-  <button onclick="salvarPedido()">Salvar Pedido</button>
+  <button onclick="salvarPedido()">Salvar</button>
   <button onclick="voltarHome()">Voltar</button>
-</div>
 
-<!-- LISTA DE PEDIDOS -->
-<div id="listaPedidos" style="display:none;">
-  <h2>Pedidos</h2>
-
-  <ul id="listaPedidosUl"></ul>
-
-  <button onclick="voltarHome()">Voltar</button>
+  <ul id="listaPedidos"></ul>
 </div>
 
 <!-- RELATÓRIOS -->
 <div id="relatorios" style="display:none;">
   <h2>Relatórios</h2>
 
-  <h3>Filtrar por data de entrega</h3>
-  <input type="date" id="dataInicio">
-  <input type="date" id="dataFim">
-  <button onclick="gerarRelatorio()">Gerar Relatório</button>
+  <input type="date" id="inicio">
+  <input type="date" id="fim">
+  <button onclick="gerarRelatorio()">Gerar</button>
 
-  <h3>Resultados</h3>
-  <ul id="listaRelatorio"></ul>
+  <ul id="resultado"></ul>
 
-  <h3>Totais</h3>
-  <p id="totalVendas"></p>
-  <p id="totalPix"></p>
-  <p id="totalPrazo"></p>
-  <p id="totalCartao"></p>
+  <p id="total"></p>
+  <p id="pix"></p>
+  <p id="prazo"></p>
+  <p id="cartao"></p>
 
   <button onclick="voltarHome()">Voltar</button>
 </div>
 
+<!-- USUÁRIOS -->
+<div id="usuarios" style="display:none;">
+  <h2>Usuários</h2>
+  <input id="novoUser" placeholder="Usuário">
+  <input id="novaSenha" placeholder="Senha">
+  <button onclick="addUsuario()">Adicionar</button>
+  <button onclick="voltarHome()">Voltar</button>
+</div>
 
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
