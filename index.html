@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Mimos da Nay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase -->
+  <!-- Firebase COMPAT (obrigatório para este app) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
@@ -14,8 +16,8 @@
 <!-- LOGIN -->
 <div id="login">
   <h2>Mimos da Nay</h2>
-  <input id="user" placeholder="Usuário"><br>
-  <input id="senha" type="password" placeholder="Senha"><br>
+  <input id="user" placeholder="Usuário">
+  <input id="senha" type="password" placeholder="Senha">
   <button onclick="login()">Entrar</button>
   <p id="erro" style="color:red"></p>
 </div>
@@ -30,12 +32,13 @@
 
 <!-- ARTE SACRA -->
 <div id="arte" style="display:none">
-  <h2>Cadastro Arte Sacra</h2>
+  <h2>Cadastro de Arte Sacra</h2>
 
-  <input id="nomeArte" placeholder="Nome do item"><br>
-  <input id="valorArte" type="number" placeholder="Valor R$"><br>
-  <input id="fotoArte" type="file" accept="image/*"><br>
-  <img id="previewArte" style="display:none; max-width:100px"><br>
+  <input id="nomeArte" placeholder="Nome do item">
+  <input id="valorArte" type="number" placeholder="Valor (R$)" step="0.01">
+
+  <input id="fotoArte" type="file" accept="image/*">
+  <img id="previewArte" style="display:none; max-width:120px">
 
   <button onclick="salvarArte()">Salvar</button>
   <button onclick="voltarHome()">Voltar</button>
@@ -47,19 +50,20 @@
 <div id="pedidos" style="display:none">
   <h2>Pedidos</h2>
 
-  <input id="cliente" placeholder="Nome do cliente"><br>
-  <select id="item"></select><br>
+  <input id="cliente" placeholder="Nome do cliente">
+
+  <select id="item"></select>
 
   <select id="pagamento">
     <option>Pix</option>
     <option>Cartão</option>
     <option>A prazo</option>
-  </select><br>
+  </select>
 
   <select id="status">
     <option>Não entregue</option>
     <option>Entregue</option>
-  </select><br>
+  </select>
 
   <button onclick="salvarPedido()">Salvar Pedido</button>
   <button onclick="voltarHome()">Voltar</button>
@@ -67,6 +71,7 @@
   <ul id="listaPedidos"></ul>
 </div>
 
+<!-- APP -->
 <script src="app.js"></script>
 </body>
 </html>
