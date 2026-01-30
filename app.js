@@ -50,10 +50,15 @@ function logout() {
 // NAVEGAÇÃO
 // ===============================
 function voltarHome() {
-  ["arte","pedidos"].forEach(id => {
+  ["arte", "pedidos", "relatorios"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
+
+  // LIMPA O CONTEÚDO DO RELATÓRIO (CORREÇÃO DO BUG)
+  const resultado = document.getElementById("resultadoRelatorio");
+  if (resultado) resultado.innerHTML = "";
+
   document.getElementById("home").style.display = "block";
 }
 
@@ -242,5 +247,6 @@ async function gerarRelatorio() {
   html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
   resultado.innerHTML = html;
 }
+
 
 
