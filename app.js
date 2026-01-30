@@ -8,6 +8,13 @@ let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 let artes = JSON.parse(localStorage.getItem("artes")) || [];
 let indiceArteEditando = null;
 
+// ===== GARANTIA EXTRA DE CARGA DO STORAGE =====
+document.addEventListener("DOMContentLoaded", () => {
+  artes = JSON.parse(localStorage.getItem("artes")) || [];
+  pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+  usuarios = JSON.parse(localStorage.getItem("usuarios")) || usuarios;
+});
+
 // ===== LOGIN =====
 function login() {
   const u = document.getElementById("user").value.trim();
@@ -22,11 +29,22 @@ function login() {
   } else {
     erro.innerText = "Usuário ou senha inválidos";
   }
+  
+function logout() {
+  // Esconde todas as telas
+  ["home", "pedidos", "arte", "relatorios", "usuarios"].forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+
+  // Limpa campos de login
+  document.getElementById("user").value = "";
+  document.getElementById("senha").value = "";
+  document.getElementById("erro").innerText = "";
+
+  // Volta para login SEM recarregar a página
+  document.getElementById("login").style.display = "block";
 }
 
-function logout() {
-  location.reload();
-}
 
 // ===== NAVEGAÇÃO =====
 function voltarHome() {
@@ -252,3 +270,4 @@ function addUsuario() {
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   alert("Usuário criado!");
 }
+
