@@ -232,4 +232,35 @@ function addUsuario() {
   alert("Usuário criado com sucesso!");
 }
 
+// ===== BACKUP POR EMAIL =====
+function backupEmail() {
+  const backup = {
+    usuarios,
+    artes,
+    pedidos,
+    data: new Date().toLocaleString("pt-BR")
+  };
+
+  const texto = encodeURIComponent(JSON.stringify(backup, null, 2));
+
+  const email = "edvaldo_junyor@msn.com"; // ← troque aqui
+  const assunto = "Backup Mimos da Nay";
+  const corpo = `
+Olá,
+
+Segue backup do sistema Mimos da Nay.
+
+Data: ${backup.data}
+
+(Cole o conteúdo abaixo em um arquivo .json se necessário)
+
+${JSON.stringify(backup, null, 2)}
+`;
+
+  const mailto = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+  window.location.href = mailto;
+}
+
+
+
 
