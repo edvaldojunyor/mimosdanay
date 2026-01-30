@@ -6,6 +6,7 @@ let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
 
 let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 let artes = JSON.parse(localStorage.getItem("artes")) || [];
+let indiceArteEditando = null;
 
 // ===== ELEMENTOS =====
 const loginDiv = document.getElementById("login");
@@ -72,23 +73,45 @@ function abrirUsuarios() {
 
 // ===== ARTE SACRA =====
 function salvarArte() {
-  const nome = document.getElementById("nomeArte").value.trim();
+  const input = document.getElementById("nomeArte");
+  const nome = input.value.trim();
   if (!nome) return;
 
-  artes.push(nome);
+  if (indiceArteEditando !== null) {
+    artes[indiceArteEditando] = nome;
+    indiceArteEditando = null;
+  } else {
+    artes.push(nome);
+  }
+
   localStorage.setItem("artes", JSON.stringify(artes));
-  document.getElementById("nomeArte").value = "";
+  input.value = "";
   listarArte();
 }
 
 function listarArte() {
   const lista = document.getElementById("listaArte");
   lista.innerHTML = "";
-  artes.forEach(a => {
+
+  artes.forEach((a, i) => {
     const li = document.createElement("li");
-    li.innerText = a;
+
+    const texto = document.createElement("div");
+    texto.innerText = a;
+
+    const btnEditar = document.createElement("button");
+    btnEditar.innerText = "Editar";
+    btnEditar.onclick = () => editarArte(i);
+
+    li.appendChild(texto);
+    li.appendChild(btnEditar);
     lista.appendChild(li);
   });
+}
+
+function editarArte(indice) {
+  document.getElementById("nomeArte").value = artes[indice];
+  indiceArteEditando = indice;
 }
 
 function atualizarSelectArte() {
