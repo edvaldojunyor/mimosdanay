@@ -283,6 +283,26 @@ async function gerarRelatorio() {
   resultado.innerHTML = html;
 }
 
+// ===============================
+// PLACEHOLDER FAKE - DATA ENTREGA (Safari iOS)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const dataEntrega = document.getElementById("dataEntrega");
+  const placeholder = document.querySelector(".fake-placeholder");
+
+  if (!dataEntrega || !placeholder) return;
+
+  dataEntrega.addEventListener("change", () => {
+    if (dataEntrega.value) {
+      placeholder.style.display = "none";
+    } else {
+      placeholder.style.display = "block";
+    }
+  });
+});
+
+
+
 
 
 
