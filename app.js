@@ -79,6 +79,25 @@ function salvarArte() {
     return;
   }
 
+  // ===== PREVIEW DA IMAGEM =====
+document.getElementById("fotoArte").addEventListener("change", function () {
+  const file = this.files[0];
+  const preview = document.getElementById("previewArte");
+
+  if (!file) {
+    preview.style.display = "none";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    preview.src = reader.result;
+    preview.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+});
+
+
   // mantém foto antiga se estiver editando
   let fotoExistente = null;
   if (indiceArteEditando !== null && artes[indiceArteEditando].foto) {
@@ -211,3 +230,4 @@ function addUsuario() {
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   alert("Usuário criado com sucesso!");
 }
+
