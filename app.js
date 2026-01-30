@@ -148,14 +148,26 @@ async function listarArte() {
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
     const a = doc.data();
+    const id = doc.id;
+
     const li = document.createElement("li");
     li.innerHTML = `
       <strong>${a.nome}</strong><br>
-      R$ ${a.valor.toFixed(2)}<br>
-      ${a.foto ? `<img src="${a.foto}" style="max-width:100px">` : ""}
+      Valor: R$ ${a.valor.toFixed(2)}<br>
+      ${a.foto ? `<img src="${a.foto}" style="max-width:100px">` : "<em>Sem imagem</em>"}
+      <br>
+      <button onclick="excluirArte('${id}')">Excluir</button>
     `;
     lista.appendChild(li);
   });
+}
+
+async function excluirArte(id) {
+  const confirmar = confirm("Tem certeza que deseja excluir este item?");
+  if (!confirmar) return;
+
+  await db.collection("artes").doc(id).delete();
+  listarArte();
 }
 
 // ===============================
@@ -198,3 +210,4 @@ async function listarPedidos() {
     lista.appendChild(li);
   });
 }
+
