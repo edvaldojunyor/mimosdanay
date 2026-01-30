@@ -8,14 +8,6 @@ let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 let artes = JSON.parse(localStorage.getItem("artes")) || [];
 let indiceArteEditando = null;
 
-// ===== ELEMENTOS =====
-const loginDiv = document.getElementById("login");
-const homeDiv = document.getElementById("home");
-const pedidosDiv = document.getElementById("pedidos");
-const arteDiv = document.getElementById("arte");
-const relatoriosDiv = document.getElementById("relatorios");
-const usuariosDiv = document.getElementById("usuarios");
-
 // ===== LOGIN =====
 function login() {
   const u = document.getElementById("user").value.trim();
@@ -24,8 +16,8 @@ function login() {
 
   const ok = usuarios.find(x => x.user === u && x.senha === s);
   if (ok) {
-    loginDiv.style.display = "none";
-    homeDiv.style.display = "block";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("home").style.display = "block";
     erro.innerText = "";
   } else {
     erro.innerText = "Usuário ou senha inválidos";
@@ -38,35 +30,61 @@ function logout() {
 
 // ===== NAVEGAÇÃO =====
 function voltarHome() {
-  pedidosDiv.style.display = "none";
-  arteDiv.style.display = "none";
-  relatoriosDiv.style.display = "none";
-  usuariosDiv.style.display = "none";
-  homeDiv.style.display = "block";
+  ["pedidos", "arte", "relatorios", "usuarios"].forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+  document.getElementById("home").style.display = "block";
 }
 
 function abrirPedidos() {
-  homeDiv.style.display = "none";
-  pedidosDiv.style.display = "block";
+  voltarHome();
+  document.getElementById("home").style.display = "none";
+  document.getElementById("pedidos").style.display = "block";
   atualizarSelectArte();
   listarPedidos();
 }
 
 function abrirArte() {
-  homeDiv.style.display = "none";
-  arteDiv.style.display = "block";
+  voltarHome();
+  document.getElementById("home").style.display = "none";
+  document.getElementById("arte").style.display = "block";
   listarArte();
 }
 
 function abrirRelatorios() {
-  homeDiv.style.display = "none";
-  relatoriosDiv.style.display = "block";
+  voltarHome();
+  document.getElementById("home").style.display = "none";
+  document.getElementById("relatorios").style.display = "block";
 }
 
 function abrirUsuarios() {
-  homeDiv.style.display = "none";
-  usuariosDiv.style.display = "block";
+  voltarHome();
+  document.getElementById("home").style.display = "none";
+  document.getElementById("usuarios").style.display = "block";
 }
+
+// ===== PREVIEW IMAGEM =====
+document.addEventListener("DOMContentLoaded", () => {
+  const fotoInput = document.getElementById("fotoArte");
+  if (!fotoInput) return;
+
+  fotoInput.addEventListener("change", function () {
+    const file = this.files[0];
+    const preview = document.getElementById("previewArte");
+
+    if (!file) {
+      preview.style.display = "none";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      preview.src = reader.result;
+      preview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+});
 
 // ===== ARTE SACRA =====
 function salvarArte() {
@@ -79,26 +97,6 @@ function salvarArte() {
     return;
   }
 
-  // ===== PREVIEW DA IMAGEM =====
-document.getElementById("fotoArte").addEventListener("change", function () {
-  const file = this.files[0];
-  const preview = document.getElementById("previewArte");
-
-  if (!file) {
-    preview.style.display = "none";
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    preview.src = reader.result;
-    preview.style.display = "block";
-  };
-  reader.readAsDataURL(file);
-});
-
-
-  // mantém foto antiga se estiver editando
   let fotoExistente = null;
   if (indiceArteEditando !== null && artes[indiceArteEditando].foto) {
     fotoExistente = artes[indiceArteEditando].foto;
@@ -142,7 +140,7 @@ function listarArte() {
     li.innerHTML = `
       <strong>${a.nome}</strong><br>
       Valor: R$ ${a.valor.toFixed(2)}<br>
-      ${a.foto ? `<img src="${a.foto}">` : "<em>Sem imagem</em>"}
+      ${a.foto ? `<img src="${a.foto}" style="max-width:100px;">` : "<em>Sem imagem</em>"}
       <br>
       <button onclick="editarArte(${i})">Editar</button>
       <button onclick="excluirArte(${i})">Excluir</button>
@@ -151,16 +149,15 @@ function listarArte() {
   });
 }
 
-function editarArte(indice) {
-  document.getElementById("nomeArte").value = artes[indice].nome;
-  document.getElementById("valorArte").value = artes[indice].valor;
-  indiceArteEditando = indice;
+function editarArte(i) {
+  document.getElementById("nomeArte").value = artes[i].nome;
+  document.getElementById("valorArte").value = artes[i].valor;
+  indiceArteEditando = i;
 }
 
-function excluirArte(indice) {
-  if (!confirm("Tem certeza que deseja excluir este item?")) return;
-
-  artes.splice(indice, 1);
+function excluirArte(i) {
+  if (!confirm("Deseja excluir este item?")) return;
+  artes.splice(i, 1);
   localStorage.setItem("artes", JSON.stringify(artes));
   listarArte();
 }
@@ -178,12 +175,12 @@ function atualizarSelectArte() {
 }
 
 function salvarPedido() {
-  const arteSelecionada = artes[document.getElementById("item").value];
+  const arte = artes[document.getElementById("item").value];
 
   pedidos.push({
     cliente: document.getElementById("cliente").value,
-    item: arteSelecionada.nome,
-    valor: arteSelecionada.valor,
+    item: arte.nome,
+    valor: arte.valor,
     pagamento: document.getElementById("pagamento").value,
     status: document.getElementById("status").value
   });
@@ -221,19 +218,8 @@ function gerarRelatorio() {
   document.getElementById("cartao").innerText = `Cartão: R$ ${cartao.toFixed(2)}`;
 }
 
-// ===== USUÁRIOS =====
-function addUsuario() {
-  usuarios.push({
-    user: document.getElementById("novoUser").value,
-    senha: document.getElementById("novaSenha").value
-  });
-
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-  alert("Usuário criado com sucesso!");
-}
-
-// ===== BACKUP POR EMAIL =====
-function backupEmail() {
+// ===== BACKUP =====
+function gerarBackup() {
   const backup = {
     usuarios,
     artes,
@@ -241,26 +227,28 @@ function backupEmail() {
     data: new Date().toLocaleString("pt-BR")
   };
 
-  const texto = encodeURIComponent(JSON.stringify(backup, null, 2));
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {
+    type: "application/json"
+  });
 
-  const email = "edvaldo_junyor@msn.com"; // ← troque aqui
-  const assunto = "Backup Mimos da Nay";
-  const corpo = `
-Olá,
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `backup-mimos-da-nay-${Date.now()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 
-Segue backup do sistema Mimos da Nay.
-
-Data: ${backup.data}
-
-(Cole o conteúdo abaixo em um arquivo .json se necessário)
-
-${JSON.stringify(backup, null, 2)}
-`;
-
-  const mailto = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
-  window.location.href = mailto;
+  alert("Backup gerado com sucesso!\nEnvie o arquivo para seu email ou Drive.");
 }
 
-
-
-
+// ===== USUÁRIOS =====
+function addUsuario() {
+  usuarios.push({
+    user: document.getElementById("novoUser").value,
+    senha: document.getElementById("novaSenha").value
+  });
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  alert("Usuário criado!");
+}
