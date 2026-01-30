@@ -1,96 +1,59 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>Mimos da Nay</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-<header>Mimos da Nay</header>
+<h1>Mimos da Nay</h1>
 
 <!-- LOGIN -->
 <div id="login">
   <h2>Login</h2>
-  <input id="user" placeholder="Usuário">
+  <input id="usuario" placeholder="Usuário">
   <input id="senha" type="password" placeholder="Senha">
   <button onclick="login()">Entrar</button>
-  <p id="erro"></p>
 </div>
 
-<!-- HOME -->
-<div id="home" style="display:none;">
-  <h2>Menu</h2>
-  <button onclick="abrirPedidos()">Pedidos</button>
-  <button onclick="abrirArte()">Arte Sacra</button>
-  <button onclick="abrirRelatorios()">Relatórios</button>
-  <button onclick="abrirUsuarios()">Usuários</button>
-  <button onclick="logout()">Sair</button>
-</div>
+<!-- APP -->
+<div id="app" style="display:none">
 
-<!-- PEDIDOS -->
-<div id="pedidos" style="display:none;">
-  <h2>Novo Pedido</h2>
-
-  <input id="cliente" placeholder="Nome do Cliente">
-  <select id="item"></select>
-
-  <input type="number" id="valor" placeholder="Valor (R$)">
-
-  <select id="pagamento">
-    <option>Pix</option>
-    <option>A prazo</option>
-    <option>Cartão</option>
-  </select>
-
-  <select id="status">
-    <option>Não entregue</option>
-    <option>Entregue</option>
-  </select>
-
-  <button onclick="salvarPedido()">Salvar Pedido</button>
-  <button onclick="voltarHome()">Voltar</button>
-
-  <ul id="listaPedidos"></ul>
-</div>
-
-<!-- ARTE SACRA -->
-<div id="arte" style="display:none;">
   <h2>Cadastro de Arte Sacra</h2>
-
-  <input id="nomeArte" placeholder="Nome do item (ex: São José)">
+  <input id="nomeArte" placeholder="Nome do item">
+  <input id="valorArte" type="number" step="0.01" placeholder="Valor (R$)">
+  <input id="fotoArte" type="file" accept="image/*">
   <button onclick="salvarArte()">Salvar Item</button>
 
   <ul id="listaArte"></ul>
 
-  <button onclick="voltarHome()">Voltar</button>
-</div>
+  <hr>
 
-<!-- RELATÓRIOS -->
-<div id="relatorios" style="display:none;">
-  <h2>Relatórios</h2>
+  <h2>Novo Pedido</h2>
+  <input id="dataPedido" type="date">
+  <input id="clientePedido" placeholder="Nome do cliente">
 
-  <button onclick="gerarRelatorio()">Gerar Relatório Geral</button>
+  <select id="artePedido"></select>
 
-  <p id="total"></p>
-  <p id="pix"></p>
-  <p id="prazo"></p>
-  <p id="cartao"></p>
+  <input id="dataEntrega" type="date">
 
-  <button onclick="voltarHome()">Voltar</button>
-</div>
+  <select id="pagamento">
+    <option>Pix</option>
+    <option>A prazo</option>
+    <option>Cartão de Crédito</option>
+  </select>
 
-<!-- USUÁRIOS -->
-<div id="usuarios" style="display:none;">
-  <h2>Usuários</h2>
+  <button onclick="salvarPedido()">Salvar Pedido</button>
 
-  <input id="novoUser" placeholder="Usuário">
-  <input id="novaSenha" placeholder="Senha">
-  <button onclick="addUsuario()">Adicionar Usuário</button>
+  <hr>
 
-  <button onclick="voltarHome()">Voltar</button>
+  <h2>Relatório Geral</h2>
+  <button onclick="gerarRelatorio()">Gerar Relatório</button>
+  <div id="relatorio"></div>
+
 </div>
 
 <script src="app.js"></script>
