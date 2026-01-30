@@ -116,5 +116,47 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .input-date::-webkit-calendar-picker-indicator {
   opacity: 0.6;
 }
+/* ===== Container do campo de data ===== */
+.campo-data {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Placeholder fake */
+.fake-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Input date padronizado */
+.campo-data input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* Esconde placeholder quando tiver valor */
+.campo-data input[type="date"]:not(:placeholder-shown) + .fake-placeholder,
+.campo-data input[type="date"]:valid + .fake-placeholder {
+  display: none;
+}
+
+/* Safari iOS correção */
+.campo-data input::-webkit-datetime-edit {
+  color: #000;
+}
+
 
 
