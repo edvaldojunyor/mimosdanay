@@ -1,210 +1,110 @@
-let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-let itensArte = JSON.parse(localStorage.getItem("itensArte")) || [];
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
-  { user: "Edvaldo", senha: "1234", tipo: "admin" },
-  { user: "Neiara", senha: "1234", tipo: "admin" }
+  { user: "Edvaldo", senha: "1234" },
+  { user: "Neiara", senha: "1234" }
 ];
-localStorage.setItem("pedidos", JSON.stringify(pedidos));
-localStorage.setItem("itensArte", JSON.stringify(itensArte));
-localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-
-// Usuários iniciais (simples por enquanto)
-const usuarios = [
-  { usuario: "edvaldo", senha: "1234", perfil: "ADM" },
-  { usuario: "neiara", senha: "1234", perfil: "ADM" }
-];
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 
 function login() {
-  const user = document.getElementById("usuario").value;
-  const pass = document.getElementById("senha").value;
+  const u = user.value;
+  const s = senha.value;
 
-  const encontrado = usuarios.find(u =>
-    u.usuario === user && u.senha === pass
-  );
-
-  if (encontrado) {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("home").style.display = "block";
+  const ok = usuarios.find(x => x.user === u && x.senha === s);
+  if (ok) {
+    loginDiv(false);
   } else {
-    document.getElementById("erro").innerText = "Usuário ou senha inválidos";
+    erro.innerText = "Usuário ou senha inválidos";
   }
 }
 
-// Lista de Arte Sacra (temporária)
-let itensArteSacra = [];
-
-// Abrir tela Arte Sacra
-function abrirArteSacra() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("arteSacra").style.display = "block";
-  atualizarLista();
+function loginDiv(logado) {
+  login.style.display = logado ? "block" : "none";
+  home.style.display = logado ? "none" : "block";
 }
 
-// Voltar para Home
+function logout() {
+  location.reload();
+}
+
+function abrirPedidos() {
+  home.style.display = "none";
+  pedidosDiv(true);
+  listarPedidos();
+}
+
+function pedidosDiv(v) {
+  pedidos.style.display = v ? "block" : "none";
+}
+
 function voltarHome() {
-  document.getElementById("arteSacra").style.display = "none";
-  document.getElementById("home").style.display = "block";
+  pedidos.style.display = "none";
+  relatorios.style.display = "none";
+  usuarios.style.display = "none";
+  home.style.display = "block";
 }
 
-// Salvar item
-function salvarItem() {
-  const nome = document.getElementById("nomeItem").value;
-  const descricao = document.getElementById("descricaoItem").value;
-  const valor = document.getElementById("valorItem").value;
-
-  if (nome === "") {
-    alert("Informe o nome do item");
-    return;
-  }
-
-  itensArteSacra.push({
-    nome: nome,
-    descricao: descricao,
-    valor: valor
-  });
-
-  document.getElementById("nomeItem").value = "";
-  document.getElementById("descricaoItem").value = "";
-  document.getElementById("valorItem").value = "";
-
-  atualizarLista();
-}
-
-// Atualizar lista na tela
-function atualizarLista() {
-  const lista = document.getElementById("listaItens");
-  lista.innerHTML = "";
-
-  itensArteSacra.forEach(item => {
-    const li = document.createElement("li");
-    li.innerText = `${item.nome} - R$ ${item.valor || "0,00"}`;
-    lista.appendChild(li);
-  });
-}
-
-// Lista de pedidos
-let pedidos = [];
-
-// Abrir Novo Pedido
-function abrirNovoPedido() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("novoPedido").style.display = "block";
-
-  carregarItensPedido();
-}
-
-// Carregar itens de Arte Sacra no select
-function carregarItensPedido() {
-  const select = document.getElementById("itemPedido");
-  select.innerHTML = "";
-
-  itensArteSacra.forEach(item => {
-    const option = document.createElement("option");
-    option.value = item.nome;
-    option.text = item.nome;
-    select.appendChild(option);
-  });
-}
-
-// Salvar pedido
 function salvarPedido() {
-  const cliente = document.getElementById("clientePedido").value;
-  const item = document.getElementById("itemPedido").value;
-  const entrega = document.getElementById("dataEntrega").value;
-  const valor = document.getElementById("valorPedido").value;
-  const pagamento = document.getElementById("pagamentoPedido").value;
-  const status = document.getElementById("statusPedido").value;
-
-  if (cliente === "" || entrega === "" || valor === "") {
-    alert("Preencha todos os campos obrigatórios");
-    return;
-  }
-
   pedidos.push({
-    cliente: cliente,
-    item: item,
-    entrega: entrega,
-    valor: parseFloat(valor),
-    pagamento: pagamento,
-    status: status
+    cliente: cliente.value,
+    item: item.value,
+    entrega: dataEntrega.value,
+    valor: Number(valor.value),
+    pagamento: pagamento.value,
+    status: status.value
   });
 
-  document.getElementById("clientePedido").value = "";
-  document.getElementById("dataEntrega").value = "";
-  document.getElementById("valorPedido").value = "";
-
-  alert("Pedido salvo com sucesso!");
-  voltarHome();
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  listarPedidos();
 }
 
-// Abrir lista de pedidos
-function abrirListaPedidos() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("listaPedidos").style.display = "block";
-  atualizarPedidos();
-}
-
-// Atualizar lista de pedidos
-function atualizarPedidos() {
-  const lista = document.getElementById("listaPedidosUl");
-  lista.innerHTML = "";
-
+function listarPedidos() {
+  listaPedidos.innerHTML = "";
   pedidos.forEach(p => {
     const li = document.createElement("li");
-    li.innerText =
-      `${p.cliente} | ${p.item} | ${p.entrega} | R$ ${p.valor.toFixed(2)} | ${p.status}`;
-    lista.appendChild(li);
+    li.innerText = `${p.cliente} | ${p.item} | R$ ${p.valor}`;
+    listaPedidos.appendChild(li);
   });
 }
 
-// Abrir Relatórios
 function abrirRelatorios() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("relatorios").style.display = "block";
+  home.style.display = "none";
+  relatorios.style.display = "block";
 }
 
-// Gerar relatório
 function gerarRelatorio() {
-  const inicio = document.getElementById("dataInicio").value;
-  const fim = document.getElementById("dataFim").value;
-
-  let total = 0;
-  let pix = 0;
-  let prazo = 0;
-  let cartao = 0;
-
-  const lista = document.getElementById("listaRelatorio");
-  lista.innerHTML = "";
+  let total = pixV = prazoV = cartaoV = 0;
+  resultado.innerHTML = "";
 
   pedidos.forEach(p => {
-    if (p.entrega >= inicio && p.entrega <= fim) {
-      const li = document.createElement("li");
-
-      li.innerText =
-        `${p.cliente} | ${p.item} | ${p.entrega} | R$ ${p.valor.toFixed(2)} | ${p.status}`;
-
-      lista.appendChild(li);
-
-      if (p.status === "Entregue") {
-        total += p.valor;
-
-        if (p.pagamento === "Pix") pix += p.valor;
-        if (p.pagamento === "A prazo") prazo += p.valor;
-        if (p.pagamento === "Cartão") cartao += p.valor;
-      }
+    if (p.status === "Entregue") {
+      total += p.valor;
+      if (p.pagamento === "Pix") pixV += p.valor;
+      if (p.pagamento === "A prazo") prazoV += p.valor;
+      if (p.pagamento === "Cartão") cartaoV += p.valor;
     }
   });
 
-  document.getElementById("totalVendas").innerText =
-    `Total de vendas: R$ ${total.toFixed(2)}`;
+  total.innerText = "Total: R$ " + total.toFixed(2);
+  pix.innerText = "Pix: R$ " + pixV.toFixed(2);
+  prazo.innerText = "A prazo: R$ " + prazoV.toFixed(2);
+  cartao.innerText = "Cartão: R$ " + cartaoV.toFixed(2);
+}
 
-  document.getElementById("totalPix").innerText =
-    `Pix: R$ ${pix.toFixed(2)}`;
+function abrirUsuarios() {
+  home.style.display = "none";
+  usuariosDiv(true);
+}
 
-  document.getElementById("totalPrazo").innerText =
-    `A prazo: R$ ${prazo.toFixed(2)}`;
+function usuariosDiv(v) {
+  usuarios.style.display = v ? "block" : "none";
+}
 
-  document.getElementById("totalCartao").innerText =
-    `Cartão: R$ ${cartao.toFixed(2)}`;
+function addUsuario() {
+  usuarios.push({
+    user: novoUser.value,
+    senha: novaSenha.value
+  });
+
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  alert("Usuário criado!");
 }
