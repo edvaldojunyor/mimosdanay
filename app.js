@@ -14,24 +14,20 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // ===============================
-// USUÁRIOS (LOGIN LOCAL)
+// LOGIN LOCAL
 // ===============================
 const usuarios = [
   { user: "Edvaldo", senha: "1234" },
   { user: "Neiara", senha: "1234" }
 ];
 
-// ===============================
-// LOGIN
-// ===============================
 function login() {
   const u = document.getElementById("user").value.trim();
   const s = document.getElementById("senha").value.trim();
   const erro = document.getElementById("erro");
 
-  const valido = usuarios.find(us => us.user === u && us.senha === s);
-
-  if (!valido) {
+  const ok = usuarios.find(x => x.user === u && x.senha === s);
+  if (!ok) {
     erro.innerText = "Usuário ou senha inválidos";
     return;
   }
@@ -42,72 +38,55 @@ function login() {
 }
 
 function logout() {
-  ["home", "arte", "pedidos", "relatorios", "usuarios"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
+  ["home","arte","pedidos","relatorios","usuarios"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display="none";
   });
-
-  document.getElementById("login").style.display = "block";
-  document.getElementById("user").value = "";
-  document.getElementById("senha").value = "";
+  document.getElementById("login").style.display="block";
 }
 
 // ===============================
 // NAVEGAÇÃO
 // ===============================
-function voltarHome() {
-  ["arte", "pedidos", "relatorios", "usuarios"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-  });
-  document.getElementById("home").style.display = "block";
-}
-
 function abrirArte() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("arte").style.display = "block";
+  document.getElementById("home").style.display="none";
+  document.getElementById("arte").style.display="block";
   listarArte();
 }
 
 function abrirPedidos() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("pedidos").style.display = "block";
+  document.getElementById("home").style.display="none";
+  document.getElementById("pedidos").style.display="block";
   carregarArtesNoSelect();
   listarPedidos();
 }
 
-function abrirRelatorios() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("relatorios").style.display = "block";
-}
-
 // ===============================
-// PREVIEW DA IMAGEM
+// PREVIEW DE IMAGEM
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  const fotoInput = document.getElementById("fotoArte");
+  const input = document.getElementById("fotoArte");
   const preview = document.getElementById("previewArte");
 
-  if (!fotoInput || !preview) return;
+  if (!input) return;
 
-  fotoInput.addEventListener("change", () => {
-    const file = fotoInput.files[0];
+  input.addEventListener("change", () => {
+    const file = input.files[0];
     if (!file) {
-      preview.style.display = "none";
+      preview.style.display="none";
       return;
     }
-
     const reader = new FileReader();
     reader.onload = () => {
       preview.src = reader.result;
-      preview.style.display = "block";
+      preview.style.display="block";
     };
     reader.readAsDataURL(file);
   });
 });
 
 // ===============================
-// ARTE SACRA (FIRESTORE)
+// ARTE SACRA
 // ===============================
 async function salvarArte() {
   const nome = document.getElementById("nomeArte").value.trim();
@@ -122,7 +101,9 @@ async function salvarArte() {
   if (file) {
     const reader = new FileReader();
     reader.onload = async () => {
-      await db.collection("artes").add({ nome, valor, foto: reader.result });
+      await db.collection("artes").add({
+        nome, valor, foto: reader.result
+      });
       limparArte();
       listarArte();
     };
@@ -135,15 +116,15 @@ async function salvarArte() {
 }
 
 function limparArte() {
-  document.getElementById("nomeArte").value = "";
-  document.getElementById("valorArte").value = "";
-  document.getElementById("fotoArte").value = "";
-  document.getElementById("previewArte").style.display = "none";
+  document.getElementById("nomeArte").value="";
+  document.getElementById("valorArte").value="";
+  document.getElementById("fotoArte").value="";
+  document.getElementById("previewArte").style.display="none";
 }
 
 async function listarArte() {
   const lista = document.getElementById("listaArte");
-  lista.innerHTML = "";
+  lista.innerHTML="";
 
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
@@ -153,29 +134,33 @@ async function listarArte() {
     const li = document.createElement("li");
     li.innerHTML = `
       <strong>${a.nome}</strong><br>
-      Valor: R$ ${a.valor.toFixed(2)}<br>
-      ${a.foto ? `<img src="${a.foto}" style="max-width:100px">` : "<em>Sem imagem</em>"}
+      R$ ${a.valor.toFixed(2)}<br>
+      ${a.foto ? `<img src="${a.foto}" style="max-width:100px"><br>
+      <button onclick="excluirImagemArte('${id}')">Excluir imagem</button>` : "<em>Sem imagem</em>"}
       <br>
-      <button onclick="excluirArte('${id}')">Excluir</button>
+      <button onclick="excluirArte('${id}')">Excluir item</button>
     `;
     lista.appendChild(li);
   });
 }
 
 async function excluirArte(id) {
-  const confirmar = confirm("Tem certeza que deseja excluir este item?");
-  if (!confirmar) return;
-
+  if (!confirm("Excluir este item?")) return;
   await db.collection("artes").doc(id).delete();
   listarArte();
 }
 
+async function excluirImagemArte(id) {
+  await db.collection("artes").doc(id).update({ foto: null });
+  listarArte();
+}
+
 // ===============================
-// PEDIDOS (FIRESTORE)
+// PEDIDOS
 // ===============================
 async function carregarArtesNoSelect() {
   const select = document.getElementById("item");
-  select.innerHTML = "";
+  select.innerHTML="";
 
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
@@ -194,20 +179,18 @@ async function salvarPedido() {
     status: document.getElementById("status").value,
     data: new Date()
   });
-
   listarPedidos();
 }
 
 async function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
-  lista.innerHTML = "";
+  lista.innerHTML="";
 
   const snap = await db.collection("pedidos").get();
-  snap.forEach(doc => {
+  snap.forEach(doc=>{
     const p = doc.data();
-    const li = document.createElement("li");
-    li.textContent = `${p.cliente} | ${p.item}`;
+    const li=document.createElement("li");
+    li.textContent=`${p.cliente} | ${p.item}`;
     lista.appendChild(li);
   });
 }
-
