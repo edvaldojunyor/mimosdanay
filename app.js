@@ -1,13 +1,14 @@
 // ===============================
-// FIREBASE
+// FIREBASE (CONFIG REAL)
 // ===============================
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_AUTH_DOMAIN",
-  projectId: "SEU_PROJECT_ID",
-  storageBucket: "SEU_STORAGE",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID"
+  apiKey: "AIzaSyDoCKrLiZqg_9axMy9BN8nPh55pc4N5sIg",
+  authDomain: "mimos-da-nay.firebaseapp.com",
+  projectId: "mimos-da-nay",
+  storageBucket: "mimos-da-nay.firebasestorage.app",
+  messagingSenderId: "732309876023",
+  appId: "1:732309876023:web:9ccf0d316adeaf170a3eb2",
+  measurementId: "G-N61LNQ0JGF"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -38,25 +39,33 @@ function login() {
 }
 
 function logout() {
-  ["home","arte","pedidos","relatorios","usuarios"].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.style.display="none";
+  ["home","arte","pedidos"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
   });
-  document.getElementById("login").style.display="block";
+  document.getElementById("login").style.display = "block";
 }
 
 // ===============================
 // NAVEGAÇÃO
 // ===============================
+function voltarHome() {
+  ["arte","pedidos"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+  document.getElementById("home").style.display = "block";
+}
+
 function abrirArte() {
-  document.getElementById("home").style.display="none";
-  document.getElementById("arte").style.display="block";
+  document.getElementById("home").style.display = "none";
+  document.getElementById("arte").style.display = "block";
   listarArte();
 }
 
 function abrirPedidos() {
-  document.getElementById("home").style.display="none";
-  document.getElementById("pedidos").style.display="block";
+  document.getElementById("home").style.display = "none";
+  document.getElementById("pedidos").style.display = "block";
   carregarArtesNoSelect();
   listarPedidos();
 }
@@ -73,58 +82,48 @@ document.addEventListener("DOMContentLoaded", () => {
   input.addEventListener("change", () => {
     const file = input.files[0];
     if (!file) {
-      preview.style.display="none";
+      preview.style.display = "none";
       return;
     }
     const reader = new FileReader();
     reader.onload = () => {
       preview.src = reader.result;
-      preview.style.display="block";
+      preview.style.display = "block";
     };
     reader.readAsDataURL(file);
   });
 });
 
 // ===============================
-// ARTE SACRA
+// ARTE SACRA (FIRESTORE)
 // ===============================
 async function salvarArte() {
   const nome = document.getElementById("nomeArte").value.trim();
   const valor = parseFloat(document.getElementById("valorArte").value);
-  const file = document.getElementById("fotoArte").files[0];
+  const preview = document.getElementById("previewArte");
 
   if (!nome || isNaN(valor)) {
     alert("Informe nome e valor");
     return;
   }
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      await db.collection("artes").add({
-        nome, valor, foto: reader.result
-      });
-      limparArte();
-      listarArte();
-    };
-    reader.readAsDataURL(file);
-  } else {
-    await db.collection("artes").add({ nome, valor, foto: null });
-    limparArte();
-    listarArte();
-  }
-}
+  await db.collection("artes").add({
+    nome,
+    valor,
+    foto: preview.src || null
+  });
 
-function limparArte() {
-  document.getElementById("nomeArte").value="";
-  document.getElementById("valorArte").value="";
-  document.getElementById("fotoArte").value="";
-  document.getElementById("previewArte").style.display="none";
+  document.getElementById("nomeArte").value = "";
+  document.getElementById("valorArte").value = "";
+  document.getElementById("fotoArte").value = "";
+  preview.style.display = "none";
+
+  listarArte();
 }
 
 async function listarArte() {
   const lista = document.getElementById("listaArte");
-  lista.innerHTML="";
+  lista.innerHTML = "";
 
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
@@ -145,7 +144,7 @@ async function listarArte() {
 }
 
 async function excluirArte(id) {
-  if (!confirm("Excluir este item?")) return;
+  if (!confirm("Deseja excluir este item?")) return;
   await db.collection("artes").doc(id).delete();
   listarArte();
 }
@@ -156,11 +155,11 @@ async function excluirImagemArte(id) {
 }
 
 // ===============================
-// PEDIDOS
+// PEDIDOS (FIRESTORE)
 // ===============================
 async function carregarArtesNoSelect() {
   const select = document.getElementById("item");
-  select.innerHTML="";
+  select.innerHTML = "";
 
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
@@ -184,13 +183,13 @@ async function salvarPedido() {
 
 async function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
-  lista.innerHTML="";
+  lista.innerHTML = "";
 
   const snap = await db.collection("pedidos").get();
-  snap.forEach(doc=>{
+  snap.forEach(doc => {
     const p = doc.data();
-    const li=document.createElement("li");
-    li.textContent=`${p.cliente} | ${p.item}`;
+    const li = document.createElement("li");
+    li.textContent = `${p.cliente} | ${p.item}`;
     lista.appendChild(li);
   });
 }
