@@ -9,11 +9,12 @@ let artes = JSON.parse(localStorage.getItem("artes")) || [];
 let indiceArteEditando = null;
 
 // ===== GARANTIA EXTRA DE CARGA DO STORAGE =====
+// ===== GARANTIA EXTRA DE CARGA (SEM AFETAR LOGIN) =====
 document.addEventListener("DOMContentLoaded", () => {
-  artes = JSON.parse(localStorage.getItem("artes")) || [];
-  pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-  usuarios = JSON.parse(localStorage.getItem("usuarios")) || usuarios;
+  artes = JSON.parse(localStorage.getItem("artes")) || artes;
+  pedidos = JSON.parse(localStorage.getItem("pedidos")) || pedidos;
 });
+
 
 // ===== LOGIN =====
 function login() {
@@ -270,4 +271,5 @@ function addUsuario() {
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
   alert("Usuário criado!");
 }
+
 
