@@ -43,7 +43,12 @@ ul {
 
 li {
   background: white;
-  margin-top: 5px;
+  margin-top: 8px;
   padding: 8px;
   border-radius: 6px;
+}
+
+li button {
+  margin-top: 5px;
+  font-size: 14px;
 }
