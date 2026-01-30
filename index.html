@@ -7,7 +7,7 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase COMPAT (obrigatório para este app) -->
+  <!-- Firebase COMPAT -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
@@ -65,11 +65,11 @@
     <option>Não entregue</option>
     <option>Entregue</option>
   </select>
-<div class="campo-data">
-  <span class="fake-placeholder">Data de entrega</span>
-  <input type="date" id="dataEntrega">
-</div>
 
+  <div class="campo-data">
+    <span class="fake-placeholder">Data de entrega</span>
+    <input type="date" id="dataEntrega">
+  </div>
 
   <button onclick="salvarPedido()">Salvar Pedido</button>
   <button onclick="voltarHome()">Voltar</button>
@@ -77,14 +77,11 @@
   <ul id="listaPedidos"></ul>
 </div>
 
-<!-- APP -->
-<script src="app.js"></script>
 <!-- RELATÓRIOS -->
 <div id="relatorios" style="display:none">
   <h2>Relatório Mensal de Vendas</h2>
 
-  <label>Mês:</label>
-  <input type="month" id="mesRelatorio">
+  <input type="month" id="mesRelatorio" placeholder="Mês do relatório">
 
   <button onclick="gerarRelatorio()">Gerar Relatório</button>
   <button onclick="voltarHome()">Voltar</button>
@@ -92,9 +89,8 @@
   <div id="resultadoRelatorio"></div>
 </div>
 
+<!-- APP -->
+<script src="app.js"></script>
+
 </body>
 </html>
-
-
-
-
