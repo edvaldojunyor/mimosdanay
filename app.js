@@ -1,44 +1,91 @@
-// USUÁRIOS
-const usuarios = [
-  { user: "Edvaldo", pass: "1234" },
-  { user: "Neiara", pass: "1234" }
+// ===== DADOS =====
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
+  { user: "Edvaldo", senha: "1234" },
+  { user: "Neiara", senha: "1234" }
 ];
 
-let artes = JSON.parse(localStorage.getItem("artes")) || [];
 let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-let arteEditando = null;
+let artes = JSON.parse(localStorage.getItem("artes")) || [];
+let indiceArteEditando = null;
 
-// LOGIN
+// ===== ELEMENTOS =====
+const loginDiv = document.getElementById("login");
+const homeDiv = document.getElementById("home");
+const pedidosDiv = document.getElementById("pedidos");
+const arteDiv = document.getElementById("arte");
+const relatoriosDiv = document.getElementById("relatorios");
+const usuariosDiv = document.getElementById("usuarios");
+
+const userInput = document.getElementById("user");
+const senhaInput = document.getElementById("senha");
+const erroMsg = document.getElementById("erro");
+
+// ===== LOGIN =====
 function login() {
-  const u = usuario.value;
-  const s = senha.value;
-  const valido = usuarios.find(x => x.user === u && x.pass === s);
+  const u = userInput.value.trim();
+  const s = senhaInput.value.trim();
 
-  if (valido) {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    listarArte();
-    carregarSelectArte();
+  const ok = usuarios.find(x => x.user === u && x.senha === s);
+  if (ok) {
+    loginDiv.style.display = "none";
+    homeDiv.style.display = "block";
+    erroMsg.innerText = "";
   } else {
-    alert("Usuário ou senha inválidos");
+    erroMsg.innerText = "Usuário ou senha inválidos";
   }
 }
 
-// ARTE SACRA
+function logout() {
+  location.reload();
+}
+
+// ===== NAVEGAÇÃO =====
+function voltarHome() {
+  pedidosDiv.style.display = "none";
+  arteDiv.style.display = "none";
+  relatoriosDiv.style.display = "none";
+  usuariosDiv.style.display = "none";
+  homeDiv.style.display = "block";
+}
+
+function abrirPedidos() {
+  homeDiv.style.display = "none";
+  pedidosDiv.style.display = "block";
+  atualizarSelectArte();
+  listarPedidos();
+}
+
+function abrirArte() {
+  homeDiv.style.display = "none";
+  arteDiv.style.display = "block";
+  listarArte();
+}
+
+function abrirRelatorios() {
+  homeDiv.style.display = "none";
+  relatoriosDiv.style.display = "block";
+}
+
+function abrirUsuarios() {
+  homeDiv.style.display = "none";
+  usuariosDiv.style.display = "block";
+}
+
+// ===== ARTE SACRA =====
 function salvarArte() {
-  const nome = nomeArte.value.trim();
-  const valor = parseFloat(valorArte.value);
-  const foto = fotoArte.files[0];
+  const nome = document.getElementById("nomeArte").value.trim();
+  const valor = parseFloat(document.getElementById("valorArte").value);
+  const fotoInput = document.getElementById("fotoArte").files[0];
 
   if (!nome || isNaN(valor)) {
     alert("Informe nome e valor");
     return;
   }
 
-  if (foto) {
+  if (fotoInput) {
     const reader = new FileReader();
     reader.onload = () => salvarArteFinal(nome, valor, reader.result);
-    reader.readAsDataURL(foto);
+    reader.readAsDataURL(fotoInput);
   } else {
     salvarArteFinal(nome, valor, null);
   }
@@ -47,84 +94,108 @@ function salvarArte() {
 function salvarArteFinal(nome, valor, foto) {
   const item = { nome, valor, foto };
 
-  if (arteEditando !== null) {
-    artes[arteEditando] = item;
-    arteEditando = null;
+  if (indiceArteEditando !== null) {
+    artes[indiceArteEditando] = item;
+    indiceArteEditando = null;
   } else {
     artes.push(item);
   }
 
   localStorage.setItem("artes", JSON.stringify(artes));
-  nomeArte.value = "";
-  valorArte.value = "";
-  fotoArte.value = "";
+
+  document.getElementById("nomeArte").value = "";
+  document.getElementById("valorArte").value = "";
+  document.getElementById("fotoArte").value = "";
 
   listarArte();
-  carregarSelectArte();
 }
 
 function listarArte() {
-  listaArte.innerHTML = "";
+  const lista = document.getElementById("listaArte");
+  lista.innerHTML = "";
+
   artes.forEach((a, i) => {
     const li = document.createElement("li");
     li.innerHTML = `
       <strong>${a.nome}</strong><br>
-      Valor: R$ ${a.valor.toFixed(2)}
-      ${a.foto ? `<img src="${a.foto}">` : ""}
+      Valor: R$ ${a.valor.toFixed(2)}<br>
+      ${a.foto ? `<img src="${a.foto}" style="max-width:100px">` : ""}
       <br>
       <button onclick="editarArte(${i})">Editar</button>
     `;
-    listaArte.appendChild(li);
+    lista.appendChild(li);
   });
 }
 
-function editarArte(i) {
-  nomeArte.value = artes[i].nome;
-  valorArte.value = artes[i].valor;
-  arteEditando = i;
+function editarArte(indice) {
+  document.getElementById("nomeArte").value = artes[indice].nome;
+  document.getElementById("valorArte").value = artes[indice].valor;
+  indiceArteEditando = indice;
 }
 
-// PEDIDOS
-function carregarSelectArte() {
-  artePedido.innerHTML = "";
+function atualizarSelectArte() {
+  const select = document.getElementById("item");
+  select.innerHTML = "";
   artes.forEach((a, i) => {
     const opt = document.createElement("option");
     opt.value = i;
-    opt.text = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
-    artePedido.appendChild(opt);
+    opt.innerText = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
+    select.appendChild(opt);
   });
 }
 
+// ===== PEDIDOS =====
 function salvarPedido() {
-  const arte = artes[artePedido.value];
+  const arteSelecionada = artes[document.getElementById("item").value];
 
   pedidos.push({
-    dataPedido: dataPedido.value,
-    cliente: clientePedido.value,
-    arte: arte.nome,
-    valor: arte.valor,
-    entrega: dataEntrega.value,
-    pagamento: pagamento.value
+    cliente: document.getElementById("cliente").value,
+    item: arteSelecionada.nome,
+    valor: arteSelecionada.valor,
+    pagamento: document.getElementById("pagamento").value,
+    status: document.getElementById("status").value
   });
 
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  alert("Pedido salvo com sucesso");
+  listarPedidos();
 }
 
-// RELATÓRIO
+function listarPedidos() {
+  const lista = document.getElementById("listaPedidos");
+  lista.innerHTML = "";
+  pedidos.forEach(p => {
+    const li = document.createElement("li");
+    li.innerText = `${p.cliente} | ${p.item} | R$ ${p.valor.toFixed(2)}`;
+    lista.appendChild(li);
+  });
+}
+
+// ===== RELATÓRIOS =====
 function gerarRelatorio() {
-  relatorio.innerHTML = "";
-  let total = 0;
+  let total = 0, pix = 0, prazo = 0, cartao = 0;
 
   pedidos.forEach(p => {
-    total += p.valor;
-    relatorio.innerHTML += `
-      <p>
-        ${p.cliente} | ${p.arte} | 
-        R$ ${p.valor.toFixed(2)} | ${p.pagamento}
-      </p>
-    `;
+    if (p.status === "Entregue") {
+      total += p.valor;
+      if (p.pagamento === "Pix") pix += p.valor;
+      if (p.pagamento === "A prazo") prazo += p.valor;
+      if (p.pagamento === "Cartão") cartao += p.valor;
+    }
   });
 
-  relatorio.innerHTML += `<h3>Total Geral: R$ ${total.toFixed(2)}</h3>`;
+  document.getElementById("total").innerText = `Total: R$ ${total.toFixed(2)}`;
+  document.getElementById("pix").innerText = `Pix: R$ ${pix.toFixed(2)}`;
+  document.getElementById("prazo").innerText = `A prazo: R$ ${prazo.toFixed(2)}`;
+  document.getElementById("cartao").innerText = `Cartão: R$ ${cartao.toFixed(2)}`;
+}
+
+// ===== USUÁRIOS =====
+function addUsuario() {
+  usuarios.push({
+    user: document.getElementById("novoUser").value,
+    senha: document.getElementById("novaSenha").value
+  });
+
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  alert("Usuário criado com sucesso!");
 }
