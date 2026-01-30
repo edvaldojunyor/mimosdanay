@@ -169,20 +169,41 @@ async function carregarArtesNoSelect() {
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
     const a = doc.data();
+
     const opt = document.createElement("option");
+    opt.value = doc.id;
     opt.textContent = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
+
+    opt.dataset.nome = a.nome;
+    opt.dataset.valor = a.valor;
+
     select.appendChild(opt);
   });
 }
 
 async function salvarPedido() {
+  const selectItem = document.getElementById("item");
+  const opcao = selectItem.options[selectItem.selectedIndex];
+
+  const dataEntregaInput = document.getElementById("dataEntrega").value;
+
   await db.collection("pedidos").add({
     cliente: document.getElementById("cliente").value,
-    item: document.getElementById("item").value,
+    
+    itemId: selectItem.value,
+    itemNome: opcao.dataset.nome,
+    valor: parseFloat(opcao.dataset.valor),
+
     pagamento: document.getElementById("pagamento").value,
     status: document.getElementById("status").value,
-    data: new Date()
+
+    dataPedido: firebase.firestore.FieldValue.serverTimestamp(),
+    dataEntrega: dataEntregaInput ? new Date(dataEntregaInput) : null
   });
+
+  document.getElementById("cliente").value = "";
+  document.getElementById("dataEntrega").value = "";
+
   listarPedidos();
 }
 
@@ -190,11 +211,25 @@ async function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
   lista.innerHTML = "";
 
-  const snap = await db.collection("pedidos").get();
+  const snap = await db.collection("pedidos").orderBy("dataPedido", "desc").get();
+
   snap.forEach(doc => {
     const p = doc.data();
+
+    const dataPedido = p.dataPedido?.toDate()?.toLocaleDateString("pt-BR") || "-";
+    const dataEntrega = p.dataEntrega
+      ? p.dataEntrega.toDate?.().toLocaleDateString("pt-BR") || new Date(p.dataEntrega).toLocaleDateString("pt-BR")
+      : "—";
+
     const li = document.createElement("li");
-    li.textContent = `${p.cliente} | ${p.item}`;
+    li.innerHTML = `
+      <strong>${p.cliente}</strong><br>
+      ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
+      Pedido: ${dataPedido}<br>
+      Entrega: ${dataEntrega}<br>
+      Status: ${p.status}
+    `;
+
     lista.appendChild(li);
   });
 }
@@ -247,6 +282,7 @@ async function gerarRelatorio() {
   html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
   resultado.innerHTML = html;
 }
+
 
 
 
