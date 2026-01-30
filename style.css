@@ -1,16 +1,12 @@
+/* ===============================
+   ESTILO GERAL
+=============================== */
+
 body {
   font-family: Arial, sans-serif;
   background: #f5f0fa;
   margin: 0;
   padding: 10px;
-}
-
-header {
-  background: #8e6ac9;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 22px;
 }
 
 h2 {
@@ -21,20 +17,35 @@ div {
   margin-top: 20px;
 }
 
-input, select, button {
+/* ===============================
+   INPUTS / SELECTS / BOTÕES
+=============================== */
+
+input,
+select,
+button {
   width: 100%;
   padding: 10px;
   margin-top: 8px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
+/* Reset obrigatório para Safari iOS */
 button {
+  -webkit-appearance: none;
+  appearance: none;
   background: #8e6ac9;
-  color: white;
+  color: #fff;
   border: none;
-  font-size: 16px;
+  cursor: pointer;
 }
+
+/* ===============================
+   LISTAS
+=============================== */
 
 ul {
   list-style: none;
@@ -42,137 +53,35 @@ ul {
 }
 
 li {
-  background: white;
+  background: #fff;
   margin-top: 8px;
   padding: 8px;
   border-radius: 6px;
 }
 
 li button {
-  margin-top: 5px;
+  margin-top: 6px;
   font-size: 14px;
 }
-/* ===== Imagens da Arte Sacra ===== */
+
+/* ===============================
+   IMAGENS
+=============================== */
+
 img {
   max-width: 120px;
   margin-top: 8px;
   border-radius: 6px;
 }
-/* ===== Padronizar input type=date ===== */
-input[type="date"] {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  background-color: #fff;
-  color: #000;
-  box-sizing: border-box;
-}
 
-/* Remove aparência diferente em alguns navegadores */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-}
-/* ===== Input DATE padronizado (iOS + Web) ===== */
-.input-date {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  background-color: #fff;
-  color: #000;
-  box-sizing: border-box;
-  height: 44px; /* força mesmo tamanho dos outros */
-}
-
-/* Texto "Data da entrega" fake dentro do campo */
-.input-date:before {
-  content: "Data de entrega";
-  color: #aaa;
-}
-
-/* Quando tem valor, remove o texto fake */
-.input-date:valid:before {
-  content: "";
-}
-
-/* Safari / iOS */
-.input-date::-webkit-datetime-edit {
-  color: transparent;
-}
-
-.input-date:focus::-webkit-datetime-edit,
-.input-date:valid::-webkit-datetime-edit {
-  color: #000;
-}
-
-/* Cursor do calendário */
-.input-date::-webkit-calendar-picker-indicator {
-  opacity: 0.6;
-}
-/* ===== Container do campo de data ===== */
-.campo-data {
-  position: relative;
-  width: 100%;
-  margin-top: 8px;
-}
-
-/* Placeholder fake */
-.fake-placeholder {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  color: #aaa;
-  font-size: 16px;
-  pointer-events: none;
-}
-
-/* ===== Input DATE padronizado (igual aos outros) ===== */
-.campo-data input[type="date"] {
-  width: 100%;
-  height: 44px;              /* altura exata */
-  padding: 0 10px;           /* remove padding vertical extra */
-  margin-top: 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  background-color: #fff;
-  box-sizing: border-box;
-  line-height: 44px;         /* força alinhamento vertical */
-}
-
-/* Safari iOS – remove ajustes internos */
-.campo-data input::-webkit-datetime-edit {
-  height: 44px;
-  line-height: 44px;
-  padding: 0;
-}
-
-/* Esconde placeholder quando tiver valor */
-.campo-data input[type="date"]:not(:placeholder-shown) + .fake-placeholder,
-.campo-data input[type="date"]:valid + .fake-placeholder {
-  display: none;
-}
-
-/* Safari iOS correção */
-.campo-data input::-webkit-datetime-edit {
-  color: #000;
-}
-
-/* ===== Ajuste final do campo Data de Entrega ===== */
+/* ===============================
+   CAMPO DATA ENTREGA (IOS + WEB)
+=============================== */
 
 .campo-data {
   position: relative;
   width: 100%;
-  margin-top: 8px; /* mesmo espaçamento dos inputs */
+  margin-top: 8px;
 }
 
 .fake-placeholder {
@@ -185,11 +94,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   pointer-events: none;
 }
 
-/* Input date exatamente igual aos outros campos */
+/* Input date com mesmo tamanho dos outros */
 .campo-data input[type="date"] {
   width: 100%;
   height: 44px;
-  padding: 10px;              /* igual aos inputs normais */
+  padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-family: Arial, sans-serif;
@@ -198,35 +107,32 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   box-sizing: border-box;
 }
 
-/* Safari iOS - remove padding interno extra */
+/* Safari iOS – remove espaçamento interno extra */
 .campo-data input::-webkit-datetime-edit {
   padding: 0;
   height: 100%;
-  line-height: normal;
 }
 
-/* Esconde placeholder fake quando data escolhida */
+/* Esconde placeholder fake quando data selecionada */
 .campo-data input:valid + .fake-placeholder {
   display: none;
 }
-/* ===== Botões de ação ===== */
+
+/* ===============================
+   BOTÕES DE AÇÃO
+=============================== */
 
 .btn-excluir-item {
-  background-color: #d9534f; /* vermelho */
-}
-
-.btn-excluir-imagem {
-  background-color: #f0ad4e; /* laranja */
+  background-color: #d9534f !important; /* vermelho */
   color: #fff;
 }
 
-/* efeito visual ao tocar */
+.btn-excluir-imagem {
+  background-color: #f0ad4e !important; /* laranja */
+  color: #fff;
+}
+
 .btn-excluir-item:hover,
 .btn-excluir-imagem:hover {
   opacity: 0.9;
 }
-
-
-
-
-
