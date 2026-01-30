@@ -39,7 +39,7 @@ function login() {
 }
 
 function logout() {
-  ["home","arte","pedidos"].forEach(id => {
+  ["home", "arte", "pedidos", "relatorios"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
@@ -55,7 +55,6 @@ function voltarHome() {
     if (el) el.style.display = "none";
   });
 
-  // LIMPA O CONTEÚDO DO RELATÓRIO (CORREÇÃO DO BUG)
   const resultado = document.getElementById("resultadoRelatorio");
   if (resultado) resultado.innerHTML = "";
 
@@ -75,28 +74,46 @@ function abrirPedidos() {
   listarPedidos();
 }
 
+function abrirRelatorios() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("relatorios").style.display = "block";
+  document.getElementById("resultadoRelatorio").innerHTML = "";
+}
+
 // ===============================
-// PREVIEW DE IMAGEM
+// DOM READY (UNIFICADO)
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("fotoArte");
+
+  // Preview de imagem da arte
+  const inputFoto = document.getElementById("fotoArte");
   const preview = document.getElementById("previewArte");
 
-  if (!input) return;
+  if (inputFoto && preview) {
+    inputFoto.addEventListener("change", () => {
+      const file = inputFoto.files[0];
+      if (!file) {
+        preview.style.display = "none";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        preview.src = reader.result;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
+  }
 
-  input.addEventListener("change", () => {
-    const file = input.files[0];
-    if (!file) {
-      preview.style.display = "none";
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      preview.src = reader.result;
-      preview.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-  });
+  // Placeholder fake da data de entrega (Safari iOS)
+  const dataEntrega = document.getElementById("dataEntrega");
+  const placeholder = document.querySelector(".fake-placeholder");
+
+  if (dataEntrega && placeholder) {
+    dataEntrega.addEventListener("change", () => {
+      placeholder.style.display = dataEntrega.value ? "none" : "block";
+    });
+  }
 });
 
 // ===============================
@@ -136,24 +153,24 @@ async function listarArte() {
     const id = doc.id;
 
     const li = document.createElement("li");
-   li.innerHTML = `
-  <strong>${a.nome}</strong><br>
-  R$ ${a.valor.toFixed(2)}<br>
+    li.innerHTML = `
+      <strong>${a.nome}</strong><br>
+      R$ ${a.valor.toFixed(2)}<br>
 
-  ${
-    a.foto
-      ? `<img src="${a.foto}" style="max-width:100px"><br>
-         <button class="btn-excluir-imagem" onclick="excluirImagemArte('${id}')">
-           Excluir imagem
-         </button>`
-      : "<em>Sem imagem</em>"
-  }
-  <br>
+      ${
+        a.foto
+          ? `<img src="${a.foto}"><br>
+             <button class="btn-excluir-imagem" onclick="excluirImagemArte('${id}')">
+               Excluir imagem
+             </button>`
+          : "<em>Sem imagem</em>"
+      }
+      <br>
 
-  <button class="btn-excluir-item" onclick="excluirArte('${id}')">
-    Excluir item
-  </button>
-`;
+      <button class="btn-excluir-item" onclick="excluirArte('${id}')">
+        Excluir item
+      </button>
+    `;
 
     lista.appendChild(li);
   });
@@ -184,7 +201,6 @@ async function carregarArtesNoSelect() {
     const opt = document.createElement("option");
     opt.value = doc.id;
     opt.textContent = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
-
     opt.dataset.nome = a.nome;
     opt.dataset.valor = a.valor;
 
@@ -193,21 +209,23 @@ async function carregarArtesNoSelect() {
 }
 
 async function salvarPedido() {
+  const cliente = document.getElementById("cliente").value.trim();
+  if (!cliente) {
+    alert("Informe o nome do cliente");
+    return;
+  }
+
   const selectItem = document.getElementById("item");
   const opcao = selectItem.options[selectItem.selectedIndex];
-
   const dataEntregaInput = document.getElementById("dataEntrega").value;
 
   await db.collection("pedidos").add({
-    cliente: document.getElementById("cliente").value,
-    
+    cliente,
     itemId: selectItem.value,
     itemNome: opcao.dataset.nome,
     valor: parseFloat(opcao.dataset.valor),
-
     pagamento: document.getElementById("pagamento").value,
     status: document.getElementById("status").value,
-
     dataPedido: firebase.firestore.FieldValue.serverTimestamp(),
     dataEntrega: dataEntregaInput ? new Date(dataEntregaInput) : null
   });
@@ -229,7 +247,8 @@ async function listarPedidos() {
 
     const dataPedido = p.dataPedido?.toDate()?.toLocaleDateString("pt-BR") || "-";
     const dataEntrega = p.dataEntrega
-      ? p.dataEntrega.toDate?.().toLocaleDateString("pt-BR") || new Date(p.dataEntrega).toLocaleDateString("pt-BR")
+      ? p.dataEntrega.toDate?.().toLocaleDateString("pt-BR") ||
+        new Date(p.dataEntrega).toLocaleDateString("pt-BR")
       : "—";
 
     const li = document.createElement("li");
@@ -245,12 +264,9 @@ async function listarPedidos() {
   });
 }
 
-function abrirRelatorios() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("relatorios").style.display = "block";
-  document.getElementById("resultadoRelatorio").innerHTML = "";
-}
-
+// ===============================
+// RELATÓRIO (ATUALIZADO)
+// ===============================
 async function gerarRelatorio() {
   const mesInput = document.getElementById("mesRelatorio").value;
   const resultado = document.getElementById("resultadoRelatorio");
@@ -261,60 +277,25 @@ async function gerarRelatorio() {
   }
 
   const [ano, mes] = mesInput.split("-").map(Number);
-
   const inicio = new Date(ano, mes - 1, 1);
   const fim = new Date(ano, mes, 0, 23, 59, 59);
 
   let total = 0;
   let html = `<h3>Pedidos de ${mes}/${ano}</h3><ul>`;
 
-  const pedidosSnap = await db.collection("pedidos").get();
-  const artesSnap = await db.collection("artes").get();
+  const snap = await db.collection("pedidos").get();
 
-  // cria mapa de preços das artes
-  const mapaValores = {};
-  artesSnap.forEach(doc => {
-    const a = doc.data();
-    mapaValores[a.nome] = a.valor;
-  });
-
-  pedidosSnap.forEach(doc => {
+  snap.forEach(doc => {
     const p = doc.data();
-    const dataPedido = p.data?.toDate?.() || new Date(p.data);
+    const dataPedido = p.dataPedido?.toDate?.();
+    if (!dataPedido) return;
 
     if (dataPedido >= inicio && dataPedido <= fim) {
-      const valorItem = mapaValores[p.item.split(" - ")[0]] || 0;
-      total += valorItem;
-
-      html += `<li>${p.cliente} – ${p.item} – R$ ${valorItem.toFixed(2)}</li>`;
+      total += p.valor;
+      html += `<li>${p.cliente} – ${p.itemNome} – R$ ${p.valor.toFixed(2)}</li>`;
     }
   });
 
   html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
   resultado.innerHTML = html;
 }
-
-// ===============================
-// PLACEHOLDER FAKE - DATA ENTREGA (Safari iOS)
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  const dataEntrega = document.getElementById("dataEntrega");
-  const placeholder = document.querySelector(".fake-placeholder");
-
-  if (!dataEntrega || !placeholder) return;
-
-  dataEntrega.addEventListener("change", () => {
-    if (dataEntrega.value) {
-      placeholder.style.display = "none";
-    } else {
-      placeholder.style.display = "block";
-    }
-  });
-});
-
-
-
-
-
-
-
