@@ -136,14 +136,25 @@ async function listarArte() {
     const id = doc.id;
 
     const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${a.nome}</strong><br>
-      R$ ${a.valor.toFixed(2)}<br>
-      ${a.foto ? `<img src="${a.foto}" style="max-width:100px"><br>
-      <button onclick="excluirImagemArte('${id}')">Excluir imagem</button>` : "<em>Sem imagem</em>"}
-      <br>
-      <button onclick="excluirArte('${id}')">Excluir item</button>
-    `;
+   li.innerHTML = `
+  <strong>${a.nome}</strong><br>
+  R$ ${a.valor.toFixed(2)}<br>
+
+  ${
+    a.foto
+      ? `<img src="${a.foto}" style="max-width:100px"><br>
+         <button class="btn-excluir-imagem" onclick="excluirImagemArte('${id}')">
+           Excluir imagem
+         </button>`
+      : "<em>Sem imagem</em>"
+  }
+  <br>
+
+  <button class="btn-excluir-item" onclick="excluirArte('${id}')">
+    Excluir item
+  </button>
+`;
+
     lista.appendChild(li);
   });
 }
@@ -300,6 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 
 
 
