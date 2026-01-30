@@ -14,9 +14,9 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // ===============================
-// USUÁRIOS (LOGIN SIMPLES)
+// USUÁRIOS (LOGIN LOCAL)
 // ===============================
-let usuarios = [
+const usuarios = [
   { user: "Edvaldo", senha: "1234" },
   { user: "Neiara", senha: "1234" }
 ];
@@ -25,57 +25,124 @@ let usuarios = [
 // LOGIN
 // ===============================
 function login() {
-  const u = user.value.trim();
-  const s = senha.value.trim();
+  const u = document.getElementById("user").value.trim();
+  const s = document.getElementById("senha").value.trim();
   const erro = document.getElementById("erro");
 
-  const ok = usuarios.find(x => x.user === u && x.senha === s);
-  if (ok) {
-    login.style.display = "none";
-    home.style.display = "block";
-  } else {
+  const valido = usuarios.find(us => us.user === u && us.senha === s);
+
+  if (!valido) {
     erro.innerText = "Usuário ou senha inválidos";
+    return;
   }
+
+  document.getElementById("login").style.display = "none";
+  document.getElementById("home").style.display = "block";
+  erro.innerText = "";
 }
 
 function logout() {
-  home.style.display = "none";
-  login.style.display = "block";
+  ["home", "arte", "pedidos", "relatorios", "usuarios"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+
+  document.getElementById("login").style.display = "block";
+  document.getElementById("user").value = "";
+  document.getElementById("senha").value = "";
 }
 
 // ===============================
-// ARTE SACRA (NUVEM)
+// NAVEGAÇÃO
+// ===============================
+function voltarHome() {
+  ["arte", "pedidos", "relatorios", "usuarios"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+  document.getElementById("home").style.display = "block";
+}
+
+function abrirArte() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("arte").style.display = "block";
+  listarArte();
+}
+
+function abrirPedidos() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("pedidos").style.display = "block";
+  carregarArtesNoSelect();
+  listarPedidos();
+}
+
+function abrirRelatorios() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("relatorios").style.display = "block";
+}
+
+// ===============================
+// PREVIEW DA IMAGEM
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const fotoInput = document.getElementById("fotoArte");
+  const preview = document.getElementById("previewArte");
+
+  if (!fotoInput || !preview) return;
+
+  fotoInput.addEventListener("change", () => {
+    const file = fotoInput.files[0];
+    if (!file) {
+      preview.style.display = "none";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      preview.src = reader.result;
+      preview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+// ===============================
+// ARTE SACRA (FIRESTORE)
 // ===============================
 async function salvarArte() {
-  const nome = nomeArte.value.trim();
-  const valor = parseFloat(valorArte.value);
+  const nome = document.getElementById("nomeArte").value.trim();
+  const valor = parseFloat(document.getElementById("valorArte").value);
+  const file = document.getElementById("fotoArte").files[0];
 
   if (!nome || isNaN(valor)) {
     alert("Informe nome e valor");
     return;
   }
 
-  let foto = null;
-  const file = fotoArte.files[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = async () => {
-      await db.collection("artes").add({
-        nome,
-        valor,
-        foto: reader.result
-      });
+      await db.collection("artes").add({ nome, valor, foto: reader.result });
+      limparArte();
       listarArte();
     };
     reader.readAsDataURL(file);
   } else {
     await db.collection("artes").add({ nome, valor, foto: null });
+    limparArte();
     listarArte();
   }
 }
 
+function limparArte() {
+  document.getElementById("nomeArte").value = "";
+  document.getElementById("valorArte").value = "";
+  document.getElementById("fotoArte").value = "";
+  document.getElementById("previewArte").style.display = "none";
+}
+
 async function listarArte() {
-  const lista = listaArte;
+  const lista = document.getElementById("listaArte");
   lista.innerHTML = "";
 
   const snap = await db.collection("artes").get();
@@ -85,23 +152,34 @@ async function listarArte() {
     li.innerHTML = `
       <strong>${a.nome}</strong><br>
       R$ ${a.valor.toFixed(2)}<br>
-      ${a.foto ? `<img src="${a.foto}" width="100">` : ""}
+      ${a.foto ? `<img src="${a.foto}" style="max-width:100px">` : ""}
     `;
     lista.appendChild(li);
   });
 }
 
 // ===============================
-// PEDIDOS (NUVEM)
+// PEDIDOS (FIRESTORE)
 // ===============================
-async function salvarPedido() {
-  const arte = item.options[item.selectedIndex].text;
+async function carregarArtesNoSelect() {
+  const select = document.getElementById("item");
+  select.innerHTML = "";
 
+  const snap = await db.collection("artes").get();
+  snap.forEach(doc => {
+    const a = doc.data();
+    const opt = document.createElement("option");
+    opt.textContent = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
+    select.appendChild(opt);
+  });
+}
+
+async function salvarPedido() {
   await db.collection("pedidos").add({
-    cliente: cliente.value,
-    item: arte,
-    pagamento: pagamento.value,
-    status: status.value,
+    cliente: document.getElementById("cliente").value,
+    item: document.getElementById("item").value,
+    pagamento: document.getElementById("pagamento").value,
+    status: document.getElementById("status").value,
     data: new Date()
   });
 
@@ -109,13 +187,14 @@ async function salvarPedido() {
 }
 
 async function listarPedidos() {
-  listaPedidos.innerHTML = "";
-  const snap = await db.collection("pedidos").get();
+  const lista = document.getElementById("listaPedidos");
+  lista.innerHTML = "";
 
+  const snap = await db.collection("pedidos").get();
   snap.forEach(doc => {
     const p = doc.data();
     const li = document.createElement("li");
-    li.innerText = `${p.cliente} | ${p.item}`;
-    listaPedidos.appendChild(li);
+    li.textContent = `${p.cliente} | ${p.item}`;
+    lista.appendChild(li);
   });
 }
