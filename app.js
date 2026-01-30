@@ -193,3 +193,54 @@ async function listarPedidos() {
     lista.appendChild(li);
   });
 }
+
+function abrirRelatorios() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("relatorios").style.display = "block";
+  document.getElementById("resultadoRelatorio").innerHTML = "";
+}
+
+async function gerarRelatorio() {
+  const mesInput = document.getElementById("mesRelatorio").value;
+  const resultado = document.getElementById("resultadoRelatorio");
+
+  if (!mesInput) {
+    alert("Selecione um mês");
+    return;
+  }
+
+  const [ano, mes] = mesInput.split("-").map(Number);
+
+  const inicio = new Date(ano, mes - 1, 1);
+  const fim = new Date(ano, mes, 0, 23, 59, 59);
+
+  let total = 0;
+  let html = `<h3>Pedidos de ${mes}/${ano}</h3><ul>`;
+
+  const pedidosSnap = await db.collection("pedidos").get();
+  const artesSnap = await db.collection("artes").get();
+
+  // cria mapa de preços das artes
+  const mapaValores = {};
+  artesSnap.forEach(doc => {
+    const a = doc.data();
+    mapaValores[a.nome] = a.valor;
+  });
+
+  pedidosSnap.forEach(doc => {
+    const p = doc.data();
+    const dataPedido = p.data?.toDate?.() || new Date(p.data);
+
+    if (dataPedido >= inicio && dataPedido <= fim) {
+      const valorItem = mapaValores[p.item.split(" - ")[0]] || 0;
+      total += valorItem;
+
+      html += `<li>${p.cliente} – ${p.item} – R$ ${valorItem.toFixed(2)}</li>`;
+    }
+  });
+
+  html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
+  resultado.innerHTML = html;
+}
+
+
