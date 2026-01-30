@@ -13,6 +13,10 @@ header {
   font-size: 22px;
 }
 
+h2 {
+  color: #5b3fa3;
+}
+
 div {
   margin-top: 20px;
 }
@@ -30,14 +34,6 @@ button {
   color: white;
   border: none;
   font-size: 16px;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-h2 {
-  color: #5b3fa3;
 }
 
 ul {
