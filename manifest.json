@@ -1,0 +1,15 @@
+{
+  "name": "Mimos da Nay",
+  "short_name": "Mimos da Nay",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7b5cb8",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
