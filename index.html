@@ -1,59 +1,98 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Mimos da Nay</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Mimos da Nay</h1>
+<header>Mimos da Nay</header>
 
 <!-- LOGIN -->
 <div id="login">
   <h2>Login</h2>
-  <input id="usuario" placeholder="Usuário">
+  <input id="user" placeholder="Usuário">
   <input id="senha" type="password" placeholder="Senha">
   <button onclick="login()">Entrar</button>
+  <p id="erro"></p>
 </div>
 
-<!-- APP -->
-<div id="app" style="display:none">
+<!-- HOME -->
+<div id="home" style="display:none;">
+  <h2>Menu</h2>
+  <button onclick="abrirPedidos()">Pedidos</button>
+  <button onclick="abrirArte()">Arte Sacra</button>
+  <button onclick="abrirRelatorios()">Relatórios</button>
+  <button onclick="abrirUsuarios()">Usuários</button>
+  <button onclick="logout()">Sair</button>
+</div>
 
-  <h2>Cadastro de Arte Sacra</h2>
-  <input id="nomeArte" placeholder="Nome do item">
-  <input id="valorArte" type="number" step="0.01" placeholder="Valor (R$)">
-  <input id="fotoArte" type="file" accept="image/*">
-  <button onclick="salvarArte()">Salvar Item</button>
-
-  <ul id="listaArte"></ul>
-
-  <hr>
-
+<!-- PEDIDOS -->
+<div id="pedidos" style="display:none;">
   <h2>Novo Pedido</h2>
-  <input id="dataPedido" type="date">
-  <input id="clientePedido" placeholder="Nome do cliente">
 
-  <select id="artePedido"></select>
+  <input id="cliente" placeholder="Nome do Cliente">
 
-  <input id="dataEntrega" type="date">
+  <select id="item"></select>
 
   <select id="pagamento">
     <option>Pix</option>
     <option>A prazo</option>
-    <option>Cartão de Crédito</option>
+    <option>Cartão</option>
+  </select>
+
+  <select id="status">
+    <option>Não entregue</option>
+    <option>Entregue</option>
   </select>
 
   <button onclick="salvarPedido()">Salvar Pedido</button>
+  <button onclick="voltarHome()">Voltar</button>
 
-  <hr>
+  <ul id="listaPedidos"></ul>
+</div>
 
-  <h2>Relatório Geral</h2>
-  <button onclick="gerarRelatorio()">Gerar Relatório</button>
-  <div id="relatorio"></div>
+<!-- ARTE SACRA -->
+<div id="arte" style="display:none;">
+  <h2>Cadastro de Arte Sacra</h2>
 
+  <input id="nomeArte" placeholder="Nome do item (ex: São José)">
+  <input id="valorArte" type="number" step="0.01" placeholder="Valor (R$)">
+  <input id="fotoArte" type="file" accept="image/*">
+
+  <button onclick="salvarArte()">Salvar Item</button>
+
+  <ul id="listaArte"></ul>
+
+  <button onclick="voltarHome()">Voltar</button>
+</div>
+
+<!-- RELATÓRIOS -->
+<div id="relatorios" style="display:none;">
+  <h2>Relatórios</h2>
+
+  <button onclick="gerarRelatorio()">Gerar Relatório Geral</button>
+
+  <p id="total"></p>
+  <p id="pix"></p>
+  <p id="prazo"></p>
+  <p id="cartao"></p>
+
+  <button onclick="voltarHome()">Voltar</button>
+</div>
+
+<!-- USUÁRIOS -->
+<div id="usuarios" style="display:none;">
+  <h2>Usuários</h2>
+
+  <input id="novoUser" placeholder="Usuário">
+  <input id="novaSenha" placeholder="Senha">
+  <button onclick="addUsuario()">Adicionar Usuário</button>
+
+  <button onclick="voltarHome()">Voltar</button>
 </div>
 
 <script src="app.js"></script>
