@@ -288,5 +288,25 @@ li.atrasado::before {
   border-radius: 5px;
   background: #d9534f;
 }
+/* ===============================
+   DATA DE ENTREGA – STATUS VISUAL
+=============================== */
+
+.data-entrega {
+  font-weight: 600;
+}
+
+.data-prazo {
+  color: #4caf50; /* verde */
+}
+
+.data-atrasada {
+  color: #d9534f; /* vermelho */
+}
+
+.data-sem {
+  color: #999; /* neutro */
+}
+
 
 
