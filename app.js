@@ -217,6 +217,8 @@ async function listarPedidos() {
     .get();
 
   snap.forEach(doc => {
+    // NÃO mostrar pedidos entregues na lista principal
+if (p.status === "Entregue") return;
     const p = doc.data();
     const id = doc.id;
 
@@ -294,5 +296,6 @@ async function excluirPedido(id) {
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
+
 
 
