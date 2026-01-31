@@ -16,7 +16,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // ===============================
-// LOGIN LOCAL
+// LOGIN LOCAL (SAFARI OK)
 // ===============================
 const usuarios = [
   { user: "Edvaldo", senha: "1234" },
@@ -41,8 +41,7 @@ function login() {
 
 function logout() {
   ["home", "arte", "pedidos", "relatorios"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
+    document.getElementById(id).style.display = "none";
   });
   document.getElementById("login").style.display = "block";
 }
@@ -52,29 +51,28 @@ function logout() {
 // ===============================
 function voltarHome() {
   ["arte", "pedidos", "relatorios"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
+    document.getElementById(id).style.display = "none";
   });
   document.getElementById("home").style.display = "block";
 }
 
 function abrirArte() {
-  home.style.display = "none";
-  arte.style.display = "block";
+  document.getElementById("home").style.display = "none";
+  document.getElementById("arte").style.display = "block";
   listarArte();
 }
 
 function abrirPedidos() {
-  home.style.display = "none";
-  pedidos.style.display = "block";
+  document.getElementById("home").style.display = "none";
+  document.getElementById("pedidos").style.display = "block";
   carregarArtesNoSelect();
   listarPedidos();
 }
 
 function abrirRelatorios() {
-  home.style.display = "none";
-  relatorios.style.display = "block";
-  resultadoRelatorio.innerHTML = "";
+  document.getElementById("home").style.display = "none";
+  document.getElementById("relatorios").style.display = "block";
+  document.getElementById("resultadoRelatorio").innerHTML = "";
 }
 
 // ===============================
@@ -84,11 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputFoto = document.getElementById("fotoArte");
   const preview = document.getElementById("previewArte");
 
-  if (inputFoto && preview) {
+  if (inputFoto) {
     inputFoto.addEventListener("change", () => {
       const file = inputFoto.files[0];
-      if (!file) return preview.style.display = "none";
-
+      if (!file) {
+        preview.style.display = "none";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         preview.src = reader.result;
@@ -100,35 +100,47 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ===============================
-// ARTE
+// ARTES
 // ===============================
 async function salvarArte() {
-  const nome = nomeArte.value.trim();
-  const valor = parseFloat(valorArte.value);
-  if (!nome || isNaN(valor)) return alert("Informe nome e valor");
+  const nome = document.getElementById("nomeArte").value.trim();
+  const valor = parseFloat(document.getElementById("valorArte").value);
+  const preview = document.getElementById("previewArte");
 
-  await db.collection("artes").add({ nome, valor, foto: previewArte.src || null });
+  if (!nome || isNaN(valor)) {
+    alert("Informe nome e valor");
+    return;
+  }
 
-  nomeArte.value = "";
-  valorArte.value = "";
-  fotoArte.value = "";
-  previewArte.style.display = "none";
+  await db.collection("artes").add({
+    nome,
+    valor,
+    foto: preview.src || null
+  });
+
+  document.getElementById("nomeArte").value = "";
+  document.getElementById("valorArte").value = "";
+  document.getElementById("fotoArte").value = "";
+  preview.style.display = "none";
 
   listarArte();
 }
 
 async function listarArte() {
-  listaArte.innerHTML = "";
-  const snap = await db.collection("artes").get();
+  const lista = document.getElementById("listaArte");
+  lista.innerHTML = "";
 
+  const snap = await db.collection("artes").get();
   snap.forEach(doc => {
     const a = doc.data();
-    listaArte.innerHTML += `
+    lista.innerHTML += `
       <li>
         <strong>${a.nome}</strong><br>
         R$ ${a.valor.toFixed(2)}<br>
         ${a.foto ? `<img src="${a.foto}"><br>` : "<em>Sem imagem</em><br>"}
-        <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">Excluir</button>
+        <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
+          Excluir
+        </button>
       </li>
     `;
   });
@@ -144,30 +156,40 @@ async function excluirArte(id) {
 // PEDIDOS
 // ===============================
 async function carregarArtesNoSelect() {
-  item.innerHTML = "";
+  const select = document.getElementById("item");
+  select.innerHTML = "";
+
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
     const a = doc.data();
-    item.innerHTML += `
-      <option value="${doc.id}" data-nome="${a.nome}" data-valor="${a.valor}">
-        ${a.nome} - R$ ${a.valor.toFixed(2)}
-      </option>
-    `;
+    const opt = document.createElement("option");
+    opt.value = doc.id;
+    opt.textContent = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
+    opt.dataset.nome = a.nome;
+    opt.dataset.valor = a.valor;
+    select.appendChild(opt);
   });
 }
 
 async function salvarPedido() {
-  if (!cliente.value.trim()) return alert("Informe o cliente");
+  const cliente = document.getElementById("cliente").value.trim();
+  if (!cliente) {
+    alert("Informe o cliente");
+    return;
+  }
 
-  const opt = item.options[item.selectedIndex];
+  const select = document.getElementById("item");
+  const opt = select.options[select.selectedIndex];
+  const dataEntregaValor = document.getElementById("dataEntrega").value;
+
   const dados = {
-    cliente: cliente.value,
-    itemId: item.value,
+    cliente,
+    itemId: select.value,
     itemNome: opt.dataset.nome,
     valor: Number(opt.dataset.valor),
-    pagamento: pagamento.value,
-    status: status.value,
-    dataEntrega: dataEntrega.value ? new Date(dataEntrega.value) : null
+    pagamento: document.getElementById("pagamento").value,
+    status: document.getElementById("status").value,
+    dataEntrega: dataEntregaValor ? new Date(dataEntregaValor) : null
   };
 
   if (pedidoEditandoId) {
@@ -178,46 +200,57 @@ async function salvarPedido() {
     await db.collection("pedidos").add(dados);
   }
 
-  cliente.value = "";
-  dataEntrega.value = "";
+  document.getElementById("cliente").value = "";
+  document.getElementById("dataEntrega").value = "";
+
   listarPedidos();
 }
 
 async function listarPedidos() {
-  listaPedidos.innerHTML = "";
-  const hoje = new Date();
+  const lista = document.getElementById("listaPedidos");
+  lista.innerHTML = "";
 
-  const snap = await db.collection("pedidos").orderBy("dataPedido", "desc").get();
+  const hoje = new Date();
+  const snap = await db.collection("pedidos")
+    .orderBy("dataPedido", "desc")
+    .get();
+
   snap.forEach(doc => {
     const p = doc.data();
     const entrega = p.dataEntrega?.toDate?.() || p.dataEntrega;
-    const atrasado = entrega && entrega < hoje && p.status !== "Entregue";
+    const atrasado =
+      entrega && entrega < hoje && p.status !== "Entregue";
 
-    listaPedidos.innerHTML += `
+    lista.innerHTML += `
       <li style="border-left:5px solid ${atrasado ? "red" : "green"}">
         <strong>${p.cliente}</strong><br>
         ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
         Entrega: ${entrega ? entrega.toLocaleDateString("pt-BR") : "—"}<br>
         Status: ${p.status}<br>
         <button onclick="editarPedido('${doc.id}')">Editar</button>
-        <button class="btn-excluir-item" onclick="excluirPedido('${doc.id}')">Excluir</button>
+        <button class="btn-excluir-item" onclick="excluirPedido('${doc.id}')">
+          Excluir
+        </button>
       </li>
     `;
   });
 }
 
 async function editarPedido(id) {
-  const doc = await db.collection("pedidos").doc(id).get();
-  const p = doc.data();
+  const ref = await db.collection("pedidos").doc(id).get();
+  if (!ref.exists) return;
 
-  cliente.value = p.cliente;
-  pagamento.value = p.pagamento;
-  status.value = p.status;
-  item.value = p.itemId;
+  const p = ref.data();
+
+  document.getElementById("cliente").value = p.cliente;
+  document.getElementById("pagamento").value = p.pagamento;
+  document.getElementById("status").value = p.status;
+  document.getElementById("item").value = p.itemId;
 
   if (p.dataEntrega) {
     const d = p.dataEntrega.toDate?.() || p.dataEntrega;
-    dataEntrega.value = d.toISOString().split("T")[0];
+    document.getElementById("dataEntrega").value =
+      d.toISOString().split("T")[0];
   }
 
   pedidoEditandoId = id;
