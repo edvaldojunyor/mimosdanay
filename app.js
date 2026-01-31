@@ -221,6 +221,19 @@ async function listarPedidos() {
     const id = doc.id;
 
     const entrega = p.dataEntrega?.toDate?.() || p.dataEntrega;
+
+    // 👉 LÓGICA DA DATA (FORA DO HTML)
+    let classeData = "data-sem";
+    let textoData = "—";
+
+    if (entrega) {
+      textoData = entrega.toLocaleDateString("pt-BR");
+      classeData =
+        entrega < hoje && p.status !== "Entregue"
+          ? "data-atrasada"
+          : "data-prazo";
+    }
+
     const atrasado =
       entrega && entrega < hoje && p.status !== "Entregue";
 
@@ -229,6 +242,7 @@ async function listarPedidos() {
     if (p.status === "Entregue") li.classList.add("entregue");
     if (atrasado) li.classList.add("atrasado");
 
+    // 👉 APENAS HTML AQUI
     li.innerHTML = `
       <strong>${p.cliente}</strong>
 
@@ -237,17 +251,10 @@ async function listarPedidos() {
       </div>
 
       <div class="pedido-meta">
-       let classeData = "data-sem";
-let textoData = "—";
-
-if (entrega) {
-  textoData = entrega.toLocaleDateString("pt-BR");
-  classeData =
-    entrega < hoje && p.status !== "Entregue"
-      ? "data-atrasada"
-      : "data-prazo";
-}
-
+        Entrega:
+        <span class="data-entrega ${classeData}">
+          ${textoData}
+        </span><br>
         Status: ${p.status}
       </div>
 
@@ -260,6 +267,7 @@ if (entrega) {
     lista.appendChild(li);
   });
 }
+
 
 async function editarPedido(id) {
   const ref = await db.collection("pedidos").doc(id).get();
@@ -286,4 +294,5 @@ async function excluirPedido(id) {
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
+
 
