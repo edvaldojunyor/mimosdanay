@@ -258,3 +258,20 @@ img {
     max-width: 90px;
   }
 }
+
+/* ===============================
+   BOTÃO MARCAR COMO ENTREGUE
+=============================== */
+button.btn-entregue {
+  flex: 0 0 auto;
+  width: 42px;
+  padding: 8px;
+  font-size: 18px;
+  border-radius: 50%;
+  background: #4caf50 !important;
+  color: #fff;
+}
+
+button.btn-entregue:hover {
+  opacity: 0.9;
+}
