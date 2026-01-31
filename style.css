@@ -156,3 +156,19 @@ button.btn-editar {
 li[style*="red"] {
   background: #fff5f5;
 }
+/* ===============================
+   LOGO (LOGIN E MENU)
+=============================== */
+
+.logo-login {
+  max-width: 160px;
+  display: block;
+  margin: 10px auto 20px auto;
+}
+
+.logo-home {
+  max-width: 110px;
+  display: block;
+  margin: 10px auto;
+}
+
