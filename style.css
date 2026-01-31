@@ -145,12 +145,10 @@ li.atrasado::before {
   border-radius: 5px;
 }
 
-/* Verde – entregue ou em dia */
 li.entregue::before {
   background: #4caf50;
 }
 
-/* Vermelho – atrasado */
 li.atrasado::before {
   background: #d9534f;
 }
@@ -270,8 +268,15 @@ button.btn-entregue {
   border-radius: 50%;
   background: #4caf50 !important;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button.btn-entregue:hover {
   opacity: 0.9;
+}
+
+button.btn-entregue:active {
+  transform: scale(0.95);
 }
