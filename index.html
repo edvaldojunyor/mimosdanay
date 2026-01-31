@@ -14,21 +14,21 @@
 <body>
 
 <!-- LOGIN -->
-<div id="login">
+<form id="login" onsubmit="return false;">
   <h2>Mimos da Nay</h2>
   <input id="user" placeholder="Usuário">
   <input id="senha" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+  <button type="button" onclick="login()">Entrar</button>
   <p id="erro" style="color:red"></p>
-</div>
+</form>
 
 <!-- HOME -->
 <div id="home" style="display:none">
   <h2>Menu</h2>
-  <button onclick="abrirArte()">Cadastro de Artesanatos</button>
-  <button onclick="abrirPedidos()">Pedidos de Clientes</button>
-  <button onclick="abrirRelatorios()">Relatório dos Pedidos</button>
-  <button onclick="logout()">Sair</button>
+  <button type="button" onclick="abrirArte()">Cadastro de Artesanatos</button>
+  <button type="button" onclick="abrirPedidos()">Pedidos de Clientes</button>
+  <button type="button" onclick="abrirRelatorios()">Relatório dos Pedidos</button>
+  <button type="button" onclick="logout()">Sair</button>
 </div>
 
 <!-- ARTE SACRA -->
@@ -41,8 +41,8 @@
   <input id="fotoArte" type="file" accept="image/*">
   <img id="previewArte" style="display:none; max-width:120px">
 
-  <button onclick="salvarArte()">Salvar</button>
-  <button onclick="voltarHome()">Voltar</button>
+  <button type="button" onclick="salvarArte()">Salvar</button>
+  <button type="button" onclick="voltarHome()">Voltar</button>
 
   <ul id="listaArte"></ul>
 </div>
@@ -71,8 +71,8 @@
     <input type="date" id="dataEntrega">
   </div>
 
-  <button onclick="salvarPedido()">Salvar Pedido</button>
-  <button onclick="voltarHome()">Voltar</button>
+  <button type="button" onclick="salvarPedido()">Salvar Pedido</button>
+  <button type="button" onclick="voltarHome()">Voltar</button>
 
   <ul id="listaPedidos"></ul>
 </div>
@@ -81,10 +81,10 @@
 <div id="relatorios" style="display:none">
   <h2>Relatório Mensal de Vendas</h2>
 
-  <input type="month" id="mesRelatorio" placeholder="Mês do relatório">
+  <input type="month" id="mesRelatorio">
 
-  <button onclick="gerarRelatorio()">Gerar Relatório</button>
-  <button onclick="voltarHome()">Voltar</button>
+  <button type="button" onclick="gerarRelatorio()">Gerar Relatório</button>
+  <button type="button" onclick="voltarHome()">Voltar</button>
 
   <div id="resultadoRelatorio"></div>
 </div>
