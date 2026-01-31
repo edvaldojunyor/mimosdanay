@@ -16,7 +16,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // ===============================
-// LOGIN LOCAL (SAFARI OK)
+// LOGIN LOCAL
 // ===============================
 const usuarios = [
   { user: "Edvaldo", senha: "1234" },
@@ -135,9 +135,9 @@ async function listarArte() {
     const a = doc.data();
     lista.innerHTML += `
       <li>
-        <strong>${a.nome}</strong><br>
-        R$ ${a.valor.toFixed(2)}<br>
-        ${a.foto ? `<img src="${a.foto}"><br>` : "<em>Sem imagem</em><br>"}
+        <strong>${a.nome}</strong>
+        <div>R$ ${a.valor.toFixed(2)}</div>
+        ${a.foto ? `<img src="${a.foto}">` : "<em>Sem imagem</em>"}
         <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
           Excluir
         </button>
@@ -211,30 +211,43 @@ async function listarPedidos() {
   lista.innerHTML = "";
 
   const hoje = new Date();
+
   const snap = await db.collection("pedidos")
     .orderBy("dataPedido", "desc")
     .get();
 
   snap.forEach(doc => {
     const p = doc.data();
+    const id = doc.id;
+
     const entrega = p.dataEntrega?.toDate?.() || p.dataEntrega;
     const atrasado =
       entrega && entrega < hoje && p.status !== "Entregue";
 
-    lista.innerHTML += `
-      <li style="border-left:5px solid ${atrasado ? "red" : "green"}">
-        <strong>${p.cliente}</strong><br>
-        ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
+    const li = document.createElement("li");
+
+    if (p.status === "Entregue") li.classList.add("entregue");
+    if (atrasado) li.classList.add("atrasado");
+
+    li.innerHTML = `
+      <strong>${p.cliente}</strong>
+
+      <div class="pedido-item">
+        ${p.itemNome} – R$ ${p.valor.toFixed(2)}
+      </div>
+
+      <div class="pedido-meta">
         Entrega: ${entrega ? entrega.toLocaleDateString("pt-BR") : "—"}<br>
-        Status: ${p.status}<br>
-        <button class="btn-editar" onclick="editarPedido('${doc.id}')">
-  Editar
-</button>
-        <button class="btn-excluir-item" onclick="excluirPedido('${doc.id}')">
-          Excluir
-        </button>
-      </li>
+        Status: ${p.status}
+      </div>
+
+      <div class="pedido-acoes">
+        <button class="btn-editar" onclick="editarPedido('${id}')">Editar</button>
+        <button class="btn-excluir-item" onclick="excluirPedido('${id}')">Excluir</button>
+      </div>
     `;
+
+    lista.appendChild(li);
   });
 }
 
@@ -263,4 +276,3 @@ async function excluirPedido(id) {
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
-
