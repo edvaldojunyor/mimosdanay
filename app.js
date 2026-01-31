@@ -227,7 +227,9 @@ async function listarPedidos() {
         ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
         Entrega: ${entrega ? entrega.toLocaleDateString("pt-BR") : "—"}<br>
         Status: ${p.status}<br>
-        <button onclick="editarPedido('${doc.id}')">Editar</button>
+        <button class="btn-editar" onclick="editarPedido('${doc.id}')">
+  Editar
+</button>
         <button class="btn-excluir-item" onclick="excluirPedido('${doc.id}')">
           Excluir
         </button>
@@ -261,3 +263,4 @@ async function excluirPedido(id) {
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
+
