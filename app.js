@@ -1,7 +1,7 @@
 let pedidoEditandoId = null;
 
 // ===============================
-// FIREBASE (CONFIG REAL)
+// FIREBASE
 // ===============================
 const firebaseConfig = {
   apiKey: "AIzaSyDoCKrLiZqg_9axMy9BN8nPh55pc4N5sIg",
@@ -9,8 +9,7 @@ const firebaseConfig = {
   projectId: "mimos-da-nay",
   storageBucket: "mimos-da-nay.firebasestorage.app",
   messagingSenderId: "732309876023",
-  appId: "1:732309876023:web:9ccf0d316adeaf170a3eb2",
-  measurementId: "G-N61LNQ0JGF"
+  appId: "1:732309876023:web:9ccf0d316adeaf170a3eb2"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -56,48 +55,40 @@ function voltarHome() {
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
-
-  const resultado = document.getElementById("resultadoRelatorio");
-  if (resultado) resultado.innerHTML = "";
-
   document.getElementById("home").style.display = "block";
 }
 
 function abrirArte() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("arte").style.display = "block";
+  home.style.display = "none";
+  arte.style.display = "block";
   listarArte();
 }
 
 function abrirPedidos() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("pedidos").style.display = "block";
+  home.style.display = "none";
+  pedidos.style.display = "block";
   carregarArtesNoSelect();
   listarPedidos();
 }
 
 function abrirRelatorios() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("relatorios").style.display = "block";
-  document.getElementById("resultadoRelatorio").innerHTML = "";
+  home.style.display = "none";
+  relatorios.style.display = "block";
+  resultadoRelatorio.innerHTML = "";
 }
 
 // ===============================
-// DOM READY (UNIFICADO)
+// DOM READY
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-
-  // Preview de imagem da arte
   const inputFoto = document.getElementById("fotoArte");
   const preview = document.getElementById("previewArte");
 
   if (inputFoto && preview) {
     inputFoto.addEventListener("change", () => {
       const file = inputFoto.files[0];
-      if (!file) {
-        preview.style.display = "none";
-        return;
-      }
+      if (!file) return preview.style.display = "none";
+
       const reader = new FileReader();
       reader.onload = () => {
         preview.src = reader.result;
@@ -106,272 +97,134 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     });
   }
-
-  // Placeholder fake da data de entrega (Safari iOS)
-  const dataEntrega = document.getElementById("dataEntrega");
-  const placeholder = document.querySelector(".fake-placeholder");
-
-  if (dataEntrega && placeholder) {
-    dataEntrega.addEventListener("change", () => {
-      placeholder.style.display = dataEntrega.value ? "none" : "block";
-    });
-  }
 });
 
 // ===============================
-// ARTE SACRA (FIRESTORE)
+// ARTE
 // ===============================
 async function salvarArte() {
-  const nome = document.getElementById("nomeArte").value.trim();
-  const valor = parseFloat(document.getElementById("valorArte").value);
-  const preview = document.getElementById("previewArte");
+  const nome = nomeArte.value.trim();
+  const valor = parseFloat(valorArte.value);
+  if (!nome || isNaN(valor)) return alert("Informe nome e valor");
 
-  if (!nome || isNaN(valor)) {
-    alert("Informe nome e valor");
-    return;
-  }
+  await db.collection("artes").add({ nome, valor, foto: previewArte.src || null });
 
-  await db.collection("artes").add({
-    nome,
-    valor,
-    foto: preview.src || null
-  });
-
-  document.getElementById("nomeArte").value = "";
-  document.getElementById("valorArte").value = "";
-  document.getElementById("fotoArte").value = "";
-  preview.style.display = "none";
+  nomeArte.value = "";
+  valorArte.value = "";
+  fotoArte.value = "";
+  previewArte.style.display = "none";
 
   listarArte();
 }
 
 async function listarArte() {
-  const lista = document.getElementById("listaArte");
-  lista.innerHTML = "";
-
+  listaArte.innerHTML = "";
   const snap = await db.collection("artes").get();
+
   snap.forEach(doc => {
     const a = doc.data();
-    const id = doc.id;
-
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${a.nome}</strong><br>
-      R$ ${a.valor.toFixed(2)}<br>
-
-      ${
-        a.foto
-          ? `<img src="${a.foto}"><br>
-             <button class="btn-excluir-imagem" onclick="excluirImagemArte('${id}')">
-               Excluir imagem
-             </button>`
-          : "<em>Sem imagem</em>"
-      }
-      <br>
-
-      <button class="btn-excluir-item" onclick="excluirArte('${id}')">
-        Excluir item
-      </button>
+    listaArte.innerHTML += `
+      <li>
+        <strong>${a.nome}</strong><br>
+        R$ ${a.valor.toFixed(2)}<br>
+        ${a.foto ? `<img src="${a.foto}"><br>` : "<em>Sem imagem</em><br>"}
+        <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">Excluir</button>
+      </li>
     `;
-
-    lista.appendChild(li);
   });
 }
 
 async function excluirArte(id) {
-  if (!confirm("Deseja excluir este item?")) return;
+  if (!confirm("Excluir item?")) return;
   await db.collection("artes").doc(id).delete();
   listarArte();
 }
 
-async function excluirImagemArte(id) {
-  await db.collection("artes").doc(id).update({ foto: null });
-  listarArte();
-}
-
 // ===============================
-// PEDIDOS (FIRESTORE)
+// PEDIDOS
 // ===============================
 async function carregarArtesNoSelect() {
-  const select = document.getElementById("item");
-  select.innerHTML = "";
-
+  item.innerHTML = "";
   const snap = await db.collection("artes").get();
   snap.forEach(doc => {
     const a = doc.data();
-
-    const opt = document.createElement("option");
-    opt.value = doc.id;
-    opt.textContent = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
-    opt.dataset.nome = a.nome;
-    opt.dataset.valor = a.valor;
-
-    select.appendChild(opt);
+    item.innerHTML += `
+      <option value="${doc.id}" data-nome="${a.nome}" data-valor="${a.valor}">
+        ${a.nome} - R$ ${a.valor.toFixed(2)}
+      </option>
+    `;
   });
 }
 
 async function salvarPedido() {
-  const cliente = document.getElementById("cliente").value.trim();
-  if (!cliente) {
-    alert("Informe o nome do cliente");
-    return;
-  }
+  if (!cliente.value.trim()) return alert("Informe o cliente");
 
-  const selectItem = document.getElementById("item");
-  const opcao = selectItem.options[selectItem.selectedIndex];
-  const dataEntregaInput = document.getElementById("dataEntrega").value;
-
+  const opt = item.options[item.selectedIndex];
   const dados = {
-    cliente,
-    itemId: selectItem.value,
-    itemNome: opcao.dataset.nome,
-    valor: parseFloat(opcao.dataset.valor),
-    pagamento: document.getElementById("pagamento").value,
-    status: document.getElementById("status").value,
-    dataEntrega: dataEntregaInput ? new Date(dataEntregaInput) : null
+    cliente: cliente.value,
+    itemId: item.value,
+    itemNome: opt.dataset.nome,
+    valor: Number(opt.dataset.valor),
+    pagamento: pagamento.value,
+    status: status.value,
+    dataEntrega: dataEntrega.value ? new Date(dataEntrega.value) : null
   };
 
   if (pedidoEditandoId) {
-    // 🔄 ATUALIZAR
     await db.collection("pedidos").doc(pedidoEditandoId).update(dados);
     pedidoEditandoId = null;
-    document.querySelector("#pedidos button").innerText = "Salvar Pedido";
   } else {
-    // ➕ NOVO
     dados.dataPedido = firebase.firestore.FieldValue.serverTimestamp();
     await db.collection("pedidos").add(dados);
   }
 
-  document.getElementById("cliente").value = "";
-  document.getElementById("dataEntrega").value = "";
-
-  listarPedidos();
-}
-
-
-  const selectItem = document.getElementById("item");
-  const opcao = selectItem.options[selectItem.selectedIndex];
-  const dataEntregaInput = document.getElementById("dataEntrega").value;
-
-  await db.collection("pedidos").add({
-    cliente,
-    itemId: selectItem.value,
-    itemNome: opcao.dataset.nome,
-    valor: parseFloat(opcao.dataset.valor),
-    pagamento: document.getElementById("pagamento").value,
-    status: document.getElementById("status").value,
-    dataPedido: firebase.firestore.FieldValue.serverTimestamp(),
-    dataEntrega: dataEntregaInput ? new Date(dataEntregaInput) : null
-  });
-
-  document.getElementById("cliente").value = "";
-  document.getElementById("dataEntrega").value = "";
-
+  cliente.value = "";
+  dataEntrega.value = "";
   listarPedidos();
 }
 
 async function listarPedidos() {
-  const lista = document.getElementById("listaPedidos");
-  lista.innerHTML = "";
+  listaPedidos.innerHTML = "";
+  const hoje = new Date();
 
-  const snap = await db.collection("pedidos")
-    .orderBy("dataPedido", "desc")
-    .get();
-
+  const snap = await db.collection("pedidos").orderBy("dataPedido", "desc").get();
   snap.forEach(doc => {
     const p = doc.data();
-    const id = doc.id;
+    const entrega = p.dataEntrega?.toDate?.() || p.dataEntrega;
+    const atrasado = entrega && entrega < hoje && p.status !== "Entregue";
 
-    const dataPedido = p.dataPedido?.toDate()?.toLocaleDateString("pt-BR") || "-";
-    const dataEntrega = p.dataEntrega
-      ? p.dataEntrega.toDate?.().toLocaleDateString("pt-BR") ||
-        new Date(p.dataEntrega).toLocaleDateString("pt-BR")
-      : "—";
-
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${p.cliente}</strong><br>
-      ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
-      Pedido: ${dataPedido}<br>
-      Entrega: ${dataEntrega}<br>
-      Status: ${p.status}<br>
-
-      <button onclick="editarPedido('${id}')">Editar</button>
-      <button class="btn-excluir-item" onclick="excluirPedido('${id}')">
-        Excluir
-      </button>
+    listaPedidos.innerHTML += `
+      <li style="border-left:5px solid ${atrasado ? "red" : "green"}">
+        <strong>${p.cliente}</strong><br>
+        ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
+        Entrega: ${entrega ? entrega.toLocaleDateString("pt-BR") : "—"}<br>
+        Status: ${p.status}<br>
+        <button onclick="editarPedido('${doc.id}')">Editar</button>
+        <button class="btn-excluir-item" onclick="excluirPedido('${doc.id}')">Excluir</button>
+      </li>
     `;
-
-    lista.appendChild(li);
   });
-}
-
-
-// ===============================
-// RELATÓRIO (ATUALIZADO)
-// ===============================
-async function gerarRelatorio() {
-  const mesInput = document.getElementById("mesRelatorio").value;
-  const resultado = document.getElementById("resultadoRelatorio");
-
-  if (!mesInput) {
-    alert("Selecione um mês");
-    return;
-  }
-
-  const [ano, mes] = mesInput.split("-").map(Number);
-  const inicio = new Date(ano, mes - 1, 1);
-  const fim = new Date(ano, mes, 0, 23, 59, 59);
-
-  let total = 0;
-  let html = `<h3>Pedidos de ${mes}/${ano}</h3><ul>`;
-
-  const snap = await db.collection("pedidos").get();
-
-  snap.forEach(doc => {
-    const p = doc.data();
-    const dataPedido = p.dataPedido?.toDate?.();
-    if (!dataPedido) return;
-
-    if (dataPedido >= inicio && dataPedido <= fim) {
-      total += p.valor;
-      html += `<li>${p.cliente} – ${p.itemNome} – R$ ${p.valor.toFixed(2)}</li>`;
-    }
-  });
-
-  html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
-  resultado.innerHTML = html;
 }
 
 async function editarPedido(id) {
   const doc = await db.collection("pedidos").doc(id).get();
-  if (!doc.exists) return;
-
   const p = doc.data();
 
-  document.getElementById("cliente").value = p.cliente;
-  document.getElementById("pagamento").value = p.pagamento;
-  document.getElementById("status").value = p.status;
+  cliente.value = p.cliente;
+  pagamento.value = p.pagamento;
+  status.value = p.status;
+  item.value = p.itemId;
 
   if (p.dataEntrega) {
-    const data = p.dataEntrega.toDate
-      ? p.dataEntrega.toDate()
-      : new Date(p.dataEntrega);
-
-    document.getElementById("dataEntrega").value =
-      data.toISOString().split("T")[0];
+    const d = p.dataEntrega.toDate?.() || p.dataEntrega;
+    dataEntrega.value = d.toISOString().split("T")[0];
   }
 
-  document.getElementById("item").value = p.itemId;
-
   pedidoEditandoId = id;
-  document.querySelector("#pedidos button").innerText = "Atualizar Pedido";
 }
 
 async function excluirPedido(id) {
-  if (!confirm("Deseja excluir este pedido?")) return;
+  if (!confirm("Excluir pedido?")) return;
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
-
-
