@@ -1,3 +1,5 @@
+let pedidoEditandoId = null;
+
 // ===============================
 // FIREBASE (CONFIG REAL)
 // ===============================
@@ -299,3 +301,4 @@ async function gerarRelatorio() {
   html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
   resultado.innerHTML = html;
 }
+
