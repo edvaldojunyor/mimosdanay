@@ -1,7 +1,3 @@
-body {
-  background: red !important;
-}
-
 
 /* ===============================
    VARIÁVEIS DE CORES (IDENTIDADE)
@@ -173,4 +169,5 @@ button.btn-editar {
 li[style*="red"] {
   background: #fff5f5;
 }
+
 
