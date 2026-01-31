@@ -16,6 +16,9 @@
 <!-- LOGIN -->
 <form id="login" onsubmit="return false;">
   <h2>Mimos da Nay</h2>
+
+  <img src="logo.png" class="logo-login" alt="Mimos da Nay">
+
   <input id="user" placeholder="Usuário">
   <input id="senha" type="password" placeholder="Senha">
   <button type="button" onclick="login()">Entrar</button>
@@ -24,12 +27,16 @@
 
 <!-- HOME -->
 <div id="home" style="display:none">
+  <img src="logo.png" class="logo-home" alt="Mimos da Nay">
+
   <h2>Menu</h2>
+
   <button type="button" onclick="abrirArte()">Cadastro de Artesanatos</button>
   <button type="button" onclick="abrirPedidos()">Pedidos de Clientes</button>
   <button type="button" onclick="abrirRelatorios()">Relatório dos Pedidos</button>
   <button type="button" onclick="logout()">Sair</button>
 </div>
+
 
 <!-- ARTE SACRA -->
 <div id="arte" style="display:none">
@@ -94,4 +101,5 @@
 
 </body>
 </html>
+
 
