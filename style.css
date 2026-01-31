@@ -148,4 +148,20 @@ img {
 .btn-editar:hover {
   opacity: 0.9;
 }
+/* ===============================
+   BOTÃO EDITAR (SAFARI FIX)
+=============================== */
+
+button.btn-editar {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #f0ad4e !important; /* amarelo */
+  color: #fff !important;
+  border: none;
+}
+
+button.btn-editar:hover {
+  opacity: 0.9;
+}
+
 
