@@ -157,19 +157,40 @@ li[style*="red"] {
   background: #fff5f5;
 }
 /* ===============================
-   LOGO (LOGIN E MENU)
+   LOGO (LOGIN E MENU) – FIX SAFARI
 =============================== */
 
 .logo-login {
-  max-width: 160px;
+  max-width: 140px;
+  max-height: 140px;
+  width: auto;
+  height: auto;
   display: block;
   margin: 10px auto 20px auto;
 }
 
 .logo-home {
-  max-width: 110px;
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
   display: block;
   margin: 10px auto;
 }
+
+/* Ajuste específico para iPhone */
+@media (max-width: 480px) {
+  .logo-login {
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .logo-home {
+    max-width: 90px;
+    max-height: 90px;
+  }
+}
+
+
 
 
