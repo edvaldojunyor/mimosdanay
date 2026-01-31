@@ -5,7 +5,8 @@
   <title>Mimos da Nay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
- <link rel="stylesheet" href="style.css?v=2">
+  <!-- CSS (cache atualizado) -->
+  <link rel="stylesheet" href="style.css?v=3">
 
   <!-- Firebase COMPAT -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -21,7 +22,9 @@
 
   <input id="user" placeholder="Usuário">
   <input id="senha" type="password" placeholder="Senha">
+
   <button type="button" onclick="login()">Entrar</button>
+
   <p id="erro" style="color:red"></p>
 </form>
 
@@ -36,7 +39,6 @@
   <button type="button" onclick="abrirRelatorios()">Relatório dos Pedidos</button>
   <button type="button" onclick="logout()">Sair</button>
 </div>
-
 
 <!-- ARTE SACRA -->
 <div id="arte" style="display:none">
@@ -101,6 +103,3 @@
 
 </body>
 </html>
-
-
-
