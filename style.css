@@ -190,6 +190,50 @@ li[style*="red"] {
     max-height: 90px;
   }
 }
+/* ===============================
+   LOGO (LOGIN E MENU) – SOMBRA SUAVE
+=============================== */
+
+.logo-login,
+.logo-home {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+}
+
+/* Tamanhos já ajustados */
+.logo-login {
+  max-width: 140px;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.logo-home {
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  margin-top: 10px;
+}
+
+/* Ajuste fino para iPhone */
+@media (max-width: 480px) {
+  .logo-login {
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .logo-home {
+    max-width: 90px;
+    max-height: 90px;
+  }
+}
+
+
 
 
 
