@@ -256,4 +256,37 @@ li.entregue {
 li.atrasado {
   box-shadow: 0 6px 14px rgba(217, 83, 79, 0.35);
 }
+/* ===============================
+   STATUS VISUAL DO PEDIDO
+=============================== */
+
+/* Barra lateral padrão */
+li {
+  position: relative;
+}
+
+/* Verde – pedido em dia ou entregue */
+li.entregue::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 5px;
+  border-radius: 5px;
+  background: #4caf50;
+}
+
+/* Vermelho – pedido atrasado */
+li.atrasado::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 5px;
+  border-radius: 5px;
+  background: #d9534f;
+}
+
 
