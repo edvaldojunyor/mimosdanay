@@ -296,6 +296,16 @@ async function excluirPedido(id) {
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
+async function marcarEntregue(id) {
+  if (!confirm("Marcar este pedido como entregue?")) return;
+
+  await db.collection("pedidos").doc(id).update({
+    status: "Entregue"
+  });
+
+  listarPedidos(); // atualiza a tela
+}
+
 
 
 
