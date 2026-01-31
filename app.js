@@ -237,7 +237,17 @@ async function listarPedidos() {
       </div>
 
       <div class="pedido-meta">
-        Entrega: ${entrega ? entrega.toLocaleDateString("pt-BR") : "—"}<br>
+       let classeData = "data-sem";
+let textoData = "—";
+
+if (entrega) {
+  textoData = entrega.toLocaleDateString("pt-BR");
+  classeData =
+    entrega < hoje && p.status !== "Entregue"
+      ? "data-atrasada"
+      : "data-prazo";
+}
+
         Status: ${p.status}
       </div>
 
@@ -276,3 +286,4 @@ async function excluirPedido(id) {
   await db.collection("pedidos").doc(id).delete();
   listarPedidos();
 }
+
