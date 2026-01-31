@@ -221,6 +221,38 @@ async function salvarPedido() {
   const opcao = selectItem.options[selectItem.selectedIndex];
   const dataEntregaInput = document.getElementById("dataEntrega").value;
 
+  const dados = {
+    cliente,
+    itemId: selectItem.value,
+    itemNome: opcao.dataset.nome,
+    valor: parseFloat(opcao.dataset.valor),
+    pagamento: document.getElementById("pagamento").value,
+    status: document.getElementById("status").value,
+    dataEntrega: dataEntregaInput ? new Date(dataEntregaInput) : null
+  };
+
+  if (pedidoEditandoId) {
+    // 🔄 ATUALIZAR
+    await db.collection("pedidos").doc(pedidoEditandoId).update(dados);
+    pedidoEditandoId = null;
+    document.querySelector("#pedidos button").innerText = "Salvar Pedido";
+  } else {
+    // ➕ NOVO
+    dados.dataPedido = firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection("pedidos").add(dados);
+  }
+
+  document.getElementById("cliente").value = "";
+  document.getElementById("dataEntrega").value = "";
+
+  listarPedidos();
+}
+
+
+  const selectItem = document.getElementById("item");
+  const opcao = selectItem.options[selectItem.selectedIndex];
+  const dataEntregaInput = document.getElementById("dataEntrega").value;
+
   await db.collection("pedidos").add({
     cliente,
     itemId: selectItem.value,
@@ -242,10 +274,13 @@ async function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
   lista.innerHTML = "";
 
-  const snap = await db.collection("pedidos").orderBy("dataPedido", "desc").get();
+  const snap = await db.collection("pedidos")
+    .orderBy("dataPedido", "desc")
+    .get();
 
   snap.forEach(doc => {
     const p = doc.data();
+    const id = doc.id;
 
     const dataPedido = p.dataPedido?.toDate()?.toLocaleDateString("pt-BR") || "-";
     const dataEntrega = p.dataEntrega
@@ -259,12 +294,18 @@ async function listarPedidos() {
       ${p.itemNome} – R$ ${p.valor.toFixed(2)}<br>
       Pedido: ${dataPedido}<br>
       Entrega: ${dataEntrega}<br>
-      Status: ${p.status}
+      Status: ${p.status}<br>
+
+      <button onclick="editarPedido('${id}')">Editar</button>
+      <button class="btn-excluir-item" onclick="excluirPedido('${id}')">
+        Excluir
+      </button>
     `;
 
     lista.appendChild(li);
   });
 }
+
 
 // ===============================
 // RELATÓRIO (ATUALIZADO)
@@ -301,4 +342,36 @@ async function gerarRelatorio() {
   html += `</ul><h3>Total do mês: R$ ${total.toFixed(2)}</h3>`;
   resultado.innerHTML = html;
 }
+
+async function editarPedido(id) {
+  const doc = await db.collection("pedidos").doc(id).get();
+  if (!doc.exists) return;
+
+  const p = doc.data();
+
+  document.getElementById("cliente").value = p.cliente;
+  document.getElementById("pagamento").value = p.pagamento;
+  document.getElementById("status").value = p.status;
+
+  if (p.dataEntrega) {
+    const data = p.dataEntrega.toDate
+      ? p.dataEntrega.toDate()
+      : new Date(p.dataEntrega);
+
+    document.getElementById("dataEntrega").value =
+      data.toISOString().split("T")[0];
+  }
+
+  document.getElementById("item").value = p.itemId;
+
+  pedidoEditandoId = id;
+  document.querySelector("#pedidos button").innerText = "Atualizar Pedido";
+}
+
+async function excluirPedido(id) {
+  if (!confirm("Deseja excluir este pedido?")) return;
+  await db.collection("pedidos").doc(id).delete();
+  listarPedidos();
+}
+
 
