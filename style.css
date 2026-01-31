@@ -30,7 +30,8 @@ h2 {
 /* ===============================
    CONTAINERS
 =============================== */
-div, form {
+div,
+form {
   margin-top: 20px;
 }
 
@@ -45,7 +46,7 @@ button {
   margin-top: 8px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 16px;
+  font-size: 16px; /* evita zoom iOS */
   box-sizing: border-box;
 }
 
@@ -65,34 +66,122 @@ button:hover {
 }
 
 /* ===============================
-   LISTAS / CARDS
+   LISTAS
 =============================== */
 ul {
   list-style: none;
   padding: 0;
 }
 
+/* ===============================
+   CARD DE PEDIDO – ESTILO IOS
+=============================== */
 li {
-  background: var(--cor-card);
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  border-left: 4px solid var(--cor-secundaria);
+  position: relative;
+  background: #fff;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 
-li button {
-  margin-top: 6px;
+/* Nome do cliente */
+li strong {
+  font-size: 16px;
+  color: var(--cor-primaria);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Texto secundário */
+.pedido-item {
   font-size: 14px;
+  color: #555;
+}
+
+.pedido-meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #777;
+}
+
+/* ===============================
+   BOTÕES DO CARD
+=============================== */
+.pedido-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pedido-acoes button {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+button.btn-editar {
+  background: #f7c26a !important;
+  color: #fff;
+}
+
+button.btn-excluir-item {
+  background: #e35d5b !important;
+  color: #fff;
+}
+
+/* ===============================
+   STATUS VISUAL DO PEDIDO
+=============================== */
+li.entregue::before,
+li.atrasado::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 5px;
+  border-radius: 5px;
+}
+
+/* Verde – entregue ou em dia */
+li.entregue::before {
+  background: #4caf50;
+}
+
+/* Vermelho – atrasado */
+li.atrasado::before {
+  background: #d9534f;
+}
+
+/* ===============================
+   DATA DE ENTREGA – STATUS VISUAL
+=============================== */
+.data-entrega {
+  font-weight: 600;
+}
+
+.data-prazo {
+  color: #4caf50;
+}
+
+.data-atrasada {
+  color: #d9534f;
+}
+
+.data-sem {
+  color: #999;
 }
 
 /* ===============================
    IMAGENS
 =============================== */
 img {
-  max-width: 120px;
   margin-top: 8px;
   border-radius: 6px;
   display: block;
+  max-width: 120px;
 }
 
 /* ===============================
@@ -136,27 +225,6 @@ img {
 }
 
 /* ===============================
-   BOTÕES DE AÇÃO
-=============================== */
-button.btn-excluir-item {
-  background-color: var(--cor-excluir) !important;
-}
-
-button.btn-excluir-imagem {
-  background-color: var(--cor-editar) !important;
-}
-
-button.btn-editar {
-  background-color: var(--cor-editar) !important;
-}
-
-/* ===============================
-   PEDIDOS ATRASADOS
-=============================== */
-li[style*="red"] {
-  background: #fff5f5;
-}
-/* ===============================
    LOGO (LOGIN E MENU)
 =============================== */
 .logo-login,
@@ -190,123 +258,3 @@ li[style*="red"] {
     max-width: 90px;
   }
 }
-/* ===============================
-   CARD DE PEDIDO – ESTILO IOS
-=============================== */
-
-li {
-  background: #fff;
-  border-radius: 14px;
-  padding: 14px;
-  margin-top: 14px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
-  border-left: none;
-}
-
-/* Nome do cliente */
-li strong {
-  font-size: 16px;
-  color: var(--cor-primaria);
-  display: block;
-  margin-bottom: 4px;
-}
-
-/* Texto secundário */
-.pedido-item {
-  font-size: 14px;
-  color: #555;
-}
-
-.pedido-meta {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #777;
-}
-
-/* Botões estilo iOS */
-.pedido-acoes {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.pedido-acoes button {
-  flex: 1;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 12px;
-}
-
-/* Cores suaves */
-button.btn-editar {
-  background: #f7c26a !important;
-  color: #fff;
-}
-
-button.btn-excluir-item {
-  background: #e35d5b !important;
-  color: #fff;
-}
-
-/* Status visual */
-li.entregue {
-  box-shadow: 0 6px 14px rgba(76, 175, 80, 0.25);
-}
-
-li.atrasado {
-  box-shadow: 0 6px 14px rgba(217, 83, 79, 0.35);
-}
-/* ===============================
-   STATUS VISUAL DO PEDIDO
-=============================== */
-
-/* Barra lateral padrão */
-li {
-  position: relative;
-}
-
-/* Verde – pedido em dia ou entregue */
-li.entregue::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 12px;
-  bottom: 12px;
-  width: 5px;
-  border-radius: 5px;
-  background: #4caf50;
-}
-
-/* Vermelho – pedido atrasado */
-li.atrasado::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 12px;
-  bottom: 12px;
-  width: 5px;
-  border-radius: 5px;
-  background: #d9534f;
-}
-/* ===============================
-   DATA DE ENTREGA – STATUS VISUAL
-=============================== */
-
-.data-entrega {
-  font-weight: 600;
-}
-
-.data-prazo {
-  color: #4caf50; /* verde */
-}
-
-.data-atrasada {
-  color: #d9534f; /* vermelho */
-}
-
-.data-sem {
-  color: #999; /* neutro */
-}
-
-
-
