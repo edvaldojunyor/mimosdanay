@@ -211,40 +211,37 @@ async function listarPedidos() {
   lista.innerHTML = "";
 
   const hoje = new Date();
+  let encontrou = false;
 
   const snap = await db.collection("pedidos")
     .orderBy("dataPedido", "desc")
     .get();
 
   snap.forEach(doc => {
-    // NÃO mostrar pedidos entregues na lista principal
-if (p.status === "Entregue") return;
     const p = doc.data();
     const id = doc.id;
 
+    // 👉 IGNORA ENTREGUES
+    if (p.status === "Entregue") return;
+
+    encontrou = true;
+
     const entrega = p.dataEntrega?.toDate?.() || p.dataEntrega;
 
-    // 👉 LÓGICA DA DATA (FORA DO HTML)
     let classeData = "data-sem";
     let textoData = "—";
 
     if (entrega) {
       textoData = entrega.toLocaleDateString("pt-BR");
       classeData =
-        entrega < hoje && p.status !== "Entregue"
-          ? "data-atrasada"
-          : "data-prazo";
+        entrega < hoje ? "data-atrasada" : "data-prazo";
     }
 
-    const atrasado =
-      entrega && entrega < hoje && p.status !== "Entregue";
+    const atrasado = entrega && entrega < hoje;
 
     const li = document.createElement("li");
-
-    if (p.status === "Entregue") li.classList.add("entregue");
     if (atrasado) li.classList.add("atrasado");
 
-    // 👉 APENAS HTML AQUI
     li.innerHTML = `
       <strong>${p.cliente}</strong>
 
@@ -261,6 +258,7 @@ if (p.status === "Entregue") return;
       </div>
 
       <div class="pedido-acoes">
+        <button class="btn-entregue" onclick="marcarEntregue('${id}')">✓</button>
         <button class="btn-editar" onclick="editarPedido('${id}')">Editar</button>
         <button class="btn-excluir-item" onclick="excluirPedido('${id}')">Excluir</button>
       </div>
@@ -268,6 +266,11 @@ if (p.status === "Entregue") return;
 
     lista.appendChild(li);
   });
+
+  // 👉 Mensagem amigável se não houver pendentes
+  if (!encontrou) {
+    lista.innerHTML = `<li><em>Nenhum pedido pendente 🎉</em></li>`;
+  }
 }
 
 
@@ -305,6 +308,7 @@ async function marcarEntregue(id) {
 
   listarPedidos(); // atualiza a tela
 }
+
 
 
 
