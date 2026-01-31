@@ -190,3 +190,70 @@ li[style*="red"] {
     max-width: 90px;
   }
 }
+/* ===============================
+   CARD DE PEDIDO – ESTILO IOS
+=============================== */
+
+li {
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 14px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  border-left: none;
+}
+
+/* Nome do cliente */
+li strong {
+  font-size: 16px;
+  color: var(--cor-primaria);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Texto secundário */
+.pedido-item {
+  font-size: 14px;
+  color: #555;
+}
+
+.pedido-meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #777;
+}
+
+/* Botões estilo iOS */
+.pedido-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pedido-acoes button {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+/* Cores suaves */
+button.btn-editar {
+  background: #f7c26a !important;
+  color: #fff;
+}
+
+button.btn-excluir-item {
+  background: #e35d5b !important;
+  color: #fff;
+}
+
+/* Status visual */
+li.entregue {
+  box-shadow: 0 6px 14px rgba(76, 175, 80, 0.25);
+}
+
+li.atrasado {
+  box-shadow: 0 6px 14px rgba(217, 83, 79, 0.35);
+}
+
