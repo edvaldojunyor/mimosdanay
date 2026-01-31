@@ -1,26 +1,39 @@
 /* ===============================
+   VARIÁVEIS DE CORES (IDENTIDADE)
+=============================== */
+:root {
+  --cor-primaria: #8e6ac9;   /* roxo suave */
+  --cor-secundaria: #d4af37; /* dourado */
+  --cor-editar: #f0ad4e;     /* amarelo */
+  --cor-excluir: #d9534f;    /* vermelho */
+  --cor-fundo: #f5f0fa;      /* lilás claro */
+  --cor-card: #ffffff;
+  --cor-texto: #4a4a4a;
+}
+
+/* ===============================
    ESTILO GERAL
 =============================== */
-
 body {
   font-family: Arial, sans-serif;
-  background: #f5f0fa;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
   margin: 0;
   padding: 10px;
 }
 
 h2 {
-  color: #5b3fa3;
+  color: var(--cor-primaria);
+  text-align: center;
 }
 
-div {
+div, form {
   margin-top: 20px;
 }
 
 /* ===============================
    INPUTS / SELECTS / BOTÕES
 =============================== */
-
 input,
 select,
 button {
@@ -29,34 +42,39 @@ button {
   margin-top: 8px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 16px;
+  font-size: 16px; /* evita zoom no iOS */
   box-sizing: border-box;
 }
 
-/* Reset obrigatório para Safari iOS */
+/* Botões – base (Safari + Chrome) */
 button {
   -webkit-appearance: none;
   appearance: none;
-  background: #8e6ac9;
+  background: var(--cor-primaria);
   color: #fff;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
 }
 
 /* ===============================
-   LISTAS
+   LISTAS / CARDS
 =============================== */
-
 ul {
   list-style: none;
   padding: 0;
 }
 
 li {
-  background: #fff;
-  margin-top: 8px;
-  padding: 8px;
-  border-radius: 6px;
+  background: var(--cor-card);
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--cor-secundaria); /* detalhe dourado */
 }
 
 li button {
@@ -67,17 +85,16 @@ li button {
 /* ===============================
    IMAGENS
 =============================== */
-
 img {
   max-width: 120px;
   margin-top: 8px;
   border-radius: 6px;
+  display: block;
 }
 
 /* ===============================
    CAMPO DATA ENTREGA (IOS + WEB)
 =============================== */
-
 .campo-data {
   position: relative;
   width: 100%;
@@ -94,7 +111,7 @@ img {
   pointer-events: none;
 }
 
-/* Input date com mesmo tamanho dos outros */
+/* Input date padronizado */
 .campo-data input[type="date"] {
   width: 100%;
   height: 44px;
@@ -107,25 +124,24 @@ img {
   box-sizing: border-box;
 }
 
-/* Safari iOS – remove espaçamento interno extra */
+/* Safari iOS – remove espaçamento interno */
 .campo-data input::-webkit-datetime-edit {
   padding: 0;
   height: 100%;
 }
 
-/* Esconde placeholder fake quando data selecionada */
+/* Esconde placeholder fake quando preenchido */
 .campo-data input:valid + .fake-placeholder {
   display: none;
 }
 
 /* ===============================
-   BOTÕES DE AÇÃO (SAFARI + CHROME)
+   BOTÕES DE AÇÃO (SAFARI FIX)
 =============================== */
-
 button.btn-excluir-item {
   -webkit-appearance: none;
   appearance: none;
-  background-color: #d9534f !important; /* vermelho */
+  background-color: var(--cor-excluir) !important;
   color: #fff !important;
   border: none;
 }
@@ -133,7 +149,7 @@ button.btn-excluir-item {
 button.btn-excluir-imagem {
   -webkit-appearance: none;
   appearance: none;
-  background-color: #f0ad4e !important; /* laranja */
+  background-color: var(--cor-editar) !important;
   color: #fff !important;
   border: none;
 }
@@ -141,45 +157,14 @@ button.btn-excluir-imagem {
 button.btn-editar {
   -webkit-appearance: none;
   appearance: none;
-  background-color: #f0ad4e !important; /* amarelo */
+  background-color: var(--cor-editar) !important;
   color: #fff !important;
   border: none;
 }
 
-button.btn-excluir-item:hover,
-button.btn-excluir-imagem:hover,
-button.btn-editar:hover {
-  opacity: 0.9;
-}
-
-}
 /* ===============================
-   BOTÃO EDITAR (AMARELO)
+   PEDIDOS ATRASADOS
 =============================== */
-
-.btn-editar {
-  background-color: #f0ad4e !important; /* amarelo */
-  color: #fff;
+li[style*="red"] {
+  background: #fff5f5;
 }
-
-.btn-editar:hover {
-  opacity: 0.9;
-}
-/* ===============================
-   BOTÃO EDITAR (SAFARI FIX)
-=============================== */
-
-button.btn-editar {
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: #f0ad4e !important; /* amarelo */
-  color: #fff !important;
-  border: none;
-}
-
-button.btn-editar:hover {
-  opacity: 0.9;
-}
-
-
-
