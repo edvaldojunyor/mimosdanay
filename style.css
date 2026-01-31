@@ -119,22 +119,39 @@ img {
 }
 
 /* ===============================
-   BOTÕES DE AÇÃO
+   BOTÕES DE AÇÃO (SAFARI + CHROME)
 =============================== */
 
-.btn-excluir-item {
+button.btn-excluir-item {
+  -webkit-appearance: none;
+  appearance: none;
   background-color: #d9534f !important; /* vermelho */
-  color: #fff;
+  color: #fff !important;
+  border: none;
 }
 
-.btn-excluir-imagem {
+button.btn-excluir-imagem {
+  -webkit-appearance: none;
+  appearance: none;
   background-color: #f0ad4e !important; /* laranja */
-  color: #fff;
+  color: #fff !important;
+  border: none;
 }
 
-.btn-excluir-item:hover,
-.btn-excluir-imagem:hover {
+button.btn-editar {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #f0ad4e !important; /* amarelo */
+  color: #fff !important;
+  border: none;
+}
+
+button.btn-excluir-item:hover,
+button.btn-excluir-imagem:hover,
+button.btn-editar:hover {
   opacity: 0.9;
+}
+
 }
 /* ===============================
    BOTÃO EDITAR (AMARELO)
@@ -163,5 +180,6 @@ button.btn-editar {
 button.btn-editar:hover {
   opacity: 0.9;
 }
+
 
 
