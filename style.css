@@ -1,5 +1,5 @@
 /* ===============================
-   VARIÁVEIS DE CORES (IDENTIDADE)
+   VARIÁVEIS DE CORES
 =============================== */
 :root {
   --cor-primaria: #8e6ac9;
@@ -13,7 +13,7 @@
 }
 
 /* ===============================
-   ESTILO GERAL
+   BASE
 =============================== */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
@@ -29,7 +29,7 @@ h2 {
 }
 
 /* ===============================
-   INPUTS / SELECTS / BOTÕES
+   INPUTS / BOTÕES
 =============================== */
 input,
 select,
@@ -39,18 +39,16 @@ button {
   margin-top: 8px;
   border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 16px; /* evita zoom iOS */
+  font-size: 16px;
   box-sizing: border-box;
 }
 
 button {
-  -webkit-appearance: none;
-  appearance: none;
   background: var(--cor-primaria);
   color: #fff;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.1s ease;
+  transition: transform 0.1s ease, opacity 0.2s ease;
 }
 
 button:active {
@@ -66,60 +64,21 @@ ul {
 }
 
 li {
-  position: relative;
   background: #fff;
   margin-top: 14px;
   padding: 14px;
   border-radius: 16px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  position: relative;
 }
 
 li strong {
-  font-size: 16px;
   color: var(--cor-primaria);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.pedido-item {
-  font-size: 14px;
-  color: #555;
-}
-
-.pedido-meta {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #777;
+  font-size: 16px;
 }
 
 /* ===============================
-   BOTÕES DO CARD DE PEDIDO
-=============================== */
-.pedido-acoes {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-button.btn-editar {
-  background: var(--cor-editar);
-}
-
-button.btn-excluir-item {
-  background: var(--cor-excluir);
-}
-
-/* Botão entregue */
-button.btn-entregue {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #4caf50;
-  font-size: 18px;
-}
-
-/* ===============================
-   STATUS VISUAL
+   STATUS PEDIDOS
 =============================== */
 li.atrasado::before {
   content: "";
@@ -130,18 +89,6 @@ li.atrasado::before {
   width: 5px;
   border-radius: 5px;
   background: var(--cor-excluir);
-}
-
-.data-entrega {
-  font-weight: 600;
-}
-
-.data-prazo {
-  color: #4caf50;
-}
-
-.data-atrasada {
-  color: var(--cor-excluir);
 }
 
 .data-hoje {
@@ -159,118 +106,8 @@ li.atrasado::before {
 }
 
 /* ===============================
-   IMAGENS
+   HOME – LOGO
 =============================== */
-img {
-  margin-top: 8px;
-  border-radius: 8px;
-  max-width: 120px;
-}
-
-/* ===============================
-   HOME – LOGO EM DESTAQUE
-=============================== */
-.logo-card {
-  background: #fff;
-  width: 180px;
-  height: 180px;
-  margin: 20px auto 12px;
-  border-radius: 30px;
-  box-shadow: 0 14px 28px rgba(142,106,201,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-card img {
-  max-width: 140px;
-  border-radius: 20px;
-}
-
-/* Títulos */
-.titulo-app {
-  text-align: center;
-  color: var(--cor-primaria);
-  margin-top: 10px;
-}
-
-.subtitulo-app {
-  text-align: center;
-  color: #777;
-  margin-bottom: 24px;
-}
-
-/* ===============================
-   MENU GRID
-=============================== */
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  max-width: 380px;
-  margin: 0 auto;
-}
-
-/* ===============================
-   CARD DO MENU (FINAL)
-=============================== */
-.menu-card {
-  background: var(--cor-primaria-clara);
-  border-radius: 22px;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 18px rgba(142,106,201,0.18);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.menu-card:active {
-  transform: scale(0.96);
-  box-shadow: 0 6px 12px rgba(142,106,201,0.25);
-}
-
-.menu-card .icone {
-  font-size: 30px;
-  margin-bottom: 6px;
-  color: var(--cor-primaria);
-}
-
-.menu-card .texto {
-  font-size: 14px;
-  font-weight: 600;
-  color: #4a3f8c;
-  text-align: center;
-}
-
-/* ===============================
-   BOTÃO SAIR
-=============================== */
-.btn-sair {
-  margin: 26px auto 0;
-  max-width: 380px;
-  background: linear-gradient(135deg, #e35d5b, #d9534f);
-  border-radius: 18px;
-  font-size: 16px;
-  font-weight: bold;
-  box-shadow: 0 8px 18px rgba(217,83,79,0.35);
-}
-
-/* ===============================
-   RESPONSIVO
-=============================== */
-@media (max-width: 480px) {
-  .logo-card {
-    width: 160px;
-    height: 160px;
-  }
-
-  .logo-card img {
-    max-width: 120px;
-  }
-}
 .logo-card {
   background: #fff;
   width: 200px;
@@ -287,11 +124,12 @@ img {
   max-width: 150px;
   border-radius: 24px;
 }
+
 .titulo-app {
   text-align: center;
   color: var(--cor-primaria);
-  margin-top: 8px;
   font-size: 22px;
+  margin-top: 8px;
 }
 
 .subtitulo-app {
@@ -300,6 +138,21 @@ img {
   font-size: 14px;
   margin-bottom: 26px;
 }
+
+/* ===============================
+   MENU GRID
+=============================== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* ===============================
+   MENU CARD
+=============================== */
 .menu-card {
   background: var(--cor-primaria);
   border-radius: 22px;
@@ -310,12 +163,6 @@ img {
   justify-content: center;
   box-shadow: 0 10px 22px rgba(142,106,201,0.35);
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.menu-card:active {
-  transform: scale(0.96);
-  opacity: 0.9;
 }
 
 .menu-card .icone {
@@ -330,6 +177,14 @@ img {
   color: #fff;
   text-align: center;
 }
+
+.menu-card:active {
+  transform: scale(0.96);
+}
+
+/* ===============================
+   BOTÃO SAIR
+=============================== */
 .btn-sair {
   margin: 26px auto 0;
   max-width: 380px;
@@ -337,11 +192,11 @@ img {
   border-radius: 18px;
   font-size: 16px;
   font-weight: bold;
-  color: #fff;
   box-shadow: 0 10px 22px rgba(217,83,79,0.4);
 }
+
 /* ===============================
-   LOGIN – CARD PREMIUM
+   LOGIN
 =============================== */
 .login-card {
   background: #fff;
@@ -353,22 +208,22 @@ img {
   text-align: center;
 }
 
-/* Mensagem de erro */
 .erro-login {
   color: var(--cor-excluir);
   font-size: 14px;
   margin-top: 10px;
 }
 
-/* Inputs do login */
-.login-card input {
-  margin-top: 12px;
+/* ===============================
+   RESPONSIVO
+=============================== */
+@media (max-width: 480px) {
+  .logo-card {
+    width: 160px;
+    height: 160px;
+  }
+
+  .logo-card img {
+    max-width: 120px;
+  }
 }
-
-/* Botão entrar */
-.login-card button {
-  margin-top: 16px;
-  font-size: 16px;
-}
-
-
