@@ -402,6 +402,15 @@ button.btn-voltar:active {
   margin-bottom: 22px;
 }
 
+.divisor-pagina {
+  width: 60px;
+  height: 4px;
+  background: var(--cor-primaria-clara);
+  border-radius: 10px;
+  margin: 0 auto 18px;
+}
+
+
 
 
 
