@@ -463,6 +463,30 @@ button.btn-voltar:active {
   display: none;
 }
 
+/* ===============================
+   CAMPO COM ÍCONE INTERNO
+=============================== */
+
+.campo-data {
+  position: relative;
+}
+
+/* Ícone dentro do campo */
+.icone-campo {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--cor-primaria);
+  pointer-events: none; /* não atrapalha clique */
+}
+
+/* Ajusta o input para não ficar em cima do ícone */
+.campo-data input {
+  padding-left: 44px;
+}
+
 
 
 
