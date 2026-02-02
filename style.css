@@ -372,16 +372,12 @@ button.btn-excluir-item {
 /* ===============================
    BOTÃO VOLTAR – AÇÃO SECUNDÁRIA
 =============================== */
-button.btn-voltar {
-  background: #fff;
+.btn-voltar {
+  background: transparent;
   color: var(--cor-primaria);
-  border: 2px solid var(--cor-primaria);
-  font-weight: 600;
+  border: 2px solid var(--cor-primaria-clara);
 }
 
-button.btn-voltar:active {
-  transform: scale(0.97);
-}
 
 /* ===============================
    TÍTULO E SUBTITULO - PÁGINAS
@@ -409,6 +405,7 @@ button.btn-voltar:active {
   border-radius: 10px;
   margin: 0 auto 18px;
 }
+
 
 
 
