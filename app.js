@@ -182,6 +182,12 @@ async function salvarPedido() {
   const opt = select.options[select.selectedIndex];
   const dataEntregaValor = document.getElementById("dataEntrega").value;
 
+  let dataEntrega = null;
+  if (dataEntregaValor) {
+    const [ano, mes, dia] = dataEntregaValor.split("-");
+    dataEntrega = new Date(ano, mes - 1, dia);
+  }
+
   const dados = {
     cliente,
     itemId: select.value,
@@ -189,7 +195,7 @@ async function salvarPedido() {
     valor: Number(opt.dataset.valor),
     pagamento: document.getElementById("pagamento").value,
     status: document.getElementById("status").value,
-    dataEntrega: dataEntregaValor ? new Date(dataEntregaValor) : null
+    dataEntrega
   };
 
   if (pedidoEditandoId) {
@@ -205,6 +211,7 @@ async function salvarPedido() {
 
   listarPedidos();
 }
+
 
 async function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
@@ -308,6 +315,7 @@ async function marcarEntregue(id) {
 
   listarPedidos(); // atualiza a tela
 }
+
 
 
 
