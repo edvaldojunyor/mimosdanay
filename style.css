@@ -536,16 +536,19 @@ button.btn-voltar:active {
 .campo-mes input[type="month"]:valid + .fake-placeholder {
   display: none;
 }
+
+
 /* ===============================
-   AÇÕES – ARTESANATOS
+   AÇÕES DO ARTESANATO (EDITAR / EXCLUIR)
 =============================== */
 .arte-acoes {
   display: flex;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .arte-acoes button {
+  width: auto;      /* 🔥 sobrescreve o width:100% global */
   flex: 1;
 }
 
