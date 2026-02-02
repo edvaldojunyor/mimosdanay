@@ -458,6 +458,12 @@ button.btn-voltar:active {
   margin-top: 20px;
 }
 
+/* Esconde o placeholder fake quando o mês é escolhido */
+.campo-data input.tem-valor + .fake-placeholder {
+  display: none;
+}
+
+
 
 
 
