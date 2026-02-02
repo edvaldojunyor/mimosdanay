@@ -339,5 +339,74 @@ async function marcarEntregue(id) {
   listarPedidos();
 }
 
+async function gerarPortfolio() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  let y = 20;
+  let pagina = 1;
+
+  // Título
+  pdf.setFontSize(18);
+  pdf.text("Portfólio de Artesanato", 14, y);
+  y += 8;
+
+  pdf.setFontSize(14);
+  pdf.text("Mimos da Nay", 14, y);
+  y += 10;
+
+  const snap = await db.collection("artes")
+    .orderBy("tipo")
+    .orderBy("nome")
+    .get();
+
+  let tipoAtual = "";
+
+  for (const doc of snap.docs) {
+    const a = doc.data();
+
+    // Nova página se passar do limite
+    if (y > 270) {
+      pdf.addPage();
+      y = 20;
+      pagina++;
+    }
+
+    // Cabeçalho do tipo
+    if (a.tipo !== tipoAtual) {
+      tipoAtual = a.tipo;
+      y += 6;
+      pdf.setFontSize(14);
+      pdf.setTextColor(142, 106, 201); // roxo
+      pdf.text(tipoAtual, 14, y);
+      y += 6;
+    }
+
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(12);
+
+    pdf.text(`• ${a.nome}`, 18, y);
+    y += 6;
+
+    pdf.setFontSize(11);
+    pdf.text(`Valor: R$ ${a.valor.toFixed(2)}`, 22, y);
+    y += 6;
+
+    // Imagem (se existir)
+    if (a.foto) {
+      try {
+        pdf.addImage(a.foto, "JPEG", 22, y, 40, 40);
+        y += 46;
+      } catch (e) {
+        y += 4;
+      }
+    } else {
+      y += 4;
+    }
+  }
+
+  pdf.save("portfolio-mimos-da-nay.pdf");
+}
+
 
 
