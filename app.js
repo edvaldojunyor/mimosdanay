@@ -161,29 +161,34 @@ async function listarArte() {
   const lista = document.getElementById("listaArte");
   lista.innerHTML = "";
 
-  const snap = await db.collection("artes").orderBy("tipo").orderBy("nome").get();
+  const snap = await db.collection("artes")
+    .orderBy("tipo")
+    .orderBy("nome")
+    .get();
+
   snap.forEach(doc => {
     const a = doc.data();
+
     lista.innerHTML += `
       <li>
         <strong>${a.nome}</strong>
         <div>${a.tipo}</div>
         <div>R$ ${a.valor.toFixed(2)}</div>
+
         ${a.foto ? `
-  <div class="arte-img-box">
-    <img src="${a.foto}" alt="Imagem do artesanato">
-  </div>
-` : "<em>Sem imagem</em>"}
+          <div class="arte-img-box">
+            <img src="${a.foto}" alt="Imagem do artesanato">
+          </div>
+        ` : "<em>Sem imagem</em>"}
 
-  <div class="arte-acoes">
-  <button class="btn-editar" onclick="editarArte('${doc.id}')">
-    Editar
-  </button>
-  <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
-    Excluir
-  </button>
-</div>
-
+        <div class="arte-acoes">
+          <button class="btn-editar" onclick="editarArte('${doc.id}')">
+            Editar
+          </button>
+          <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
+            Excluir
+          </button>
+        </div>
       </li>
     `;
   });
@@ -561,6 +566,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
