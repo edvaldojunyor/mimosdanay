@@ -124,13 +124,17 @@
     <option>Terços de pulsos</option>
   </select>
 
-  <select id="item">
-    <button type="button" onclick="adicionarItemCarrinho()">
+ <select id="item">
+  <option value="">Selecione o item</option>
+</select>
+
+<button type="button" onclick="adicionarItemCarrinho()">
   ➕ Adicionar item
 </button>
+
 <ul id="listaCarrinho"></ul>
-    <option value="">Selecione o item</option>
-  </select>
+
+<select id="pagamento">...</select>
 
   <select id="pagamento">
     <option>Pix</option>
@@ -187,6 +191,7 @@
 
 </body>
 </html>
+
 
 
 
