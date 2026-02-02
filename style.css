@@ -3,6 +3,7 @@
 =============================== */
 :root {
   --cor-primaria: #8e6ac9;
+  --cor-primaria-clara: #f4effc;
   --cor-secundaria: #d4af37;
   --cor-editar: #f0ad4e;
   --cor-excluir: #d9534f;
@@ -15,7 +16,7 @@
    ESTILO GERAL
 =============================== */
 body {
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   background: var(--cor-fundo);
   color: var(--cor-texto);
   margin: 0;
@@ -28,14 +29,6 @@ h2 {
 }
 
 /* ===============================
-   CONTAINERS
-=============================== */
-div,
-form {
-  margin-top: 20px;
-}
-
-/* ===============================
    INPUTS / SELECTS / BOTÕES
 =============================== */
 input,
@@ -44,13 +37,12 @@ button {
   width: 100%;
   padding: 10px;
   margin-top: 8px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 16px; /* evita zoom iOS */
   box-sizing: border-box;
 }
 
-/* Botões base (Safari + Chrome) */
 button {
   -webkit-appearance: none;
   appearance: none;
@@ -58,34 +50,30 @@ button {
   color: #fff;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.1s ease;
 }
 
-button:hover {
-  opacity: 0.9;
+button:active {
+  transform: scale(0.97);
 }
 
 /* ===============================
-   LISTAS
+   LISTAS / CARDS
 =============================== */
 ul {
   list-style: none;
   padding: 0;
 }
 
-/* ===============================
-   CARD DE PEDIDO – ESTILO IOS
-=============================== */
 li {
   position: relative;
   background: #fff;
   margin-top: 14px;
   padding: 14px;
-  border-radius: 14px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
 }
 
-/* Nome do cliente */
 li strong {
   font-size: 16px;
   color: var(--cor-primaria);
@@ -93,7 +81,6 @@ li strong {
   margin-bottom: 4px;
 }
 
-/* Texto secundário */
 .pedido-item {
   font-size: 14px;
   color: #555;
@@ -106,7 +93,7 @@ li strong {
 }
 
 /* ===============================
-   BOTÕES DO CARD
+   BOTÕES DO CARD DE PEDIDO
 =============================== */
 .pedido-acoes {
   display: flex;
@@ -114,27 +101,26 @@ li strong {
   margin-top: 12px;
 }
 
-.pedido-acoes button {
-  flex: 1;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 12px;
-}
-
 button.btn-editar {
-  background: #f7c26a !important;
-  color: #fff;
+  background: var(--cor-editar);
 }
 
 button.btn-excluir-item {
-  background: #e35d5b !important;
-  color: #fff;
+  background: var(--cor-excluir);
+}
+
+/* Botão entregue */
+button.btn-entregue {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #4caf50;
+  font-size: 18px;
 }
 
 /* ===============================
-   STATUS VISUAL DO PEDIDO
+   STATUS VISUAL
 =============================== */
-li.entregue::before,
 li.atrasado::before {
   content: "";
   position: absolute;
@@ -143,19 +129,9 @@ li.atrasado::before {
   bottom: 12px;
   width: 5px;
   border-radius: 5px;
+  background: var(--cor-excluir);
 }
 
-li.entregue::before {
-  background: #4caf50;
-}
-
-li.atrasado::before {
-  background: #d9534f;
-}
-
-/* ===============================
-   DATA DE ENTREGA – STATUS VISUAL
-=============================== */
 .data-entrega {
   font-weight: 600;
 }
@@ -165,11 +141,21 @@ li.atrasado::before {
 }
 
 .data-atrasada {
-  color: #d9534f;
+  color: var(--cor-excluir);
 }
 
-.data-sem {
-  color: #999;
+.data-hoje {
+  color: var(--cor-editar);
+  font-weight: bold;
+}
+
+.entrega-hoje {
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 10px;
+  background: var(--cor-editar);
+  color: #fff;
 }
 
 /* ===============================
@@ -177,217 +163,20 @@ li.atrasado::before {
 =============================== */
 img {
   margin-top: 8px;
-  border-radius: 6px;
-  display: block;
+  border-radius: 8px;
   max-width: 120px;
 }
 
 /* ===============================
-   CAMPO DATA ENTREGA (IOS + WEB)
+   HOME – LOGO EM DESTAQUE
 =============================== */
-.campo-data {
-  position: relative;
-  width: 100%;
-  margin-top: 8px;
-}
-
-.fake-placeholder {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  color: #aaa;
-  font-size: 16px;
-  pointer-events: none;
-}
-
-.campo-data input[type="date"] {
-  width: 100%;
-  height: 44px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  background-color: #fff;
-  box-sizing: border-box;
-}
-
-.campo-data input::-webkit-datetime-edit {
-  padding: 0;
-  height: 100%;
-}
-
-.campo-data input:valid + .fake-placeholder {
-  display: none;
-}
-
-/* ===============================
-   LOGO (LOGIN E MENU)
-=============================== */
-.logo-login,
-.logo-home {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: auto;
-  height: auto;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
-}
-
-.logo-login {
-  max-width: 140px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-.logo-home {
-  max-width: 100px;
-  margin-top: 10px;
-}
-
-/* Ajuste fino para iPhone */
-@media (max-width: 480px) {
-  .logo-login {
-    max-width: 120px;
-  }
-
-  .logo-home {
-    max-width: 90px;
-  }
-}
-
-/* ===============================
-   BOTÃO MARCAR COMO ENTREGUE
-=============================== */
-button.btn-entregue {
-  flex: 0 0 auto;
-  width: 42px;
-  padding: 8px;
-  font-size: 18px;
-  border-radius: 50%;
-  background: #4caf50 !important;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-button.btn-entregue:hover {
-  opacity: 0.9;
-}
-
-button.btn-entregue:active {
-  transform: scale(0.95);
-}
-/* ===============================
-   ENTREGA HOJE – AVISO VISUAL
-=============================== */
-.entrega-hoje {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 2px 8px;
-  font-size: 11px;
-  font-weight: bold;
-  border-radius: 10px;
-  background: #f0ad4e; /* dourado */
-  color: #fff;
-}
-
-.data-hoje {
-  color: #f0ad4e;
-  font-weight: bold;
-}
-/* ===============================
-   HOME – CARD IDENTIDADE
-=============================== */
-.home-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 24px 16px;
-  margin: 10px auto 20px;
-  max-width: 360px;
-  text-align: center;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-}
-
-.home-logo {
-  max-width: 110px;
-  margin-bottom: 10px;
-}
-
-.home-card h2 {
-  margin: 6px 0 4px;
-  color: var(--cor-primaria);
-}
-
-.home-card p {
-  margin: 0;
-  font-size: 14px;
-  color: #777;
-}
-
-/* ===============================
-   GRID MENU
-=============================== */
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  max-width: 380px;
-  margin: 0 auto;
-}
-
-/* ===============================
-   CARD MENU
-=============================== */
-.menu-card {
-  background: #fff;
-  border-radius: 18px;
-  padding: 18px 10px;
-  text-align: center;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
-  border: none;
-  cursor: pointer;
-}
-
-.menu-card span {
-  font-size: 26px;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.menu-card strong {
-  font-size: 14px;
-  color: var(--cor-texto);
-  line-height: 1.3;
-}
-
-.menu-card:hover {
-  transform: translateY(-2px);
-}
-
-/* ===============================
-   BOTÃO SAIR
-=============================== */
-.menu-sair {
-  margin: 22px auto 0;
-  max-width: 380px;
-  background: var(--cor-excluir);
-  border-radius: 14px;
-  font-size: 16px;
-}
-/* ===============================
-   MENU HOME – NOVO DESIGN
-=============================== */
-
 .logo-card {
   background: #fff;
   width: 180px;
   height: 180px;
-  margin: 20px auto 10px;
-  border-radius: 28px;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+  margin: 20px auto 12px;
+  border-radius: 30px;
+  box-shadow: 0 14px 28px rgba(142,106,201,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -411,50 +200,74 @@ button.btn-entregue:active {
   margin-bottom: 24px;
 }
 
-/* Grid do menu */
+/* ===============================
+   MENU GRID
+=============================== */
 .menu-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  padding: 0 10px;
+  max-width: 380px;
+  margin: 0 auto;
 }
 
-/* Card do menu */
+/* ===============================
+   CARD DO MENU (FINAL)
+=============================== */
 .menu-card {
-  background: var(--cor-primaria);
-  color: #fff;
+  background: var(--cor-primaria-clara);
   border-radius: 22px;
   height: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 18px rgba(142,106,201,0.18);
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .menu-card:active {
   transform: scale(0.96);
-  opacity: 0.9;
+  box-shadow: 0 6px 12px rgba(142,106,201,0.25);
 }
 
 .menu-card .icone {
-  font-size: 28px;
+  font-size: 30px;
   margin-bottom: 6px;
+  color: var(--cor-primaria);
 }
 
 .menu-card .texto {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
+  color: #4a3f8c;
+  text-align: center;
 }
 
-/* Botão sair */
+/* ===============================
+   BOTÃO SAIR
+=============================== */
 .btn-sair {
-  margin-top: 26px;
-  background: #e35d5b;
-  border-radius: 16px;
+  margin: 26px auto 0;
+  max-width: 380px;
+  background: linear-gradient(135deg, #e35d5b, #d9534f);
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 8px 18px rgba(217,83,79,0.35);
 }
 
+/* ===============================
+   RESPONSIVO
+=============================== */
+@media (max-width: 480px) {
+  .logo-card {
+    width: 160px;
+    height: 160px;
+  }
 
-
+  .logo-card img {
+    max-width: 120px;
+  }
+}
