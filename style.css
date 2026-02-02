@@ -362,6 +362,30 @@ button.btn-excluir-item {
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
+/* ===============================
+   IMAGEM DO ARTESANATO – CARD
+=============================== */
+.arte-img-box {
+  width: 120px;
+  height: 120px;
+  background: var(--cor-primaria-clara);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  overflow: hidden; /* 🔑 ESSENCIAL */
+}
+
+.arte-img-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* mostra a imagem inteira */
+  border-radius: 10px;
+}
+
+
 
 
 
