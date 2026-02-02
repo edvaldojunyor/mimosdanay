@@ -248,6 +248,44 @@ async function carregarItensPorTipo() {
   });
 }
 
+function adicionarItemCarrinho() {
+  const select = document.getElementById("item");
+
+  if (!select.value) {
+    alert("Selecione um item");
+    return;
+  }
+
+  const opt = select.options[select.selectedIndex];
+
+  carrinhoPedidos.push({
+    itemId: select.value,
+    itemNome: opt.dataset.nome,
+    valor: Number(opt.dataset.valor)
+  });
+
+  renderCarrinho();
+}
+
+function renderCarrinho() {
+  const lista = document.getElementById("listaCarrinho");
+  lista.innerHTML = "";
+
+  carrinhoPedidos.forEach((item, index) => {
+    lista.innerHTML += `
+      <li>
+        ${item.itemNome} – R$ ${item.valor.toFixed(2)}
+        <button onclick="removerItemCarrinho(${index})">❌</button>
+      </li>
+    `;
+  });
+}
+
+function removerItemCarrinho(index) {
+  carrinhoPedidos.splice(index, 1);
+  renderCarrinho();
+}
+
 async function salvarPedido() {
   const cliente = document.getElementById("cliente").value.trim();
   if (!cliente) {
@@ -255,44 +293,44 @@ async function salvarPedido() {
     return;
   }
 
-  const select = document.getElementById("item");
-  if (!select.value) {
-    alert("Selecione um item do artesanato");
+  if (carrinhoPedidos.length === 0) {
+    alert("Adicione pelo menos um item");
     return;
   }
 
-  const opt = select.options[select.selectedIndex];
-  const dataEntregaValor = document.getElementById("dataEntrega").value;
+  const pagamento = document.getElementById("pagamento").value;
+  const status = document.getElementById("status").value;
 
+  const dataEntregaValor = document.getElementById("dataEntrega").value;
   let dataEntrega = null;
+
   if (dataEntregaValor) {
     const [ano, mes, dia] = dataEntregaValor.split("-");
     dataEntrega = new Date(ano, mes - 1, dia);
   }
 
-  const dados = {
-    cliente,
-    itemId: select.value,
-    itemNome: opt.dataset.nome,
-    valor: Number(opt.dataset.valor),
-    pagamento: document.getElementById("pagamento").value,
-    status: document.getElementById("status").value,
-    dataEntrega
-  };
-
-  if (pedidoEditandoId) {
-    await db.collection("pedidos").doc(pedidoEditandoId).update(dados);
-    pedidoEditandoId = null;
-  } else {
-    dados.dataPedido = firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection("pedidos").add(dados);
+  for (const item of carrinhoPedidos) {
+    await db.collection("pedidos").add({
+      cliente,
+      itemId: item.itemId,
+      itemNome: item.itemNome,
+      valor: item.valor,
+      pagamento,
+      status,
+      dataEntrega,
+      dataPedido: firebase.firestore.FieldValue.serverTimestamp()
+    });
   }
 
+  // limpa tudo
+  carrinhoPedidos = [];
   document.getElementById("cliente").value = "";
   document.getElementById("dataEntrega").value = "";
+  document.getElementById("listaCarrinho").innerHTML = "";
 
   listarPedidos();
 }
+
 
 async function listarPedidos() {
   const lista = document.getElementById("listaPedidos");
@@ -568,6 +606,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
