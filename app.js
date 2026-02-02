@@ -250,7 +250,6 @@ async function listarPedidos() {
     const p = doc.data();
     const id = doc.id;
 
-    // ignora entregues
     if (p.status === "Entregue") return;
 
     encontrou = true;
@@ -263,15 +262,15 @@ async function listarPedidos() {
     let avisoHoje = "";
 
     if (entrega) {
-  textoData = entrega.toLocaleDateString("pt-BR");
+      textoData = entrega.toLocaleDateString("pt-BR");
 
-  if (entrega.getTime() === hoje.getTime()) {
-    classeData = "data-hoje";
-    avisoHoje = `<span class="entrega-hoje">ENTREGA HOJE</span>`;
-  } else {
-    classeData = entrega < hoje ? "data-atrasada" : "data-prazo";
-  }
-}
+      if (entrega.getTime() === hoje.getTime()) {
+        classeData = "data-hoje";
+        avisoHoje = `<span class="entrega-hoje">ENTREGA HOJE</span>`;
+      } else {
+        classeData = entrega < hoje ? "data-atrasada" : "data-prazo";
+      }
+    }
 
     const li = document.createElement("li");
     if (entrega && entrega < hoje) li.classList.add("atrasado");
@@ -281,7 +280,8 @@ async function listarPedidos() {
       <div class="pedido-item">${p.itemNome} – R$ ${p.valor.toFixed(2)}</div>
       <div class="pedido-meta">
         Entrega:
-        <span class="data-entrega ${classeData}">${textoData}</span><br>
+        <span class="data-entrega ${classeData}">${textoData}</span>
+        ${avisoHoje}<br>
         Status: ${p.status}
       </div>
       <div class="pedido-acoes">
@@ -298,6 +298,7 @@ async function listarPedidos() {
     lista.innerHTML = `<li><em>Nenhum pedido pendente 🎉</em></li>`;
   }
 }
+
 
 async function editarPedido(id) {
   const ref = await db.collection("pedidos").doc(id).get();
@@ -337,5 +338,6 @@ async function marcarEntregue(id) {
   await db.collection("pedidos").doc(id).update({ status: "Entregue" });
   listarPedidos();
 }
+
 
 
