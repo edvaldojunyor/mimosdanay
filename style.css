@@ -411,6 +411,71 @@ button.btn-voltar:active {
   margin: 0 auto 18px;
 }
 
+/* ===============================
+   RELATÓRIOS – VISUAL PREMIUM
+=============================== */
+
+/* Subtítulo abaixo do título */
+.subtitulo-pagina {
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  margin-top: -6px;
+  margin-bottom: 10px;
+}
+
+/* Linha divisória elegante */
+.divisor-pagina {
+  width: 60px;
+  height: 3px;
+  background: var(--cor-primaria);
+  border-radius: 4px;
+  margin: 0 auto 18px;
+}
+
+/* Filtro mês */
+.relatorio-filtro {
+  max-width: 260px;
+  margin: 0 auto 12px;
+}
+
+/* Botão principal */
+.btn-relatorio {
+  margin-top: 6px;
+}
+
+/* Card do resultado */
+.relatorio-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* Título do card */
+.relatorio-card h3 {
+  font-size: 16px;
+  color: var(--cor-primaria);
+  margin-bottom: 10px;
+}
+
+/* Total em destaque */
+.relatorio-total {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4caf50;
+  margin-top: 6px;
+}
+
+/* Mensagem quando não houver dados */
+.relatorio-vazio {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
 
 
 
