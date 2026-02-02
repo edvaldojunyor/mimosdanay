@@ -29,16 +29,44 @@
 
 <!-- ================= HOME ================= -->
 <div id="home" style="display:none">
-  <img src="logo.jpeg" class="logo-home" alt="Mimos da Nay">
 
-  <h2>Menu</h2>
+  <!-- CARD IDENTIDADE -->
+  <div class="home-card">
+    <img src="logo.jpeg" class="home-logo" alt="Mimos da Nay">
+    <h2>Mimos da Nay</h2>
+    <p>Produzindo exclusividade</p>
+  </div>
 
-  <button type="button" onclick="abrirArte()">Cadastro de Artesanatos</button>
-  <button type="button" onclick="abrirPedidos()">Pedidos de Clientes</button>
-  <button type="button" onclick="abrirRelatorios()">Relatório dos Pedidos</button>
-  <button type="button" onclick="gerarPortfolio()">Gerar Portfólio (PDF)</button>
-  <button type="button" onclick="logout()">Sair</button>
+  <!-- GRID DE MENU -->
+  <div class="menu-grid">
+
+    <button class="menu-card" onclick="abrirArte()">
+      <span>🧵</span>
+      <strong>Cadastro de<br>Artesanatos</strong>
+    </button>
+
+    <button class="menu-card" onclick="abrirPedidos()">
+      <span>📦</span>
+      <strong>Pedidos de<br>Clientes</strong>
+    </button>
+
+    <button class="menu-card" onclick="abrirRelatorios()">
+      <span>📊</span>
+      <strong>Relatório<br>dos Pedidos</strong>
+    </button>
+
+    <button class="menu-card" onclick="gerarPortfolio()">
+      <span>📄</span>
+      <strong>Gerar<br>Portfólio</strong>
+    </button>
+
+  </div>
+
+  <!-- SAIR -->
+  <button class="menu-sair" onclick="logout()">🚪 Sair</button>
+
 </div>
+
 
 <!-- ================= CADASTRO DE ARTES ================= -->
 <div id="arte" style="display:none">
@@ -132,4 +160,5 @@
 
 </body>
 </html>
+
 
