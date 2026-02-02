@@ -414,8 +414,11 @@ button.btn-voltar:active {
    RELATÓRIO – VISUAL FINAL
 =============================== */
 .relatorio-filtro {
-  max-width: 260px;
+  width: 100%;
+  max-width: 280px;
   margin: 0 auto 14px;
+  display: flex;
+  justify-content: center;
 }
 
 .btn-relatorio {
@@ -533,6 +536,7 @@ button.btn-voltar:active {
 .campo-mes input[type="month"]:valid + .fake-placeholder {
   display: none;
 }
+
 
 
 
