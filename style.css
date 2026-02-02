@@ -346,7 +346,7 @@ button.btn-excluir-item {
 }
 
 /* ===============================
-   IMAGEM DO ARTESANATO – CARD (PADRÃO FINAL)
+   IMAGEM DO ARTESANATO – CARD (FINAL)
 =============================== */
 .arte-img-box {
   width: 120px;
@@ -360,38 +360,16 @@ button.btn-excluir-item {
 
   margin-top: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  overflow: hidden; /* ESSENCIAL */
+  overflow: hidden; /* trava tudo dentro do quadrado */
 }
 
 .arte-img-box img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* imagem sempre inteira */
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* imagem inteira SEM corte */
+  display: block;
 }
 
-/* ===============================
-   IMAGEM DO ARTESANATO – CARD
-=============================== */
-.arte-img-box {
-  width: 120px;
-  height: 120px;
-  background: var(--cor-primaria-clara);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  overflow: hidden; /* 🔑 ESSENCIAL */
-}
-
-.arte-img-box img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* mostra a imagem inteira */
-  border-radius: 10px;
-}
 
 
 
