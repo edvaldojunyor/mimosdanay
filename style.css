@@ -271,3 +271,73 @@ img {
     max-width: 120px;
   }
 }
+.logo-card {
+  background: #fff;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto 16px;
+  border-radius: 32px;
+  box-shadow: 0 16px 32px rgba(142,106,201,0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-card img {
+  max-width: 150px;
+  border-radius: 24px;
+}
+.titulo-app {
+  text-align: center;
+  color: var(--cor-primaria);
+  margin-top: 8px;
+  font-size: 22px;
+}
+
+.subtitulo-app {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 26px;
+}
+.menu-card {
+  background: var(--cor-primaria);
+  border-radius: 22px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 22px rgba(142,106,201,0.35);
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.menu-card:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.menu-card .icone {
+  font-size: 30px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.menu-card .texto {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+.btn-sair {
+  margin: 26px auto 0;
+  max-width: 380px;
+  background: linear-gradient(135deg, #e35d5b, #d9534f);
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(217,83,79,0.4);
+}
+
