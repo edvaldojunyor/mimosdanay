@@ -377,5 +377,84 @@ button.btn-entregue:active {
   border-radius: 14px;
   font-size: 16px;
 }
+/* ===============================
+   MENU HOME – NOVO DESIGN
+=============================== */
+
+.logo-card {
+  background: #fff;
+  width: 180px;
+  height: 180px;
+  margin: 20px auto 10px;
+  border-radius: 28px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-card img {
+  max-width: 140px;
+  border-radius: 20px;
+}
+
+/* Títulos */
+.titulo-app {
+  text-align: center;
+  color: var(--cor-primaria);
+  margin-top: 10px;
+}
+
+.subtitulo-app {
+  text-align: center;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+/* Grid do menu */
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 0 10px;
+}
+
+/* Card do menu */
+.menu-card {
+  background: var(--cor-primaria);
+  color: #fff;
+  border-radius: 22px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.menu-card:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.menu-card .icone {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.menu-card .texto {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Botão sair */
+.btn-sair {
+  margin-top: 26px;
+  background: #e35d5b;
+  border-radius: 16px;
+}
+
 
 
