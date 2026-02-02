@@ -175,11 +175,10 @@ async function listarArte() {
   </div>
 ` : "<em>Sem imagem</em>"}
 
-       <div class="pedido-acoes">
+  <div class="arte-acoes">
   <button class="btn-editar" onclick="editarArte('${doc.id}')">
     Editar
   </button>
-
   <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
     Excluir
   </button>
@@ -562,6 +561,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
