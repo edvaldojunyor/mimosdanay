@@ -486,6 +486,54 @@ button.btn-voltar:active {
 .campo-data input {
   padding-left: 44px;
 }
+/* ===============================
+   CAMPO MÊS – RELATÓRIO
+=============================== */
+
+.campo-mes {
+  position: relative;
+}
+
+/* Ícone calendário */
+.campo-mes .icone-campo {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--cor-primaria);
+  pointer-events: none;
+}
+
+/* Placeholder fake */
+.campo-mes .fake-placeholder {
+  position: absolute;
+  left: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9a9a9a;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Input month */
+.campo-mes input[type="month"] {
+  width: 100%;
+  height: 46px;
+  padding-left: 44px;
+  padding-right: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background: #eee;
+  box-sizing: border-box;
+}
+
+/* Esconde placeholder quando selecionado */
+.campo-mes input[type="month"]:valid + .fake-placeholder {
+  display: none;
+}
+
 
 
 
