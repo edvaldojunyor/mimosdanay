@@ -227,3 +227,26 @@ li.atrasado::before {
     max-width: 120px;
   }
 }
+/* ===============================
+   BOTÃO ENTREGUE – CÍRCULO PERFEITO
+=============================== */
+button.btn-entregue {
+  width: 44px;
+  height: 44px;
+  padding: 0;               /* remove o oval */
+  border-radius: 50%;
+  background: #4caf50;
+  color: #fff;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 14px rgba(76, 175, 80, 0.35);
+}
+
+button.btn-entregue:active {
+  transform: scale(0.92);
+}
+
