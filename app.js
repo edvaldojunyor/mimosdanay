@@ -19,8 +19,8 @@ const db = firebase.firestore();
 // LOGIN LOCAL
 // ===============================
 const usuarios = [
-  { user: "Edvaldo", senha: "1234" },
-  { user: "Neiara", senha: "1234" }
+  { user: "Edvaldo", senha: "041185" },
+  { user: "Neiara", senha: "041185" }
 ];
 
 function login() {
@@ -526,6 +526,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
