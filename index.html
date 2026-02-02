@@ -30,40 +30,41 @@
 <!-- ================= HOME ================= -->
 <div id="home" style="display:none">
 
-  <!-- CARD IDENTIDADE -->
-  <div class="home-card">
-    <img src="logo.jpeg" class="home-logo" alt="Mimos da Nay">
-    <h2>Mimos da Nay</h2>
-    <p>Produzindo exclusividade</p>
+  <!-- LOGO EM DESTAQUE -->
+  <div class="logo-card">
+    <img src="logo.jpeg" alt="Mimos da Nay">
   </div>
 
-  <!-- GRID DE MENU -->
+  <h2 class="titulo-app">Mimos da Nay</h2>
+  <p class="subtitulo-app">Produzindo exclusividade</p>
+
+  <!-- GRID DO MENU -->
   <div class="menu-grid">
 
-    <button class="menu-card" onclick="abrirArte()">
-      <span>🧵</span>
-      <strong>Cadastro de<br>Artesanatos</strong>
-    </button>
+    <div class="menu-card" onclick="abrirArte()">
+      <span class="icone">🧵</span>
+      <span class="texto">Artesanatos</span>
+    </div>
 
-    <button class="menu-card" onclick="abrirPedidos()">
-      <span>📦</span>
-      <strong>Pedidos de<br>Clientes</strong>
-    </button>
+    <div class="menu-card" onclick="abrirPedidos()">
+      <span class="icone">📦</span>
+      <span class="texto">Pedidos</span>
+    </div>
 
-    <button class="menu-card" onclick="abrirRelatorios()">
-      <span>📊</span>
-      <strong>Relatório<br>dos Pedidos</strong>
-    </button>
+    <div class="menu-card" onclick="abrirRelatorios()">
+      <span class="icone">📊</span>
+      <span class="texto">Relatórios</span>
+    </div>
 
-    <button class="menu-card" onclick="gerarPortfolio()">
-      <span>📄</span>
-      <strong>Gerar<br>Portfólio</strong>
-    </button>
+    <div class="menu-card" onclick="gerarPortfolio()">
+      <span class="icone">📄</span>
+      <span class="texto">Portfólio</span>
+    </div>
 
   </div>
 
-  <!-- SAIR -->
-  <button class="menu-sair" onclick="logout()">🚪 Sair</button>
+  <!-- BOTÃO SAIR -->
+  <button class="btn-sair" onclick="logout()">🚪 Sair</button>
 
 </div>
 
@@ -160,5 +161,6 @@
 
 </body>
 </html>
+
 
 
