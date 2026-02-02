@@ -260,11 +260,18 @@ async function listarPedidos() {
 
     let textoData = "—";
     let classeData = "data-sem";
+    let avisoHoje = "";
 
     if (entrega) {
-      textoData = entrega.toLocaleDateString("pt-BR");
-      classeData = entrega < hoje ? "data-atrasada" : "data-prazo";
-    }
+  textoData = entrega.toLocaleDateString("pt-BR");
+
+  if (entrega.getTime() === hoje.getTime()) {
+    classeData = "data-hoje";
+    avisoHoje = `<span class="entrega-hoje">ENTREGA HOJE</span>`;
+  } else {
+    classeData = entrega < hoje ? "data-atrasada" : "data-prazo";
+  }
+}
 
     const li = document.createElement("li");
     if (entrega && entrega < hoje) li.classList.add("atrasado");
@@ -330,4 +337,5 @@ async function marcarEntregue(id) {
   await db.collection("pedidos").doc(id).update({ status: "Entregue" });
   listarPedidos();
 }
+
 
