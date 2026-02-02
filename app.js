@@ -145,7 +145,12 @@ async function listarArte() {
         <strong>${a.nome}</strong>
         <div>${a.tipo}</div>
         <div>R$ ${a.valor.toFixed(2)}</div>
-        ${a.foto ? `<img src="${a.foto}">` : "<em>Sem imagem</em>"}
+        ${a.foto ? `
+  <div class="arte-img-box">
+    <img src="${a.foto}" alt="Imagem do artesanato">
+  </div>
+` : "<em>Sem imagem</em>"}
+
         <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
           Excluir
         </button>
@@ -434,6 +439,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
