@@ -105,21 +105,24 @@ document.addEventListener("DOMContentLoaded", () => {
 async function salvarArte() {
   const nome = document.getElementById("nomeArte").value.trim();
   const valor = parseFloat(document.getElementById("valorArte").value);
+  const tipo = document.getElementById("tipoArte").value;
   const preview = document.getElementById("previewArte");
 
-  if (!nome || isNaN(valor)) {
-    alert("Informe nome e valor");
+  if (!nome || isNaN(valor) || !tipo) {
+    alert("Informe nome, valor e tipo do artesanato");
     return;
   }
 
   await db.collection("artes").add({
     nome,
     valor,
+    tipo,
     foto: preview.src || null
   });
 
   document.getElementById("nomeArte").value = "";
   document.getElementById("valorArte").value = "";
+  document.getElementById("tipoArte").value = "";
   document.getElementById("fotoArte").value = "";
   preview.style.display = "none";
 
@@ -135,8 +138,9 @@ async function listarArte() {
     const a = doc.data();
     lista.innerHTML += `
       <li>
-        <strong>${a.nome}</strong>
-        <div>R$ ${a.valor.toFixed(2)}</div>
+       <strong>${a.nome}</strong>
+<div>${a.tipo}</div>
+<div>R$ ${a.valor.toFixed(2)}</div>
         ${a.foto ? `<img src="${a.foto}">` : "<em>Sem imagem</em>"}
         <button class="btn-excluir-item" onclick="excluirArte('${doc.id}')">
           Excluir
@@ -315,6 +319,7 @@ async function marcarEntregue(id) {
 
   listarPedidos(); // atualiza a tela
 }
+
 
 
 
