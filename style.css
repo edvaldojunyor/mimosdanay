@@ -389,17 +389,20 @@ button.btn-voltar:active {
 .titulo-pagina {
   text-align: center;
   color: var(--cor-primaria);
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-  margin: 12px 0 4px;
+  letter-spacing: 0.3px;
+  margin: 14px 0 2px;
 }
 
 .subtitulo-pagina {
   text-align: center;
   font-size: 14px;
-  color: #888;
-  margin-bottom: 18px;
+  color: #8a8a8a;
+  margin-bottom: 22px;
 }
+
+
 
 
 
