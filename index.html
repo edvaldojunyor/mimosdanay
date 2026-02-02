@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 
   <!-- Firebase COMPAT -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -20,8 +20,8 @@
 
   <img src="logo.jpeg" class="logo-login" alt="Mimos da Nay">
 
-  <input id="user" placeholder="Usuário">
-  <input id="senha" type="password" placeholder="Senha">
+  <input id="user" placeholder="Usuário" autocomplete="off">
+  <input id="senha" type="password" placeholder="Senha" autocomplete="off">
 
   <button type="button" onclick="login()">Entrar</button>
   <p id="erro" style="color:red"></p>
@@ -30,7 +30,6 @@
 <!-- ================= HOME ================= -->
 <div id="home" style="display:none">
 
-  <!-- LOGO EM DESTAQUE -->
   <div class="logo-card">
     <img src="logo.jpeg" alt="Mimos da Nay">
   </div>
@@ -38,36 +37,32 @@
   <h2 class="titulo-app">Mimos da Nay</h2>
   <p class="subtitulo-app">Produzindo exclusividade</p>
 
-  <!-- GRID DO MENU -->
   <div class="menu-grid">
 
-    <div class="menu-card" onclick="abrirArte()">
+    <button class="menu-card" onclick="abrirArte()">
       <span class="icone">🧵</span>
       <span class="texto">Artesanatos</span>
-    </div>
+    </button>
 
-    <div class="menu-card" onclick="abrirPedidos()">
+    <button class="menu-card" onclick="abrirPedidos()">
       <span class="icone">📦</span>
       <span class="texto">Pedidos</span>
-    </div>
+    </button>
 
-    <div class="menu-card" onclick="abrirRelatorios()">
+    <button class="menu-card" onclick="abrirRelatorios()">
       <span class="icone">📊</span>
       <span class="texto">Relatórios</span>
-    </div>
+    </button>
 
-    <div class="menu-card" onclick="gerarPortfolio()">
+    <button class="menu-card" onclick="gerarPortfolio()">
       <span class="icone">📄</span>
       <span class="texto">Portfólio</span>
-    </div>
+    </button>
 
   </div>
 
-  <!-- BOTÃO SAIR -->
   <button class="btn-sair" onclick="logout()">🚪 Sair</button>
-
 </div>
-
 
 <!-- ================= CADASTRO DE ARTES ================= -->
 <div id="arte" style="display:none">
@@ -90,7 +85,7 @@
   </select>
 
   <input id="fotoArte" type="file" accept="image/*">
-  <img id="previewArte" style="display:none; max-width:120px">
+  <img id="previewArte" alt="Preview da arte" style="display:none; max-width:120px">
 
   <button type="button" onclick="salvarArte()">Salvar</button>
   <button type="button" onclick="voltarHome()">Voltar</button>
@@ -155,12 +150,8 @@
   <div id="resultadoRelatorio"></div>
 </div>
 
-<!-- ================= APP ================= -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="app.js"></script>
 
 </body>
 </html>
-
-
-
