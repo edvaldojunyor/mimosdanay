@@ -103,6 +103,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const mesInput = document.getElementById("mesRelatorio");
+
+  if (mesInput) {
+    mesInput.addEventListener("change", () => {
+      if (mesInput.value) {
+        mesInput.classList.add("tem-valor");
+      } else {
+        mesInput.classList.remove("tem-valor");
+      }
+    });
+  }
+});
+
+
 // ===============================
 // ARTES
 // ===============================
@@ -511,6 +526,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
