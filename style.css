@@ -538,19 +538,18 @@ button.btn-voltar:active {
 }
 
 
-/* ===============================
-   AÇÕES DO ARTESANATO (EDITAR / EXCLUIR)
-=============================== */
+
+/* GARANTIA VISUAL – AÇÕES DO ARTESANATO */
 .arte-acoes {
   display: flex;
   gap: 10px;
-  margin-top: 12px;
 }
 
 .arte-acoes button {
-  width: auto;      /* 🔥 sobrescreve o width:100% global */
-  flex: 1;
+  flex: 1 !important;
+  width: auto !important;
 }
+
 
 
 
