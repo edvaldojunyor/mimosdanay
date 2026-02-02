@@ -366,7 +366,9 @@ async function gerarRelatorio() {
 
   snap.forEach(doc => {
     const p = doc.data();
-    const dataPedido = p.dataPedido?.toDate?.();
+    const dataPedido =
+  p.dataPedido?.toDate?.() || p.dataPedido || null;
+
 
     if (!dataPedido) return;
     if (dataPedido < inicio || dataPedido > fim) return;
@@ -509,6 +511,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
