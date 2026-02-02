@@ -133,12 +133,20 @@ async function salvarArte() {
     return;
   }
 
-  await db.collection("artes").add({
-    nome,
-    valor,
-    tipo,
-    foto: preview.src || null
-  });
+  const dados = {
+  nome,
+  valor,
+  tipo,
+  foto: preview.src || null
+};
+
+if (arteEditandoId) {
+  await db.collection("artes").doc(arteEditandoId).update(dados);
+  arteEditandoId = null;
+} else {
+  await db.collection("artes").add(dados);
+}
+
 
   document.getElementById("nomeArte").value = "";
   document.getElementById("valorArte").value = "";
@@ -187,6 +195,26 @@ async function excluirArte(id) {
   await db.collection("artes").doc(id).delete();
   listarArte();
 }
+
+async function editarArte(id) {
+  const ref = await db.collection("artes").doc(id).get();
+  if (!ref.exists) return;
+
+  const a = ref.data();
+
+  document.getElementById("nomeArte").value = a.nome;
+  document.getElementById("valorArte").value = a.valor;
+  document.getElementById("tipoArte").value = a.tipo;
+
+  if (a.foto) {
+    const preview = document.getElementById("previewArte");
+    preview.src = a.foto;
+    preview.style.display = "block";
+  }
+
+  arteEditandoId = id;
+}
+
 
 // ===============================
 // PEDIDOS
@@ -534,6 +562,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
