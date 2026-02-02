@@ -153,13 +153,18 @@
 
 <!-- ================= RELATÓRIOS ================= -->
 <div id="relatorios" style="display:none">
+ 
   <h2 class="titulo-pagina">Relatórios</h2>
 <p class="subtitulo-pagina">Resumo mensal de vendas</p>
   <div class="divisor-pagina"></div>
 
+  <div class="relatorio-filtro">
   <input type="month" id="mesRelatorio">
+</div>
 
-  <button type="button" onclick="gerarRelatorio()">Gerar Relatório</button>
+  <button type="button" class="btn-relatorio" onclick="gerarRelatorio()">
+  Gerar Relatório
+</button>
   <button type="button" class="btn-voltar" onclick="voltarHome()">Voltar</button>
 
 
@@ -171,6 +176,7 @@
 
 </body>
 </html>
+
 
 
 
