@@ -328,4 +328,19 @@ button.btn-excluir-item {
   color: #999;
 }
 
+/* ===============================
+   PREVIEW IMAGEM – CADASTRO ARTESANATO
+=============================== */
+#previewArte {
+  display: block;
+  max-width: 120px;
+  max-height: 120px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 
