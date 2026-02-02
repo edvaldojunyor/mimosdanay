@@ -354,13 +354,14 @@ async function gerarPortfolio() {
   // LOGO CENTRALIZADO
   // ===============================
   try {
-    const logoLargura = 40;
-    const logoX = (larguraPagina - logoLargura) / 2;
-    pdf.addImage(logoBase64, "JPEG", logoX, y, logoLargura, 40);
-    y += 48;
-  } catch (e) {
-    y += 10;
-  }
+  pdf.addImage(logoBase64, "PNG", logoX, y, logoLargura, 40);
+  y += 48;
+} catch (e) {
+  console.error("Erro ao carregar logo:", e);
+  alert("Erro ao carregar a logo no PDF. Veja o console.");
+  y += 10;
+}
+
 
   // ===============================
   // TÍTULOS CENTRALIZADOS
@@ -428,6 +429,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
