@@ -343,23 +343,7 @@ async function marcarEntregue(id) {
   await db.collection("pedidos").doc(id).update({ status: "Entregue" });
   listarPedidos();
 }
-function carregarImagem(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = url;
-  });
-}
-
-async function gerarPortfolio() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
-
-  const larguraPagina = pdf.internal.pageSize.getWidth();
-  let y = 20;
-
-  async function gerarRelatorio() {
+async function gerarRelatorio() {
   const mes = document.getElementById("mesRelatorio").value;
   const resultado = document.getElementById("resultadoRelatorio");
 
@@ -427,6 +411,22 @@ async function gerarPortfolio() {
     </div>
   `;
 }
+
+function carregarImagem(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+async function gerarPortfolio() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  const larguraPagina = pdf.internal.pageSize.getWidth();
+  let y = 20;
 
 
   // ===============================
@@ -509,6 +509,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
