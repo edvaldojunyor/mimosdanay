@@ -237,9 +237,12 @@ async function listarPedidos() {
   lista.innerHTML = "";
 
   const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
   let encontrou = false;
 
   const snap = await db.collection("pedidos")
+    .orderBy("dataEntrega", "asc")
     .orderBy("dataPedido", "desc")
     .get();
 
@@ -247,10 +250,14 @@ async function listarPedidos() {
     const p = doc.data();
     const id = doc.id;
 
+    // ignora entregues
     if (p.status === "Entregue") return;
+
     encontrou = true;
 
-    const entrega = p.dataEntrega?.toDate?.() || p.dataEntrega;
+    let entrega = p.dataEntrega?.toDate?.() || p.dataEntrega || null;
+    if (entrega) entrega.setHours(0, 0, 0, 0);
+
     let textoData = "—";
     let classeData = "data-sem";
 
@@ -276,6 +283,7 @@ async function listarPedidos() {
         <button class="btn-excluir-item" onclick="excluirPedido('${id}')">Excluir</button>
       </div>
     `;
+
     lista.appendChild(li);
   });
 
@@ -322,3 +330,4 @@ async function marcarEntregue(id) {
   await db.collection("pedidos").doc(id).update({ status: "Entregue" });
   listarPedidos();
 }
+
