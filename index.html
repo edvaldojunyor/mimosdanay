@@ -15,17 +15,23 @@
 <body>
 
 <!-- ================= LOGIN ================= -->
-<form id="login" onsubmit="return false;">
-  <h2>Mimos da Nay</h2>
+<form id="login" class="login-card" onsubmit="return false;">
 
-  <img src="logo.jpeg" class="logo-login" alt="Mimos da Nay">
+  <div class="logo-card">
+    <img src="logo.jpeg" alt="Mimos da Nay">
+  </div>
+
+  <h2 class="titulo-app">Mimos da Nay</h2>
+  <p class="subtitulo-app">Produzindo exclusividade</p>
 
   <input id="user" placeholder="Usuário" autocomplete="off">
   <input id="senha" type="password" placeholder="Senha" autocomplete="off">
 
   <button type="button" onclick="login()">Entrar</button>
-  <p id="erro" style="color:red"></p>
+  <p id="erro" class="erro-login"></p>
+
 </form>
+
 
 <!-- ================= HOME ================= -->
 <div id="home" style="display:none">
@@ -155,3 +161,4 @@
 
 </body>
 </html>
+
