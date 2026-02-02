@@ -105,8 +105,8 @@
 
 <!-- ================= PEDIDOS ================= -->
 <div id="pedidos" style="display:none">
- <h2 class="titulo-pagina">Pedidos</h2>
-<p class="subtitulo-pagina">Controle de entregas e clientes</p>
+  <h2 class="titulo-pagina">Pedidos</h2>
+  <p class="subtitulo-pagina">Controle de entregas e clientes</p>
   <div class="divisor-pagina"></div>
 
   <input id="cliente" placeholder="Nome do cliente">
@@ -124,17 +124,16 @@
     <option>Terços de pulsos</option>
   </select>
 
- <select id="item">
-  <option value="">Selecione o item</option>
-</select>
+  <select id="item">
+    <option value="">Selecione o item</option>
+  </select>
 
-<button type="button" onclick="adicionarItemCarrinho()">
-  ➕ Adicionar item
-</button>
+  <!-- 🔥 BOTÃO AGORA VAI APARECER -->
+  <button type="button" onclick="adicionarItemCarrinho()">
+    ➕ Adicionar item
+  </button>
 
-<ul id="listaCarrinho"></ul>
-
-<select id="pagamento">...</select>
+  <ul id="listaCarrinho"></ul>
 
   <select id="pagamento">
     <option>Pix</option>
@@ -154,7 +153,6 @@
 
   <button type="button" onclick="salvarPedido()">Salvar Pedido</button>
   <button type="button" class="btn-voltar" onclick="voltarHome()">Voltar</button>
-
 
   <ul id="listaPedidos"></ul>
 </div>
@@ -191,6 +189,7 @@
 
 </body>
 </html>
+
 
 
 
