@@ -65,7 +65,9 @@ function abrirArte() {
 function abrirPedidos() {
   document.getElementById("home").style.display = "none";
   document.getElementById("pedidos").style.display = "block";
-  carregarArtesNoSelect();
+ document.getElementById("tipoPedido").value = "";
+document.getElementById("item").innerHTML = `<option value="">Selecione o item</option>`;
+
   listarPedidos();
 }
 
@@ -319,6 +321,29 @@ async function marcarEntregue(id) {
 
   listarPedidos(); // atualiza a tela
 }
+async function carregarItensPorTipo() {
+  const tipo = document.getElementById("tipoPedido").value;
+  const select = document.getElementById("item");
+
+  select.innerHTML = `<option value="">Selecione o item</option>`;
+
+  if (!tipo) return;
+
+  const snap = await db.collection("artes")
+    .where("tipo", "==", tipo)
+    .get();
+
+  snap.forEach(doc => {
+    const a = doc.data();
+    const opt = document.createElement("option");
+    opt.value = doc.id;
+    opt.textContent = `${a.nome} - R$ ${a.valor.toFixed(2)}`;
+    opt.dataset.nome = a.nome;
+    opt.dataset.valor = a.valor;
+    select.appendChild(opt);
+  });
+}
+
 
 
 
