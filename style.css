@@ -373,11 +373,17 @@ button.btn-excluir-item {
    BOTÃO VOLTAR – AÇÃO SECUNDÁRIA
 =============================== */
 button.btn-voltar {
-  background: #f0f0f0;
-  color: #666;
-  border: none;
-  font-weight: 500;
+  background: #fff;
+  color: var(--cor-primaria);
+  border: 2px solid var(--cor-primaria);
+  font-weight: 600;
 }
+
+button.btn-voltar:active {
+  transform: scale(0.97);
+}
+
+
 
 
 
