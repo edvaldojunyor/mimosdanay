@@ -536,6 +536,19 @@ button.btn-voltar:active {
 .campo-mes input[type="month"]:valid + .fake-placeholder {
   display: none;
 }
+/* ===============================
+   AÇÕES – ARTESANATOS
+=============================== */
+.arte-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.arte-acoes button {
+  flex: 1;
+}
+
 
 
 
