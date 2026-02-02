@@ -274,3 +274,58 @@ button.btn-excluir-item {
     max-width: 120px;
   }
 }
+/* ===============================
+   CAMPO DATA ENTREGA (PLACEHOLDER INTERNO – iOS + WEB)
+=============================== */
+.campo-data {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.campo-data input[type="date"] {
+  width: 100%;
+  height: 44px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* Placeholder falso */
+.fake-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Esconde o placeholder quando tem data */
+.campo-data input:valid + .fake-placeholder {
+  display: none;
+}
+/* ===============================
+   DATA DE ENTREGA – STATUS VISUAL
+=============================== */
+.data-entrega {
+  font-weight: 600;
+}
+
+.data-prazo {
+  color: #4caf50; /* verde – dentro do prazo */
+}
+
+.data-atrasada {
+  color: var(--cor-excluir); /* vermelho */
+}
+
+.data-sem {
+  color: #999;
+}
+
+
