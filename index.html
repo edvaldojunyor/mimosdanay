@@ -74,7 +74,23 @@
 
   <input id="cliente" placeholder="Nome do cliente">
 
-  <select id="item"></select>
+  <select id="tipoPedido" onchange="carregarItensPorTipo()">
+  <option value="">Tipo do artesanato</option>
+  <option>Adorno de porta</option>
+  <option>Chaveiros</option>
+  <option>Colares</option>
+  <option>Escapulários</option>
+  <option>Imagens</option>
+  <option>Pulseiras</option>
+  <option>Semi joias</option>
+  <option>Terços</option>
+  <option>Terços de pulsos</option>
+</select>
+
+<select id="item">
+  <option value="">Selecione o item</option>
+</select>
+
 
   <select id="pagamento">
     <option>Pix</option>
@@ -115,4 +131,5 @@
 
 </body>
 </html>
+
 
