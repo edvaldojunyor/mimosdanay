@@ -29,7 +29,7 @@ h2 {
 }
 
 /* ===============================
-   INPUTS / BOTÕES
+   INPUTS / SELECTS / BOTÕES
 =============================== */
 input,
 select,
@@ -78,7 +78,7 @@ li strong {
 }
 
 /* ===============================
-   STATUS PEDIDOS
+   STATUS DO PEDIDO
 =============================== */
 li.atrasado::before {
   content: "";
@@ -106,7 +106,54 @@ li.atrasado::before {
 }
 
 /* ===============================
-   HOME – LOGO
+   AÇÕES DO PEDIDO (✓ Editar Excluir)
+=============================== */
+.pedido-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  align-items: center;
+}
+
+.pedido-acoes button {
+  flex: 1;
+}
+
+/* Botão ENTREGUE – círculo perfeito */
+button.btn-entregue {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: #4caf50;
+  color: #fff;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 14px rgba(76, 175, 80, 0.35);
+}
+
+button.btn-entregue:active {
+  transform: scale(0.92);
+}
+
+/* Editar e Excluir */
+button.btn-editar {
+  background: var(--cor-editar);
+  color: #fff;
+}
+
+button.btn-excluir-item {
+  background: var(--cor-excluir);
+  color: #fff;
+}
+
+/* ===============================
+   HOME – LOGO EM DESTAQUE
 =============================== */
 .logo-card {
   background: #fff;
@@ -227,26 +274,3 @@ li.atrasado::before {
     max-width: 120px;
   }
 }
-/* ===============================
-   BOTÃO ENTREGUE – CÍRCULO PERFEITO
-=============================== */
-button.btn-entregue {
-  width: 44px;
-  height: 44px;
-  padding: 0;               /* remove o oval */
-  border-radius: 50%;
-  background: #4caf50;
-  color: #fff;
-  font-size: 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 6px 14px rgba(76, 175, 80, 0.35);
-}
-
-button.btn-entregue:active {
-  transform: scale(0.92);
-}
-
