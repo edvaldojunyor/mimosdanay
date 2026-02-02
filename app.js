@@ -1,5 +1,7 @@
 let pedidoEditandoId = null;
 let arteEditandoId = null;
+let carrinhoPedidos = [];
+
 
 // ===============================
 // FIREBASE
@@ -566,6 +568,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
