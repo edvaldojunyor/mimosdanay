@@ -359,6 +359,76 @@ async function gerarPortfolio() {
   const larguraPagina = pdf.internal.pageSize.getWidth();
   let y = 20;
 
+  async function gerarRelatorio() {
+  const mes = document.getElementById("mesRelatorio").value;
+  const resultado = document.getElementById("resultadoRelatorio");
+
+  if (!mes) {
+    alert("Selecione um mês");
+    return;
+  }
+
+  resultado.innerHTML = "";
+
+  const [ano, mesNum] = mes.split("-");
+  const inicio = new Date(ano, mesNum - 1, 1);
+  const fim = new Date(ano, mesNum, 0, 23, 59, 59);
+
+  let totalPix = 0;
+  let totalCartao = 0;
+  let totalPrazo = 0;
+
+  const snap = await db.collection("pedidos").get();
+
+  snap.forEach(doc => {
+    const p = doc.data();
+    const dataPedido = p.dataPedido?.toDate?.();
+
+    if (!dataPedido) return;
+    if (dataPedido < inicio || dataPedido > fim) return;
+
+    if (p.pagamento === "Pix") totalPix += p.valor;
+    if (p.pagamento === "Cartão") totalCartao += p.valor;
+    if (p.pagamento === "A prazo") totalPrazo += p.valor;
+  });
+
+  const totalGeral = totalPix + totalCartao + totalPrazo;
+
+  if (totalGeral === 0) {
+    resultado.innerHTML = `
+      <div class="relatorio-vazio">
+        Nenhuma venda registrada neste mês
+      </div>
+    `;
+    return;
+  }
+
+  resultado.innerHTML = `
+    <div class="relatorio-card">
+      <h3>Pix</h3>
+      <div class="relatorio-total">R$ ${totalPix.toFixed(2)}</div>
+    </div>
+
+    <div class="relatorio-card">
+      <h3>Cartão</h3>
+      <div class="relatorio-total">R$ ${totalCartao.toFixed(2)}</div>
+    </div>
+
+    <div class="relatorio-card">
+      <h3>A prazo</h3>
+      <div class="relatorio-total">R$ ${totalPrazo.toFixed(2)}</div>
+    </div>
+
+    <div class="relatorio-card">
+      <h3>Total Geral</h3>
+      <div class="relatorio-total">
+        R$ ${totalGeral.toFixed(2)}
+      </div>
+    </div>
+  `;
+}
+
+
   // ===============================
   // LOGO CENTRALIZADO (logo.jpeg)
   // ===============================
@@ -439,6 +509,7 @@ async function gerarPortfolio() {
 
   pdf.save("portfolio-mimos-da-nay.pdf");
 }
+
 
 
 
